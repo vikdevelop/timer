@@ -20,5 +20,5 @@ git clone https://github.com/vikdevelop/timer.git
 ```
 2. Přejděte do adresáře a spusťte skript
 ```
-cd ./timer && python -m timer.py
+cd ./timer/src && python -m timer.py
 ```
