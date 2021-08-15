@@ -4,5 +4,5 @@ Name=Timer
 Name[cs]=Časovač
 Description=Simple Timer in PyGTK
 Description[cs]=Jednoduchý časovač vytvořený v pyGTK
-Exec=timer
+Exec=cd /usr/share/timer/src && python -m timer.py
 Category=System
