@@ -14,11 +14,5 @@ Timer je jednoduchý časovač, ve kterém si můžete nastavit čas, a on vám 
 ![Zastaveno uživatelem](https://github.com/vikdevelop/timer/blob/main/img/timer-zastaveno-uzivatelem.png)
 
 # Instalace
-1. Naklonujte tento repotiář:
-```
-git clone https://github.com/vikdevelop/timer.git
-```
-2. Přejděte do adresáře a spusťte skript
-```
-cd ./timer/src && python -m timer.py
-```
+Software můžete stáhnout níže 
+### [STÁHNOUT →](https://github.com/vikdevelop/timer/releases/download/1.2/timer-1.0-1-any.pkg.tar.zst)
