@@ -1,0 +1,27 @@
+# Maintainer: vikdevelop <super-vik1@protonmail.com>
+
+pkgname=timer
+pkgdesc="Simple Timer in PyGTK"
+url="https://github.com/vikdevelop/$pkgname"
+pkgver=1.0
+pkgrel=1
+arch=('any')
+license=('GPL3')
+source=('https://github.com/vikdevelop/timer/archive/refs/tags/1.2.tar.gz')
+depends=('python>=3' 'python-requests')
+sha256sums=('ddddc11022bab70397af0a90b8e992d9f64032e9f7d0dddbd5aa39d010c3de57')
+
+prepare()
+{
+  echo "#!/bin/bash\npython /usr/share/$pkgname/src/$pkgname.py \"\$@\"" > $pkgname
+}
+
+package()
+{
+  install -Dm755 $pkgname "$pkgdir/usr/bin/$pkgname"
+  cd $pkgname-1.2
+  install -Dm755 $pkgname.desktop "$pkgdir/usr/share/applications/$pkgname.desktop"
+  install -Dm755 $srcdir/timer-1.2/src/$pkgname.py "$pkgdir/usr/share/$pkgname/src/$pkgname.py"
+  install -Dm644 README.md "$pkgdir/usr/share/$pkgname/README.md"
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
