@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Timer
+Name[cs]=Časovač
+Description=Simple Timer in PyGTK
+Description[cs]=Jednoduchý časovač vytvořený v pyGTK
+Exec=timer
+Category=System
