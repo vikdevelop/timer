@@ -8,7 +8,7 @@ pkgrel=1
 arch=('any')
 license=('GPL3')
 source=('https://github.com/vikdevelop/timer/archive/refs/tags/1.2.tar.gz')
-makedepends=('python>=3' 'python-requests')
+depends=('python>=3' 'python-requests')
 sha256sums=('ddddc11022bab70397af0a90b8e992d9f64032e9f7d0dddbd5aa39d010c3de57')
 
 prepare()
