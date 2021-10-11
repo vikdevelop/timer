@@ -1,3 +1,3 @@
 #/bin/sh
 
-python -m /app/src/timer "$@"
+python /app/src/timer.py "$@"
