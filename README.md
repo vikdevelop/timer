@@ -1,18 +1,17 @@
-# Timer (Časovač)
-Timer je jednoduchý časovač, ve kterém si můžete nastavit čas, a on vám ho změří. [Nainstalovat →](https://github.com/vikdevelop/timer#Instalace)
+<h1>Timer</h1>
 
-### Po spuštění
-![Po spuštění](https://github.com/vikdevelop/timer/blob/main/img/timer-1.png)
 
-### Odpočítávání času
-![Odpočítávání času](https://github.com/vikdevelop/timer/blob/main/img/timer-2.png)
+<h2>After launching</h2>
+<img src=https://github.com/vikdevelop/timer/blob/main/img/timer-1.png>
 
-### Odpočítávání času je dokončeno
-![Dokončeno](https://github.com/vikdevelop/timer/blob/main/img/timer-dokonceno.png)
+<h2>Timing</h2>
+<img src=https://github.com/vikdevelop/timer/blob/main/img/timer-2.png>
 
-### Časování, které bylo zastaveno uživatelem
-![Zastaveno uživatelem](https://github.com/vikdevelop/timer/blob/main/img/timer-zastaveno-uzivatelem.png)
+<h2>Timing has been finished</h2>
+<img src=https://github.com/vikdevelop/timer/blob/main/img/timer-dokonceno.png>
 
-# Instalace
-Software můžete stáhnout níže 
-### [STÁHNOUT →](https://github.com/vikdevelop/timer/releases/download/1.2/timer-1.0-1-any.pkg.tar.zst)
+<h2>Timing that has been stopped by the user</h2>
+<img src=https://github.com/vikdevelop/timer/blob/main/img/timer-zastaveno-uzivatelem.png>
+
+<h1>Download</h1>
+<a href=https://github.com/vikdevelop/timer/blob/main/arch/timer-1.0-1-any.pkg.tar.zst?raw=true><img src=https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Archlinux-icon-crystal-64.svg/1200px-Archlinux-icon-crystal-64.svg.png width=45 height=45>
