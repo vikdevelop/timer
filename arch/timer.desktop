@@ -7,5 +7,5 @@ Icon=com.github.vikdevelop.timer
 Comment=Simple timer
 Comment[cs]=Jednoduchý Časovač
 Comment[fr]=Minuterie simple
-Exec=run.sh
+Exec=timer.sh
 Category=Utilities
