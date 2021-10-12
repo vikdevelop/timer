@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Timer
+Name[cs]=Časovač
+Name[fr]=Minuteur
+Type=Application
+Icon=com.github.vikdevelop.timer
+Comment=Simple timer
+Comment[cs]=Jednoduchý Časovač
+Comment[fr]=Minuterie simple
+Exec=run.sh
+Category=Utilities
