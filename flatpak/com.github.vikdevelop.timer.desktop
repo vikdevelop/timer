@@ -8,4 +8,4 @@ Comment=Simple timer
 Comment[cs]=Jednoduchý Časovač
 Comment[fr]=Minuterie simple
 Exec=timer.sh
-Category=Utilities
+Categories=Utilities
