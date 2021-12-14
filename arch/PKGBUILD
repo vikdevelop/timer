@@ -20,7 +20,7 @@ package() {
   cd "timer-$pkgver"
   install -D "arch/timer.sh" "$pkgdir/usr/bin/timer.sh"
   install -Dm755 "src/timer.py" "$pkgdir/usr/share/timer/src/timer.py"
-  install -Dm644 "arch/timer.desktop" -t "$pkgdir/usr/share/applications"
+  install -Dm644 "flatpak/$_appid.desktop" -t "$pkgdir/usr/share/applications"
   install -Dm644 "flatpak/icons/$_appid.png" -t "$pkgdir/usr/share/icons/hicolor/128x128/apps"
   install -Dm644 "flatpak/$_appid.metainfo.xml" -t "$pkgdir/usr/share/metainfo"
 }
