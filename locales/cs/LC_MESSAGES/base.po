@@ -1,1 +1,33 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: Timer\n"
+"Language: cs\n"
+
+#: 
+msgid "2"
+msgstr "Časovač"
+
+#: src/timer.py:10
+msgid "Timer"
+msgstr "Časovač"
+
+#: src/timer.py:27
+msgid "Run Timer"
+msgstr "Spustit Časovač"
+
+#: src/timer.py:31
+msgid "Stop Timer"
+msgstr "Zastavit časovač"
+
+#: src/timer.py:72
+msgid "Time:"
+msgstr "Čas:"
+
+#: src/timer.py:92
+msgid "Timer has been ended."
+msgstr "Časovač byl ukončen."
 
