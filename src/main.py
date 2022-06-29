@@ -1,4 +1,6 @@
-
+import sys
+sys.path.append('/app')
+from timer import *
 import gi
 
 gi.require_version("Gtk", "3.0")
@@ -7,9 +9,9 @@ from gi.repository import Gtk, GLib
 
 class TimerWindow(Gtk.Window):
     def __init__(self, *args, **kwargs):
-        Gtk.Window.__init__(self, title="Timer")
+        Gtk.Window.__init__(self, title=timer_title)
         self.set_border_width(40)
-        print("Timer is running...")
+        print(timer_running)
 
         mainBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         self.add(mainBox)
@@ -24,11 +26,11 @@ class TimerWindow(Gtk.Window):
         self.entry.set_text("10")
         mainBox.pack_start(self.entry, True, True, 0)
 
-        self.buttonStart = Gtk.Button(label="Run Timer")
+        self.buttonStart = Gtk.Button(label=run_timer)
         self.buttonStart.connect("clicked", self.on_buttonStart_clicked)
         mainBox.pack_start(self.buttonStart, True, True, 0)
 
-        self.buttonStop = Gtk.Button(label="Stop Timer")
+        self.buttonStop = Gtk.Button(label=stop_timer)
         self.buttonStop.set_sensitive(False)
         self.buttonStop.connect("clicked", self.on_buttonStop_clicked)
         mainBox.pack_start(self.buttonStop, True, True, 0)
@@ -57,10 +59,10 @@ class TimerWindow(Gtk.Window):
 
         self.counter -= 1
         if self.counter <= 0:
-            self.stop_timer("Timing has been finished!")
-            print("Timing has been finfished!")
+            self.stop_timer(timing_finished)
+            print(timing_finished)
             return False
-        self.label.set_label("Time: " + str(int(self.counter / 4)))
+        self.label.set_label(time_text + str(int(self.counter / 4)) + " s")
         return True
 
 
@@ -69,10 +71,10 @@ class TimerWindow(Gtk.Window):
         self.buttonStart.set_sensitive(False)
         self.buttonStop.set_sensitive(True)
         self.counter = 4 * int(self.entry.get_text())
-        self.label.set_label("Time: " + str(int(self.counter / 4)))
+        self.label.set_label(time_text + str(int(self.counter / 4)))
         self.spinner.start()
         self.timeout_id = GLib.timeout_add(250, self.on_timeout, None)
-        print("Timing has begun")
+        print(timing_ended)
 
     def stop_timer(self, alabeltext):
         """ Stop Timer """
@@ -83,10 +85,10 @@ class TimerWindow(Gtk.Window):
         self.buttonStart.set_sensitive(True)
         self.buttonStop.set_sensitive(False)
         self.label.set_label(alabeltext)
-        print("Timing has been stopped")
+        print(timing_ended)
 
 
 win = TimerWindow()
 win.show_all()
 Gtk.main()
-print("Timer has been ended.")
+print(timer_quit)
