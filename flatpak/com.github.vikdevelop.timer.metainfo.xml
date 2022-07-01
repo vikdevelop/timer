@@ -39,6 +39,11 @@
     </categories>
     
     <releases>
+        <release version="1.8.1" date="2022-07-01">
+            <description>
+                <p> Added Italian translations and instructions for translating of timer</p>
+            </description>
+        </release>
         <release version="1.8" date="2022-06-29">
             <description>
                 <p> Added Czech translations</p>
