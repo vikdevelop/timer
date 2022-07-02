@@ -10,7 +10,7 @@
     <developer_name>vikdevelop</developer_name>
     
     <description>
-      <p>Countdown time in Linux conveniently.</p>
+      <p>Timer program allows you to count down time in seconds.</p>
     </description>
     
     <url type="homepage">https://github.com/vikdevelop/timer</url>
@@ -19,16 +19,16 @@
     
     <screenshots>
         <screenshot type="default">
-            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer1.png</image>
+            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_1.png</image>
         </screenshot>
         <screenshot>
-            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer2.png</image>
+            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2.png</image>
         </screenshot>
         <screenshot>
-            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer3.png</image>
+            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_3.png</image>
         </screenshot>
         <screenshot>
-            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer4.png</image>
+            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_4.png</image>
         </screenshot>
     </screenshots>
     
@@ -39,19 +39,19 @@
     </categories>
     
     <releases>
-        <release version="1.8.1" date="2022-07-01">
+        <release version="1.8" date="2022-07-03">
             <description>
-                <p> Added Italian translations and instructions for translating of timer</p>
-            </description>
-        </release>
-        <release version="1.8" date="2022-06-29">
-            <description>
-                <p> Added Czech translations</p>
+                <p>This release brings this following changes:</p>
+                <ul>
+                    <li> Switched from GTK3 to GTK4 + Libadwaita</li>
+                    <li> Added Czech, Deutsch and Italian translations</li>
+                    <li> Other small edits of source code</li>
+                </ul>
             </description>
         </release>
         <release version="1.7" date="2021-12-13">
             <description>
-                <p> Small edits of source code: Added print for Timer events.</p>
+                <p> Small edits of source code: Added output for Timer events.</p>
             </description>
         </release>
         <release version="1.6" date="2021-11-02">
