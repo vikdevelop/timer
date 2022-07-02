@@ -11,12 +11,14 @@ print(timer_running)
 class TimerWindow(Gtk.ApplicationWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.set_default_size(250, 250)
-        self.set_title(timer_title)
+        self.set_default_size(300, 300)
+        self.set_title(title=timer_title)
+        headerbar = Gtk.HeaderBar.new()
         
-        self.mainBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=15)
+        self.set_titlebar(titlebar=headerbar)
+        self.mainBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=20)
         self.set_child(self.mainBox)
-
+        
         self.spinner = Gtk.Spinner()
         self.mainBox.append(self.spinner)
 
