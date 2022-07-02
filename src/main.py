@@ -3,37 +3,38 @@ sys.path.append('/app')
 from timer import *
 import gi
 
-gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk, GLib
+gi.require_version("Gtk", "4.0")
+gi.require_version("Adw", "1")
+from gi.repository import Gtk, GLib, Adw
 
-
-class TimerWindow(Gtk.Window):
+print(timer_running)
+class TimerWindow(Gtk.ApplicationWindow):
     def __init__(self, *args, **kwargs):
-        Gtk.Window.__init__(self, title=timer_title)
-        self.set_border_width(40)
-        print(timer_running)
-
-        mainBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-        self.add(mainBox)
+        super().__init__(*args, **kwargs)
+        self.set_default_size(250, 250)
+        self.set_title(timer_title)
+        
+        self.mainBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=15)
+        self.set_child(self.mainBox)
 
         self.spinner = Gtk.Spinner()
-        mainBox.pack_start(self.spinner, True, True, 0)
+        self.mainBox.append(self.spinner)
 
         self.label = Gtk.Label()
-        mainBox.pack_start(self.label, True, True, 0)
+        self.mainBox.append(self.label)
 
         self.entry = Gtk.Entry()
         self.entry.set_text("10")
-        mainBox.pack_start(self.entry, True, True, 0)
+        self.mainBox.append(self.entry)
 
         self.buttonStart = Gtk.Button(label=run_timer)
         self.buttonStart.connect("clicked", self.on_buttonStart_clicked)
-        mainBox.pack_start(self.buttonStart, True, True, 0)
+        self.mainBox.append(self.buttonStart)
 
         self.buttonStop = Gtk.Button(label=stop_timer)
         self.buttonStop.set_sensitive(False)
         self.buttonStop.connect("clicked", self.on_buttonStop_clicked)
-        mainBox.pack_start(self.buttonStop, True, True, 0)
+        self.mainBox.append(self.buttonStop)
 
         self.timeout_id = None
         self.connect("destroy", self.on_SpinnerWindow_destroy)
@@ -44,7 +45,7 @@ class TimerWindow(Gtk.Window):
 
     def on_buttonStop_clicked(self, widget, *args):
         """ button "clicked" in event buttonStop. """
-        self.stop_timer("Timer has been stopped")
+        self.stop_timer(timing_ended)
 
     def on_SpinnerWindow_destroy(self, widget, *args):
         """ procesing closing window """
@@ -71,10 +72,9 @@ class TimerWindow(Gtk.Window):
         self.buttonStart.set_sensitive(False)
         self.buttonStop.set_sensitive(True)
         self.counter = 4 * int(self.entry.get_text())
-        self.label.set_label(time_text + str(int(self.counter / 4)))
+        self.label.set_label(time_text + str(int(self.counter / 4)) + " s")
         self.spinner.start()
         self.timeout_id = GLib.timeout_add(250, self.on_timeout, None)
-        print(timing_ended)
 
     def stop_timer(self, alabeltext):
         """ Stop Timer """
@@ -88,7 +88,14 @@ class TimerWindow(Gtk.Window):
         print(timing_ended)
 
 
-win = TimerWindow()
-win.show_all()
-Gtk.main()
+class MyApp(Adw.Application):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.connect('activate', self.on_activate)
+    
+    def on_activate(self, app):
+        self.win = TimerWindow(application=app)
+        self.win.present()
+app = MyApp(application_id="com.github.vikdevelop.timer")
+app.run(sys.argv)
 print(timer_quit)
