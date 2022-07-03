@@ -1,3 +1,4 @@
+import subprocess
 import sys
 sys.path.append('/app')
 from timer import *
@@ -63,6 +64,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.counter -= 1
         if self.counter <= 0:
             self.stop_timer(timing_finished)
+            subprocess.call(['notify-send',timer_title,timing_finished])
             print(timing_finished)
             return False
         self.label.set_label(time_text + str(int(self.counter / 4)) + " s")
