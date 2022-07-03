@@ -44,6 +44,7 @@
                 <p>This release brings this following changes:</p>
                 <ul>
                     <li> Switched from GTK3 to GTK4 + Libadwaita</li>
+                    <li> Added notifications that timing is finished</li>
                     <li> Added Czech, Deutsch and Italian translations</li>
                     <li> Added better app icon</li>
                     <li> Other small edits of source code such as editation of metainfo file, edittion README.md and so on.</li>
