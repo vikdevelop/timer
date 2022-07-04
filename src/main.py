@@ -64,6 +64,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.counter -= 1
         if self.counter <= 0:
             self.stop_timer(timing_finished)
+            print('\a')
             subprocess.call(['notify-send',timer_title,timing_finished])
             print(timing_finished)
             return False
