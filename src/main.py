@@ -76,6 +76,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         """ Run Timer. """
         self.buttonStart.set_sensitive(False)
         self.buttonStop.set_sensitive(True)
+        print('\a')
         self.counter = 4 * int(self.entry.get_text())
         self.label.set_label(time_text + str(int(self.counter / 4)) + " s")
         self.spinner.start()
@@ -90,6 +91,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.buttonStart.set_sensitive(True)
         self.buttonStop.set_sensitive(False)
         self.label.set_label(alabeltext)
+        print('\a')
         print(timing_ended)
 
 
