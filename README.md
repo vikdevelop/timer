@@ -1,11 +1,4 @@
 <h1>Timer</h1>
-
-<h2>Contribute to translations</h2>
-
-Timer can be translate into more languages. How to do it? Look in <a href="https://github.com/vikdevelop/timer/tree/main/translations">translations folder</a>, copy contents from `en.py` file, create a new file `[your language abbreviation, e.g. cs, en, de...].py` and paste copied content from `en.py` file. Then translate content in quotes into your language.
-
-<br>
-
 <h2>Screenshots</h2>
 <h3>After launching</h3>
 <img src=https://github.com/vikdevelop/timer/blob/main/img/timer-gtk4_1.png>
