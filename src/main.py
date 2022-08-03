@@ -13,6 +13,8 @@ class TimerWindow(Gtk.ApplicationWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.set_default_size(300, 300)
+        self.set_size_request(300,300)
+        self.set_resizable(False)
         self.set_title(title=timer_title)
         headerbar = Gtk.HeaderBar.new()
         
