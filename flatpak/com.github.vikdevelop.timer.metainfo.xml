@@ -39,6 +39,14 @@
     </categories>
     
     <releases>
+        <release version="1.9" date="2022-08-03">
+            <description>
+                <ul>
+                    <li>Added beep that timing started, stopped, and finished</li>
+                    <li>Added About Dialog</li>
+                </ul>
+            </description>
+        </release>
         <release version="1.8" date="2022-07-03">
             <description>
                 <p>This release brings this following changes:</p>
