@@ -6,7 +6,7 @@ import gi
 
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
-from gi.repository import Gtk, GLib, Adw
+from gi.repository import Gtk, GLib, Adw, Gio
 
 print(timer_running)
 class TimerWindow(Gtk.ApplicationWindow):
@@ -19,7 +19,12 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.set_titlebar(titlebar=headerbar)
         self.mainBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=20)
         self.set_child(self.mainBox)
-        
+        menu_button_model = Gio.Menu()
+        menu_button_model.append(about_app, 'app.about')
+        menu_button = Gtk.MenuButton.new()
+        menu_button.set_icon_name(icon_name='open-menu-symbolic')
+        menu_button.set_menu_model(menu_model=menu_button_model)
+        headerbar.pack_end(child=menu_button)
         self.spinner = Gtk.Spinner()
         self.mainBox.append(self.spinner)
 
@@ -97,8 +102,31 @@ class TimerWindow(Gtk.ApplicationWindow):
 
 class MyApp(Adw.Application):
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+        super().__init__(**kwargs, flags=Gio.ApplicationFlags.FLAGS_NONE)
         self.connect('activate', self.on_activate)
+        self.create_action('about', self.on_about_action)
+
+    def on_about_action(self, action, param):
+        dialog = Gtk.AboutDialog()
+        dialog.set_title(about)
+        dialog.set_name(timer_title)
+        dialog.set_version("1.9")
+        dialog.set_license_type(Gtk.License(Gtk.License.GPL_3_0))
+        dialog.set_comments(simple_timer)
+        dialog.set_website("https://github.com/vikdevelop/timer")
+        dialog.set_website_label(source_code)
+        dialog.set_authors(["vikdevelop <https://github.com/vikdevelop>"])
+        dialog.set_translator_credits(translator_credits)
+        dialog.set_copyright("© 2022 vikdevelop")
+        dialog.set_logo_icon_name("com.github.vikdevelop.timer")
+        dialog.show()
+    
+    def create_action(self, name, callback, shortcuts=None):
+        action = Gio.SimpleAction.new(name, None)
+        action.connect('activate', callback)
+        self.add_action(action)
+        if shortcuts:
+            self.set_accels_for_action(f'app.{name}', shortcuts)
     
     def on_activate(self, app):
         self.win = TimerWindow(application=app)
