@@ -72,7 +72,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         if self.counter <= 0:
             self.stop_timer(timing_finished)
             print('\a')
-            subprocess.call(['notify-send',timer_title,timing_finished])
+            subprocess.call(['notify-send',timer_title,timing_finished,'-i','com.github.vikdevelop.timer'])
             print(timing_finished)
             return False
         self.label.set_label(time_text + str(int(self.counter / 4)) + " s")
