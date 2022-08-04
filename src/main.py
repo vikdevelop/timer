@@ -12,8 +12,8 @@ print(timer_running)
 class TimerWindow(Gtk.ApplicationWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.set_default_size(300, 300)
-        self.set_size_request(300,300)
+        self.set_default_size(320, 320)
+        self.set_size_request(320, 320)
         self.set_resizable(False)
         self.set_title(title=timer_title)
         headerbar = Gtk.HeaderBar.new()
@@ -23,11 +23,14 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.set_child(self.mainBox)
         menu_button_model = Gio.Menu()
         menu_button_model.append(about_app, 'app.about')
+        menu_button_model.append("Report issue", 'app.issue')
         menu_button = Gtk.MenuButton.new()
         menu_button.set_icon_name(icon_name='open-menu-symbolic')
         menu_button.set_menu_model(menu_model=menu_button_model)
         headerbar.pack_end(child=menu_button)
+        
         self.spinner = Gtk.Spinner()
+        self.spinner.set_size_request(40,40)
         self.mainBox.append(self.spinner)
 
         self.label = Gtk.Label()
@@ -71,11 +74,12 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.counter -= 1
         if self.counter <= 0:
             self.stop_timer(timing_finished)
+            self.label.set_markup("<b>" + timing_finished + "</b>")
             print('\a')
             subprocess.call(['notify-send',timer_title,timing_finished,'-i','com.github.vikdevelop.timer'])
             print(timing_finished)
             return False
-        self.label.set_label(time_text + str(int(self.counter / 4)) + " s")
+        self.label.set_label("<big><b>" + time_text + str(int(self.counter / 4)) + " s</b></big>")
         return True
 
 
@@ -85,7 +89,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.buttonStop.set_sensitive(True)
         print('\a')
         self.counter = 4 * int(self.entry.get_text())
-        self.label.set_label(time_text + str(int(self.counter / 4)) + " s")
+        self.label.set_markup("<big><b>" + time_text + str(int(self.counter / 4)) + " s</b></big>")
         self.spinner.start()
         self.timeout_id = GLib.timeout_add(250, self.on_timeout, None)
 
@@ -98,7 +102,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.buttonStart.set_sensitive(True)
         self.buttonStop.set_sensitive(False)
         self.label.set_label(alabeltext)
-        print('\a')
+        #print('\a')
         print(timing_ended)
 
 
@@ -107,6 +111,7 @@ class MyApp(Adw.Application):
         super().__init__(**kwargs, flags=Gio.ApplicationFlags.FLAGS_NONE)
         self.connect('activate', self.on_activate)
         self.create_action('about', self.on_about_action)
+        self.create_action('issue', self.on_issue_action)
 
     def on_about_action(self, action, param):
         dialog = Gtk.AboutDialog()
@@ -122,6 +127,8 @@ class MyApp(Adw.Application):
         dialog.set_copyright("© 2022 vikdevelop")
         dialog.set_logo_icon_name("com.github.vikdevelop.timer")
         dialog.show()
+    def on_issue_action(self, action, param):
+        os.system("xdg-open https://github.com/vikdevelop/timer/issues")
     
     def create_action(self, name, callback, shortcuts=None):
         action = Gio.SimpleAction.new(name, None)
