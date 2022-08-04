@@ -7,7 +7,7 @@
 <img src=https://github.com/vikdevelop/timer/blob/main/img/timergtk4_timing.png>
 
 <h3>Timing has been finished</h3>
-<img src=https://github.com/vikdevelop/timer/blob/main/img/timergtk4_finished.png>
+<img src=https://github.com/vikdevelop/timer/blob/main/img/timergtk4_FINISHED.png>
 
 <h3>Timing that has been stopped by user</h3>
 <img src=https://github.com/vikdevelop/timer/blob/main/img/timergtk4_stopped.png>
