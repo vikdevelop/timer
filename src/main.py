@@ -102,7 +102,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.buttonStart.set_sensitive(True)
         self.buttonStop.set_sensitive(False)
         self.label.set_label(alabeltext)
-        #print('\a')
+        print('\a')
         print(timing_ended)
 
 
