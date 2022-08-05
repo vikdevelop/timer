@@ -24,7 +24,7 @@ class Dialog_settings(Gtk.Dialog):
 
         # Criando os botões.
         self.add_buttons(
-            '_Close', Gtk.ResponseType.CANCEL,
+            close, Gtk.ResponseType.CANCEL,
         )
 
         # Adicionando class action nos botões
