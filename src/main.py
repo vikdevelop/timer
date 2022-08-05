@@ -11,8 +11,6 @@ gi.require_version("Adw", "1")
 from gi.repository import Gtk, GLib, Adw, Gio
 
 class Dialog_settings(Gtk.Dialog):
-    """Exemplo de uma janela de dialogo personalizada."""
-
     def __init__(self, parent):
         super().__init__(use_header_bar=True)
         #self.parent = parent
@@ -22,12 +20,12 @@ class Dialog_settings(Gtk.Dialog):
         self.set_modal(modal=True)
         self.connect('response', self.dialog_response)
 
-        # Criando os botões.
+        # Buttons
         self.add_buttons(
             close, Gtk.ResponseType.CANCEL,
         )
 
-        # Adicionando class action nos botões
+        # Close button response ID
         btn_cancel = self.get_widget_for_response(
             response_id=Gtk.ResponseType.CANCEL,
         )
@@ -62,6 +60,7 @@ class Dialog_settings(Gtk.Dialog):
     def on_combo_box_text_changed(self, comboboxtext):
         with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/preferences.json', 'w') as conf:
             conf.write('{\n "spinner-size": "%s"\n}' % comboboxtext.get_active_text())
+    # Close button clicked action
     def dialog_response(self, dialog, response):
         if response == Gtk.ResponseType.CANCEL:
             dialog.close()
@@ -75,10 +74,13 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.set_resizable(False)
         self.set_title(title=timer_title)
         headerbar = Gtk.HeaderBar.new()
-        
         self.set_titlebar(titlebar=headerbar)
+        
+        # Gtk.Box() layout
         self.mainBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=20)
         self.set_child(self.mainBox)
+        
+        # App menu
         menu_button_model = Gio.Menu()
         menu_button_model.append(preferences, 'app.settings')
         menu_button_model.append(about_app, 'app.about')
@@ -86,6 +88,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         menu_button.set_icon_name(icon_name='open-menu-symbolic')
         menu_button.set_menu_model(menu_model=menu_button_model)
         headerbar.pack_end(child=menu_button)
+        
         # Spinner
         self.spinner = Gtk.Spinner()
         self.spinner_size()
@@ -143,6 +146,7 @@ class TimerWindow(Gtk.ApplicationWindow):
             if spinner == "60":
                 self.spinner.set_size_request(60,60)
         else:
+            # default spinner size
             self.spinner.set_size_request(40,40)
     
     def on_buttonStart_clicked(self, widget, *args):
@@ -161,9 +165,6 @@ class TimerWindow(Gtk.ApplicationWindow):
         Gtk.main_quit()
 
     def on_timeout(self, *args, **kwargs):
-        """ Features timer limit.
-        """
-
         self.counter -= 1
         if self.counter <= 0:
             self.stop_timer(timing_finished)
