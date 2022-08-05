@@ -17,7 +17,7 @@ class Dialog_settings(Gtk.Dialog):
         super().__init__(use_header_bar=True)
         #self.parent = parent
 
-        self.set_title(title='Preferences')
+        self.set_title(title=preferences)
         self.use_header_bar = True
         self.set_modal(modal=True)
         self.connect('response', self.dialog_response)
@@ -41,7 +41,7 @@ class Dialog_settings(Gtk.Dialog):
         content_area.set_margin_bottom(margin=12)
         content_area.set_margin_start(margin=12)
         # Spinner size desc
-        label = Gtk.Label.new(str='Select size of spinner (40 is default size):')
+        label = Gtk.Label.new(str=spinner_size_desc)
         content_area.append(child=label)
         # ComboBox
         units = [
@@ -55,7 +55,7 @@ class Dialog_settings(Gtk.Dialog):
         content_area.append(child=combobox_text)
         # Label about restart
         label2 = Gtk.Label()
-        label2.set_markup("<i>Restart Timer for the changes to take effect.</i>")
+        label2.set_markup(restart_timer_desc)
         content_area.append(child=label2)
         self.show()
     # Save Combobox configuration
@@ -80,7 +80,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.mainBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=20)
         self.set_child(self.mainBox)
         menu_button_model = Gio.Menu()
-        menu_button_model.append("Preferences", 'app.settings')
+        menu_button_model.append(preferences, 'app.settings')
         menu_button_model.append(about_app, 'app.about')
         menu_button = Gtk.MenuButton.new()
         menu_button.set_icon_name(icon_name='open-menu-symbolic')
@@ -93,14 +93,17 @@ class TimerWindow(Gtk.ApplicationWindow):
         
         self.label = Gtk.Label()
         self.mainBox.append(self.label)
+        
         # Entry
         self.entry = Gtk.Entry()
         self.entry.set_text("10")
         self.mainBox.append(self.entry)
+        
         # Start timer button
         self.buttonStart = Gtk.Button(label=run_timer)
         self.buttonStart.connect("clicked", self.on_buttonStart_clicked)
         self.mainBox.append(self.buttonStart)
+        
         # Stop timer button
         self.buttonStop = Gtk.Button(label=stop_timer)
         self.buttonStop.set_sensitive(False)
