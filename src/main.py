@@ -211,7 +211,7 @@ class MyApp(Adw.Application):
         dialog = Gtk.AboutDialog()
         dialog.set_title(about)
         dialog.set_name(timer_title)
-        dialog.set_version("1.9")
+        dialog.set_version("2.0")
         dialog.set_license_type(Gtk.License(Gtk.License.GPL_3_0))
         dialog.set_comments(simple_timer)
         dialog.set_website("https://github.com/vikdevelop/timer")
