@@ -39,7 +39,8 @@ class Dialog_settings(Gtk.Dialog):
         content_area.set_margin_bottom(margin=12)
         content_area.set_margin_start(margin=12)
         # Spinner size desc
-        label = Gtk.Label.new(str=spinner_size_desc)
+        label = Gtk.Label(xalign=0, yalign=0)
+        label.set_markup("<b>Spinner</b>\n" + spinner_size_desc)
         content_area.append(child=label)
         # ComboBox
         units = [
@@ -51,6 +52,7 @@ class Dialog_settings(Gtk.Dialog):
         combobox_text.set_active(index_=0)
         combobox_text.connect('changed', self.on_combo_box_text_changed)
         content_area.append(child=combobox_text)
+        
         # Label about restart
         label2 = Gtk.Label()
         label2.set_markup(restart_timer_desc)
