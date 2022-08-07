@@ -38,10 +38,12 @@ class Dialog_settings(Gtk.Dialog):
         content_area.set_margin_end(margin=12)
         content_area.set_margin_bottom(margin=12)
         content_area.set_margin_start(margin=12)
+        
         # Spinner size desc
         label = Gtk.Label(xalign=0, yalign=0)
-        label.set_markup("<b>Spinner</b>\n" + spinner_size_desc)
+        label.set_markup(spinner + "\n" + spinner_size_desc)
         content_area.append(child=label)
+        
         # ComboBox
         units = [
             '-', '5', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55','60'
