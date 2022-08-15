@@ -60,8 +60,14 @@ class Dialog_settings(Gtk.Dialog):
         label2.set_markup(resizable_of_window)
         content_area.append(child=label2)
         
-        # Check button about resizable of Window
+        # Check button about resizable of Window     
         check_button = Gtk.CheckButton.new_with_label(label=resizable_of_window)
+        if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/window.json'):
+            with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/window.json') as r:
+                jR = json.load(r)
+            resizable = jR["resizable"]
+            if resizable == "true":
+                check_button.set_active(True)
         check_button.connect('toggled', self.on_check_button_toggled)
         content_area.append(child=check_button)
         
