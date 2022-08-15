@@ -11,7 +11,7 @@ gi.require_version("Adw", "1")
 from gi.repository import Gtk, GLib, Adw, Gio
 
 class Dialog_settings(Gtk.Dialog):
-    def __init__(self, parent):
+    def __init__(self, parent, **kwargs):
         super().__init__(use_header_bar=True)
         #self.parent = parent
 
@@ -45,24 +45,43 @@ class Dialog_settings(Gtk.Dialog):
         content_area.append(child=label)
         
         # ComboBox
-        units = [
-            '-', '5', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55','60'
+        sizes = [
+            choose, '5', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55', '60', '65', '70', '75', '80'
         ]
         combobox_text = Gtk.ComboBoxText.new()
-        for text in units:
+        for text in sizes:
             combobox_text.append_text(text=text)
         combobox_text.set_active(index_=0)
         combobox_text.connect('changed', self.on_combo_box_text_changed)
         content_area.append(child=combobox_text)
         
-        # Label about restart
-        label2 = Gtk.Label()
-        label2.set_markup(restart_timer_desc)
+        # Label about resizable of Window
+        label2 = Gtk.Label(xalign=0, yalign=0)
+        label2.set_markup(resizable_of_window)
         content_area.append(child=label2)
+        
+        # Check button about resizable of Window
+        check_button = Gtk.CheckButton.new_with_label(label=resizable_of_window)
+        check_button.connect('toggled', self.on_check_button_toggled)
+        content_area.append(child=check_button)
+        
+        # Label about restart
+        label3 = Gtk.Label()
+        label3.set_markup(restart_timer_desc)
+        content_area.append(child=label3)
         self.show()
+    
+    # Save resizable window configuration
+    def on_check_button_toggled(self, checkbutton):
+        if checkbutton.get_active():
+            with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/window.json', 'w') as w:
+                w.write('{\n "resizable": "true"\n}')
+        else:
+            os.remove(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/window.json')
+    
     # Save Combobox configuration
     def on_combo_box_text_changed(self, comboboxtext):
-        with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/preferences.json', 'w') as conf:
+        with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/spinner.json', 'w') as conf:
             conf.write('{\n "spinner-size": "%s"\n}' % comboboxtext.get_active_text())
     # Close button clicked action
     def dialog_response(self, dialog, response):
@@ -73,9 +92,7 @@ print(timer_running)
 class TimerWindow(Gtk.ApplicationWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.set_default_size(340, 340)
-        self.set_size_request(340, 340)
-        self.set_resizable(False)
+        self.resizable()
         self.set_title(title=timer_title)
         headerbar = Gtk.HeaderBar.new()
         self.set_titlebar(titlebar=headerbar)
@@ -120,38 +137,90 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.timeout_id = None
         self.connect("destroy", self.on_SpinnerWindow_destroy)
     
+    def resizable(self):
+        if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/window.json'):
+            with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/window.json') as jr:
+                rezisable = json.load(jr)
+            if rezisable == "true":
+                self.set_resizable(True)
+        else:
+            self.set_resizable(False)
+    
     def spinner_size(self):
-        if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/preferences.json'):
-            with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/preferences.json') as j:
+        if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/spinner.json'):
+            with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/spinner.json') as j:
                 jsonObject = json.load(j)
             spinner = jsonObject["spinner-size"]
             if spinner == "5":
                 self.spinner.set_size_request(5,5)
+                self.set_default_size(300, 300)
+                self.set_size_request(300, 300)
             if spinner == "10":
                 self.spinner.set_size_request(10,10)
+                self.set_default_size(300, 300)
+                self.set_size_request(300, 300)
             if spinner == "15":
                 self.spinner.set_size_request(15,15)
+                self.set_default_size(300, 300)
+                self.set_size_request(300, 300)
             if spinner == "20":
                 self.spinner.set_size_request(20,20)
+                self.set_default_size(320, 320)
+                self.set_size_request(320, 320)
             if spinner == "25":
                 self.spinner.set_size_request(25,25)
+                self.set_default_size(320, 320)
+                self.set_size_request(320, 320)
             if spinner == "30":
                 self.spinner.set_size_request(30,30)
+                self.set_default_size(340, 340)
+                self.set_size_request(340, 340)
             if spinner == "35":
                 self.spinner.set_size_request(35,35)
+                self.set_default_size(340, 340)
+                self.set_size_request(340, 340)
             if spinner == "40":
                 self.spinner.set_size_request(40,40)
+                self.set_default_size(340, 340)
+                self.set_size_request(340, 340)
             if spinner == "45":
                 self.spinner.set_size_request(45,45)
+                self.set_default_size(340, 340)
+                self.set_size_request(340, 340)
             if spinner == "50":
                 self.spinner.set_size_request(50,50)
+                self.set_default_size(350, 350)
+                self.set_size_request(350, 350)
             if spinner == "55":
                 self.spinner.set_size_request(55,55)
+                self.set_default_size(350, 350)
+                self.set_size_request(350, 350)
             if spinner == "60":
                 self.spinner.set_size_request(60,60)
+                self.set_default_size(360, 360)
+                self.set_size_request(360, 360)
+            if spinner == "65":
+                self.spinner.set_size_request(65,65)
+                self.set_default_size(360, 360)
+                self.set_size_request(360, 360)
+            if spinner == "70":
+                self.spinner.set_size_request(70,70)
+                self.set_default_size(370, 370)
+                self.set_size_request(370, 370)
+            if spinner == "75":
+                self.spinner.set_size_request(75,75)
+                self.set_default_size(370, 370)
+                self.set_size_request(370, 370)
+            if spinner == "80":
+                self.spinner.set_size_request(80,80)
+                self.set_default_size(400, 400)
+                self.set_size_request(400, 400)
         else:
             # default spinner size
             self.spinner.set_size_request(40,40)
+            # default size of Window
+            self.set_default_size(340, 340)
+            self.set_size_request(340, 340)
     
     def on_buttonStart_clicked(self, widget, *args):
         """ button "clicked" in event buttonStart. """
