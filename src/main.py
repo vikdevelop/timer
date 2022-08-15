@@ -57,7 +57,7 @@ class Dialog_settings(Gtk.Dialog):
         
         # Label about resizable of Window
         label2 = Gtk.Label(xalign=0, yalign=0)
-        label2.set_markup(resizable_of_window)
+        label2.set_markup("<b>" + resizable_of_window + "</b>")
         content_area.append(child=label2)
         
         # Check button about resizable of Window     
@@ -87,8 +87,8 @@ class Dialog_settings(Gtk.Dialog):
     
     # Save Combobox configuration
     def on_combo_box_text_changed(self, comboboxtext):
-        with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/spinner.json', 'w') as conf:
-            conf.write('{\n "spinner-size": "%s"\n}' % comboboxtext.get_active_text())
+        with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/spinner.json', 'w') as s:
+            s.write('{\n "spinner-size": "%s"\n}' % comboboxtext.get_active_text())
     # Close button clicked action
     def dialog_response(self, dialog, response):
         if response == Gtk.ResponseType.CANCEL:
