@@ -44,14 +44,51 @@ class Dialog_settings(Gtk.Dialog):
         label.set_markup(spinner + "\n" + spinner_size_desc)
         content_area.append(child=label)
         
-        # ComboBox
+        # ComboBox  
         sizes = [
-            choose, '5', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55', '60', '65', '70', '75', '80'
+            select, '5', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55', '60', '65', '70', '75', '80'
         ]
         combobox_text = Gtk.ComboBoxText.new()
         for text in sizes:
             combobox_text.append_text(text=text)
-        combobox_text.set_active(index_=0)
+        if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/spinner.json'):
+            with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/spinner.json') as p:
+                jsonSpinner = json.load(p)
+            combobox_s = jsonSpinner["spinner-size"]
+            if combobox_s == "5":
+                combobox_text.set_active(index_=1)
+            elif combobox_s == "10":
+                combobox_text.set_active(index_=2)
+            elif combobox_s == "15":
+                combobox_text.set_active(index_=3)
+            elif combobox_s == "20":
+                combobox_text.set_active(index_=4)
+            elif combobox_s == "25":
+                combobox_text.set_active(index_=5)
+            elif combobox_s == "30":
+                combobox_text.set_active(index_=6)
+            elif combobox_s == "35":
+                combobox_text.set_active(index_=7)
+            elif combobox_s == "40":
+                combobox_text.set_active(index_=8)
+            elif combobox_s == "45":
+                combobox_text.set_active(index_=9)
+            elif combobox_s == "50":
+                combobox_text.set_active(index_=10)
+            elif combobox_s == "55":
+                combobox_text.set_active(index_=11)
+            elif combobox_s == "60":
+                combobox_text.set_active(index_=12)
+            elif combobox_s == "65":
+                combobox_text.set_active(index_=13)
+            elif combobox_s == "70":
+                combobox_text.set_active(index_=14)
+            elif combobox_s == "75":
+                combobox_text.set_active(index_=15)
+            elif combobox_s == "80":
+                combobox_text.set_active(index_=16)
+        else:
+            combobox_text.set_active(index_=0)
         combobox_text.connect('changed', self.on_combo_box_text_changed)
         content_area.append(child=combobox_text)
         
