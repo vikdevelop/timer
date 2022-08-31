@@ -46,7 +46,7 @@ class Dialog_settings(Gtk.Dialog):
         
         # ComboBox  
         sizes = [
-            select, '5', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55', '60', '65', '70', '75', '80'
+            select, '5', '10', '15', '20', '25', '30', '35', '40 (%s)' % default, '45', '50', '55', '60', '65', '70', '75', '80'
         ]
         combobox_text = Gtk.ComboBoxText.new()
         for text in sizes:
@@ -69,7 +69,7 @@ class Dialog_settings(Gtk.Dialog):
                 combobox_text.set_active(index_=6)
             elif combobox_s == "35":
                 combobox_text.set_active(index_=7)
-            elif combobox_s == "40":
+            elif combobox_s == "40 (%s)" % default:
                 combobox_text.set_active(index_=8)
             elif combobox_s == "45":
                 combobox_text.set_active(index_=9)
@@ -130,6 +130,7 @@ class Dialog_settings(Gtk.Dialog):
     def dialog_response(self, dialog, response):
         if response == Gtk.ResponseType.CANCEL:
             dialog.close()
+            print(preferences_saved)
 
 print(timer_running)
 class TimerWindow(Gtk.ApplicationWindow):
@@ -222,7 +223,7 @@ class TimerWindow(Gtk.ApplicationWindow):
                 self.spinner.set_size_request(35,35)
                 self.set_default_size(340, 340)
                 self.set_size_request(340, 340)
-            if spinner == "40":
+            if spinner == "40 (%s)" % default:
                 self.spinner.set_size_request(40,40)
                 self.set_default_size(340, 340)
                 self.set_size_request(340, 340)
@@ -285,24 +286,22 @@ class TimerWindow(Gtk.ApplicationWindow):
         if self.counter <= 0:
             self.stop_timer(timing_finished)
             self.label.set_markup("<b>" + timing_finished + "</b>")
-            print('\a')
             subprocess.call(['notify-send',timer_title,timing_finished,'-i','com.github.vikdevelop.timer'])
             print(timing_finished)
             return False
         self.label.set_label("%s\n<big><b>" % time_text + str(int(self.counter / 4)) + " s</b></big>")
         return True
 
-
     def start_timer(self):
         """ Run Timer. """
         self.buttonStart.set_sensitive(False)
         self.buttonStop.set_sensitive(True)
-        print('\a')
         self.counter = 4 * int(self.entry.get_text())
+        print('\a')
         self.label.set_markup("%s\n<big><b>" % time_text + str(int(self.counter / 4)) + " s</b></big>")
         self.spinner.start()
         self.timeout_id = GLib.timeout_add(250, self.on_timeout, None)
-
+        
     def stop_timer(self, alabeltext):
         """ Stop Timer """
         if self.timeout_id:
@@ -314,7 +313,6 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.label.set_label(alabeltext)
         print('\a')
         print(timing_ended)
-
 
 class MyApp(Adw.Application):
     def __init__(self, **kwargs):
