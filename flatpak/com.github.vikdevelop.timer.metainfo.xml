@@ -39,18 +39,17 @@
     </categories>
     
     <releases>
-        <release version="2.0" date="2022-08-08">
+        <release version="2.1" date="2022-09-01">
+            <description>
+                <p>Minor UI changes such as adjust window size based on spinner size, new sizes of spinner and more.</p>
+            </description>
+        </release>
+        <release version="2.0" date="2022-08-02">
             <description>
                 <ul>
                     <li>Added Preferences dialog</li>
                     <li>Added icon to notification about finished timing</li>
                     <li>Minor UI changes such as set up default size and style of fonts and more</li>
-                </ul>
-            </description>
-        </release>
-        <release version="1.9" date="2022-08-02">
-            <description>
-                <ul>
                     <li>Added beep that timing started, stopped, and finished</li>
                     <li>Added About Dialog</li>
                 </ul>
