@@ -108,11 +108,36 @@ class Dialog_settings(Gtk.Dialog):
         check_button.connect('toggled', self.on_check_button_toggled)
         content_area.append(child=check_button)
         
-        # Label about restart
-        label3 = Gtk.Label()
-        label3.set_markup(restart_timer_desc)
+        # Label about theme
+        label3 = Gtk.Label(yalign=0, xalign=0)
+        label3.set_markup("<b>%s</b>\n%s" % (theme, theme_desc))
         content_area.append(child=label3)
+        
+        # Dark/light switcher
+        switcher = Gtk.CheckButton.new_with_label(label=dark_theme)
+        if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/theme.json'):
+            with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/theme.json') as r:
+                jR = json.load(r)
+            dark = jR["dark-theme"]
+            if dark == "true":
+                switcher.set_active(True)
+        switcher.connect('toggled', self.on_switcher_toggled)
+        content_area.append(child=switcher)
+        
+        # Label about restart
+        label4 = Gtk.Label()
+        label4.set_markup(restart_timer_desc)
+        content_area.append(child=label4)
         self.show()
+    
+    # Save app theme configuration
+    def on_switcher_toggled(self, switcher):
+        if switcher.get_active():
+            with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/theme.json', 'w') as t:
+                t.write('{\n "theme": "dark"\n}')
+        else:
+            with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/theme.json', 'w') as t:
+                t.write('{\n "theme": "light"\n}')
     
     # Save resizable window configuration
     def on_check_button_toggled(self, checkbutton):
@@ -137,6 +162,9 @@ class TimerWindow(Gtk.ApplicationWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.resizable()
+        self.application = kwargs.get('application')
+        self.style_manager = self.application.get_style_manager()
+        self.theme()
         self.set_title(title=timer_title)
         headerbar = Gtk.HeaderBar.new()
         self.set_titlebar(titlebar=headerbar)
@@ -181,6 +209,22 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.timeout_id = None
         self.connect("destroy", self.on_SpinnerWindow_destroy)
     
+    # Theme setup
+    def theme(self):
+        if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/theme.json'):
+            with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/theme.json') as jt:
+                t = json.load(jt)
+            theme = t["theme"]
+            if theme == "dark":
+                self.style_manager.set_color_scheme(
+                    color_scheme=Adw.ColorScheme.PREFER_DARK
+                )
+            else:
+                self.style_manager.set_color_scheme(
+                    color_scheme=Adw.ColorScheme.FORCE_LIGHT
+                )
+    
+    # Resizable of Window
     def resizable(self):
         if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/window.json'):
             with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/window.json') as jr:
@@ -190,6 +234,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         else:
             self.set_resizable(False)
     
+    # Spinner size
     def spinner_size(self):
         if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/spinner.json'):
             with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/spinner.json') as j:
@@ -325,7 +370,7 @@ class MyApp(Adw.Application):
         dialog = Gtk.AboutDialog()
         dialog.set_title(about)
         dialog.set_name(timer_title)
-        dialog.set_version("2.0")
+        dialog.set_version("2.2")
         dialog.set_license_type(Gtk.License(Gtk.License.GPL_3_0))
         dialog.set_comments(simple_timer)
         dialog.set_website("https://github.com/vikdevelop/timer")
