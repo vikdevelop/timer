@@ -118,7 +118,7 @@ class Dialog_settings(Gtk.Dialog):
         if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/theme.json'):
             with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/theme.json') as r:
                 jR = json.load(r)
-            dark = jR["dark-theme"]
+            dark = jR["theme"]
             if dark == "true":
                 switcher.set_active(True)
         switcher.connect('toggled', self.on_switcher_toggled)
