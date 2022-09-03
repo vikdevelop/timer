@@ -137,7 +137,7 @@ class Dialog_settings(Gtk.Dialog):
                 t.write('{\n "theme": "dark"\n}')
         else:
             with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/theme.json', 'w') as t:
-                t.write('{\n "theme": "light"\n}')
+                t.write('{\n "theme": "system"\n}')
     
     # Save resizable window configuration
     def on_check_button_toggled(self, checkbutton):
@@ -218,10 +218,6 @@ class TimerWindow(Gtk.ApplicationWindow):
             if theme == "dark":
                 self.style_manager.set_color_scheme(
                     color_scheme=Adw.ColorScheme.PREFER_DARK
-                )
-            else:
-                self.style_manager.set_color_scheme(
-                    color_scheme=Adw.ColorScheme.FORCE_LIGHT
                 )
     
     # Resizable of Window
