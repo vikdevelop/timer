@@ -371,7 +371,7 @@ class MyApp(Adw.Application):
         dialog.set_comments(simple_timer)
         dialog.set_website("https://github.com/vikdevelop/timer")
         dialog.set_website_label(source_code)
-        dialog.set_authors(["vikdevelop <https://github.com/vikdevelop>"])
+        dialog.set_authors(["vikdevelop https://github.com/vikdevelop"])
         dialog.set_translator_credits(translator_credits)
         dialog.set_copyright("© 2022 vikdevelop")
         dialog.set_logo_icon_name("com.github.vikdevelop.timer")
