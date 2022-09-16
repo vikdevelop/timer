@@ -198,11 +198,14 @@ class TimerWindow(Gtk.ApplicationWindow):
         # Start timer button
         self.buttonStart = Gtk.Button(label=run_timer)
         self.buttonStart.connect("clicked", self.on_buttonStart_clicked)
+        self.button1_style_context = self.buttonStart.get_style_context()
+        self.button1_style_context.add_class('suggested-action')
         self.mainBox.append(self.buttonStart)
         
         # Stop timer button
         self.buttonStop = Gtk.Button(label=stop_timer)
         self.buttonStop.set_sensitive(False)
+        self.button2_style_context = self.buttonStop.get_style_context()
         self.buttonStop.connect("clicked", self.on_buttonStop_clicked)
         self.mainBox.append(self.buttonStop)
 
@@ -337,6 +340,8 @@ class TimerWindow(Gtk.ApplicationWindow):
         """ Run Timer. """
         self.buttonStart.set_sensitive(False)
         self.buttonStop.set_sensitive(True)
+        self.button2_style_context.add_class('suggested-action')
+        self.button1_style_context.remove_class('suggested-action')
         self.counter = 4 * int(self.entry.get_text())
         print('\a')
         self.label.set_markup("%s\n<big><b>" % time_text + str(int(self.counter / 4)) + " s</b></big>")
@@ -351,6 +356,8 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.spinner.stop()
         self.buttonStart.set_sensitive(True)
         self.buttonStop.set_sensitive(False)
+        self.button2_style_context.remove_class('suggested-action')
+        self.button1_style_context.add_class('suggested-action')
         self.label.set_label(alabeltext)
         print('\a')
         print(timing_ended)
