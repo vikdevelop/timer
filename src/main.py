@@ -178,6 +178,8 @@ class TimerWindow(Gtk.ApplicationWindow):
         
         # Gtk.Box() layout
         self.mainBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=20)
+        self.mainBox.set_margin_start(10)
+        self.mainBox.set_margin_end(10)
         self.set_child(self.mainBox)
         
         # App menu
@@ -222,7 +224,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.timerBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=3)
         self.timerBox.set_margin_start(50)
         self.timerBox.set_margin_end(50)
-
+        
         self.hour_entry = Gtk.Entry()
         self.hour_entry.set_text("0")
         self.hour_entry.set_alignment(xalign=1)
@@ -390,7 +392,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.button2_style_context.add_class('suggested-action')
         self.button1_style_context.remove_class('suggested-action')
         self.counter = timedelta(hours = int(self.hour_entry.get_text()), minutes = int(self.minute_entry.get_text()), seconds = int(self.secs_entry.get_text()))
-
+        
         print('\a')
         self.label.set_markup("{}\n<big><b>{}</b></big>".format(
             time_text,
