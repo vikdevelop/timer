@@ -53,7 +53,7 @@ class Dialog_settings(Gtk.Dialog):
         
         # ComboBox  
         sizes = [
-            select, '5', '10', '15', '20', '25', '30', '35', '40 (%s)' % default, '45', '50', '55', '60', '65', '70', '75', '80'
+            '5', '10', '15', '20', '25', '30', '35', '40 (%s)' % default, '45', '50', '55', '60', '65', '70', '75', '80'
         ]
         combobox_text = Gtk.ComboBoxText.new()
         for text in sizes:
@@ -63,39 +63,39 @@ class Dialog_settings(Gtk.Dialog):
                 jsonSpinner = json.load(p)
             combobox_s = jsonSpinner["spinner-size"]
             if combobox_s == "5":
-                combobox_text.set_active(index_=1)
+                combobox_text.set_active(index_=0)
             elif combobox_s == "10":
-                combobox_text.set_active(index_=2)
+                combobox_text.set_active(index_=1)
             elif combobox_s == "15":
-                combobox_text.set_active(index_=3)
+                combobox_text.set_active(index_=2)
             elif combobox_s == "20":
-                combobox_text.set_active(index_=4)
+                combobox_text.set_active(index_=3)
             elif combobox_s == "25":
-                combobox_text.set_active(index_=5)
+                combobox_text.set_active(index_=4)
             elif combobox_s == "30":
-                combobox_text.set_active(index_=6)
+                combobox_text.set_active(index_=5)
             elif combobox_s == "35":
-                combobox_text.set_active(index_=7)
+                combobox_text.set_active(index_=6)
             elif combobox_s == "40 (%s)" % default:
-                combobox_text.set_active(index_=8)
+                combobox_text.set_active(index_=7)
             elif combobox_s == "45":
-                combobox_text.set_active(index_=9)
+                combobox_text.set_active(index_=8)
             elif combobox_s == "50":
-                combobox_text.set_active(index_=10)
+                combobox_text.set_active(index_=9)
             elif combobox_s == "55":
-                combobox_text.set_active(index_=11)
+                combobox_text.set_active(index_=10)
             elif combobox_s == "60":
-                combobox_text.set_active(index_=12)
+                combobox_text.set_active(index_=11)
             elif combobox_s == "65":
-                combobox_text.set_active(index_=13)
+                combobox_text.set_active(index_=12)
             elif combobox_s == "70":
-                combobox_text.set_active(index_=14)
+                combobox_text.set_active(index_=13)
             elif combobox_s == "75":
-                combobox_text.set_active(index_=15)
+                combobox_text.set_active(index_=14)
             elif combobox_s == "80":
-                combobox_text.set_active(index_=16)
+                combobox_text.set_active(index_=15)
         else:
-            combobox_text.set_active(index_=0)
+            combobox_text.set_active(index_=7)
         combobox_text.connect('changed', self.on_combo_box_text_changed)
         content_area.append(child=combobox_text)
         
@@ -115,11 +115,36 @@ class Dialog_settings(Gtk.Dialog):
         check_button.connect('toggled', self.on_check_button_toggled)
         content_area.append(child=check_button)
         
-        # Label about restart
-        label3 = Gtk.Label()
-        label3.set_markup(restart_timer_desc)
+        # Label about theme
+        label3 = Gtk.Label(yalign=0, xalign=0)
+        label3.set_markup("<b>%s</b>\n%s" % (theme, theme_desc))
         content_area.append(child=label3)
+        
+        # Dark/light switcher
+        switcher = Gtk.CheckButton.new_with_label(label=dark_theme)
+        if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/theme.json'):
+            with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/theme.json') as r:
+                jR = json.load(r)
+            dark = jR["theme"]
+            if dark == "dark":
+                switcher.set_active(True)
+        switcher.connect('toggled', self.on_switcher_toggled)
+        content_area.append(child=switcher)
+        
+        # Label about restart
+        label4 = Gtk.Label()
+        label4.set_markup(restart_timer_desc)
+        content_area.append(child=label4)
         self.show()
+    
+    # Save app theme configuration
+    def on_switcher_toggled(self, switcher):
+        if switcher.get_active():
+            with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/theme.json', 'w') as t:
+                t.write('{\n "theme": "dark"\n}')
+        else:
+            with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/theme.json', 'w') as t:
+                t.write('{\n "theme": "system"\n}')
     
     # Save resizable window configuration
     def on_check_button_toggled(self, checkbutton):
@@ -144,6 +169,9 @@ class TimerWindow(Gtk.ApplicationWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.resizable()
+        self.application = kwargs.get('application')
+        self.style_manager = self.application.get_style_manager()
+        self.theme()
         self.set_title(title=timer_title)
         headerbar = Gtk.HeaderBar.new()
         self.set_titlebar(titlebar=headerbar)
@@ -175,17 +203,21 @@ class TimerWindow(Gtk.ApplicationWindow):
         # Start timer button
         self.buttonStart = Gtk.Button(label=run_timer)
         self.buttonStart.connect("clicked", self.on_buttonStart_clicked)
+        self.button1_style_context = self.buttonStart.get_style_context()
+        self.button1_style_context.add_class('suggested-action')
         self.mainBox.append(self.buttonStart)
         
         # Stop timer button
         self.buttonStop = Gtk.Button(label=stop_timer)
         self.buttonStop.set_sensitive(False)
+        self.button2_style_context = self.buttonStop.get_style_context()
         self.buttonStop.connect("clicked", self.on_buttonStop_clicked)
         self.mainBox.append(self.buttonStop)
 
         self.timeout_id = None
         self.connect("destroy", self.on_SpinnerWindow_destroy)
     
+
     def make_timer_box(self):
         self.timerBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=3)
         self.timerBox.set_margin_start(50)
@@ -220,6 +252,19 @@ class TimerWindow(Gtk.ApplicationWindow):
         
         self.mainBox.append(self.timerBox)
 
+
+    # Theme setup
+    def theme(self):
+        if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/theme.json'):
+            with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/theme.json') as jt:
+                t = json.load(jt)
+            theme = t["theme"]
+            if theme == "dark":
+                self.style_manager.set_color_scheme(
+                    color_scheme=Adw.ColorScheme.PREFER_DARK
+                )
+    
+
     # Resizable of Window
     def resizable(self):
         if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/window.json'):
@@ -230,6 +275,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         else:
             self.set_resizable(False)
     
+    # Spinner size
     def spinner_size(self):
         if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/spinner.json'):
             with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/spinner.json') as j:
@@ -341,8 +387,10 @@ class TimerWindow(Gtk.ApplicationWindow):
         """ Run Timer. """
         self.buttonStart.set_sensitive(False)
         self.buttonStop.set_sensitive(True)
-        # self.counter = 4 * int(self.entry.get_text())
+        self.button2_style_context.add_class('suggested-action')
+        self.button1_style_context.remove_class('suggested-action')
         self.counter = timedelta(hours = int(self.hour_entry.get_text()), minutes = int(self.minute_entry.get_text()), seconds = int(self.secs_entry.get_text()))
+
         print('\a')
         self.label.set_markup("{}\n<big><b>{}</b></big>".format(
             time_text,
@@ -359,6 +407,8 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.spinner.stop()
         self.buttonStart.set_sensitive(True)
         self.buttonStop.set_sensitive(False)
+        self.button2_style_context.remove_class('suggested-action')
+        self.button1_style_context.add_class('suggested-action')
         self.label.set_label(alabeltext)
         print('\a')
         print(timing_ended)
@@ -374,12 +424,12 @@ class MyApp(Adw.Application):
         dialog = Gtk.AboutDialog()
         dialog.set_title(about)
         dialog.set_name(timer_title)
-        dialog.set_version("2.0")
+        dialog.set_version("2.2")
         dialog.set_license_type(Gtk.License(Gtk.License.GPL_3_0))
         dialog.set_comments(simple_timer)
         dialog.set_website("https://github.com/vikdevelop/timer")
         dialog.set_website_label(source_code)
-        dialog.set_authors(["vikdevelop <https://github.com/vikdevelop>"])
+        dialog.set_authors(["vikdevelop https://github.com/vikdevelop"])
         dialog.set_translator_credits(translator_credits)
         dialog.set_copyright("© 2022 vikdevelop")
         dialog.set_logo_icon_name("com.github.vikdevelop.timer")
