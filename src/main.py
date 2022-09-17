@@ -2,6 +2,7 @@ import subprocess
 import sys
 import json
 import os
+from datetime import timedelta
 sys.path.append('/app')
 from timer import *
 import gi
@@ -9,6 +10,12 @@ import gi
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 from gi.repository import Gtk, GLib, Adw, Gio
+
+def strfdelta(tdelta, fmt):
+    d = {"days": tdelta.days}
+    d["hours"], rem = divmod(tdelta.seconds, 3600)
+    d["minutes"], d["seconds"] = divmod(rem, 60)
+    return fmt.format(**d)
 
 class Dialog_settings(Gtk.Dialog):
     def __init__(self, parent, **kwargs):
@@ -163,9 +170,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.mainBox.append(self.label)
         
         # Entry
-        self.entry = Gtk.Entry()
-        self.entry.set_text("10")
-        self.mainBox.append(self.entry)
+        self.make_timer_box()
         
         # Start timer button
         self.buttonStart = Gtk.Button(label=run_timer)
@@ -181,6 +186,41 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.timeout_id = None
         self.connect("destroy", self.on_SpinnerWindow_destroy)
     
+    def make_timer_box(self):
+        self.timerBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=3)
+        self.timerBox.set_margin_start(50)
+        self.timerBox.set_margin_end(50)
+
+        self.hour_entry = Gtk.Entry()
+        self.hour_entry.set_text("0")
+        self.hour_entry.set_alignment(xalign=1)
+        self.timerBox.append(self.hour_entry)
+
+        label = Gtk.Label(label = "h")
+        label.set_hexpand(False)
+        self.timerBox.append(label)
+
+        self.minute_entry = Gtk.Entry()
+        self.minute_entry.set_text("1")
+        self.minute_entry.set_alignment(xalign=1)
+        self.timerBox.append(self.minute_entry)
+        
+        label = Gtk.Label(label = "m")        
+        label.set_hexpand(False)
+        self.timerBox.append(label)
+
+        self.secs_entry = Gtk.Entry()
+        self.secs_entry.set_text("0")
+        self.secs_entry.set_alignment(xalign=1)
+        self.timerBox.append(self.secs_entry)
+        
+        label = Gtk.Label(label = "s")        
+        label.set_hexpand(False)
+        self.timerBox.append(label)
+        
+        self.mainBox.append(self.timerBox)
+
+    # Resizable of Window
     def resizable(self):
         if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/window.json'):
             with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/window.json') as jr:
@@ -281,24 +321,33 @@ class TimerWindow(Gtk.ApplicationWindow):
             self.timeout_id = None
         Gtk.main_quit()
 
+    tick_counter = timedelta(milliseconds = 250) # static object so we don't recreate the object every time
+    zero_counter = timedelta()
     def on_timeout(self, *args, **kwargs):
-        self.counter -= 1
-        if self.counter <= 0:
+        self.counter -= self.tick_counter
+        if self.counter <= self.zero_counter:
             self.stop_timer(timing_finished)
             self.label.set_markup("<b>" + timing_finished + "</b>")
             subprocess.call(['notify-send',timer_title,timing_finished,'-i','com.github.vikdevelop.timer'])
             print(timing_finished)
             return False
-        self.label.set_label("%s\n<big><b>" % time_text + str(int(self.counter / 4)) + " s</b></big>")
+        self.label.set_markup("{}\n<big><b>{}</b></big>".format(
+            time_text,
+            strfdelta(self.counter, "{hours} h {minutes} m {seconds} s")
+        ))
         return True
 
     def start_timer(self):
         """ Run Timer. """
         self.buttonStart.set_sensitive(False)
         self.buttonStop.set_sensitive(True)
-        self.counter = 4 * int(self.entry.get_text())
+        # self.counter = 4 * int(self.entry.get_text())
+        self.counter = timedelta(hours = int(self.hour_entry.get_text()), minutes = int(self.minute_entry.get_text()), seconds = int(self.secs_entry.get_text()))
         print('\a')
-        self.label.set_markup("%s\n<big><b>" % time_text + str(int(self.counter / 4)) + " s</b></big>")
+        self.label.set_markup("{}\n<big><b>{}</b></big>".format(
+            time_text,
+            strfdelta(self.counter, "{hours} h {minutes} m {seconds} s")
+        ))
         self.spinner.start()
         self.timeout_id = GLib.timeout_add(250, self.on_timeout, None)
         
