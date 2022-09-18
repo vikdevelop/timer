@@ -221,30 +221,42 @@ class TimerWindow(Gtk.ApplicationWindow):
     
 
     def make_timer_box(self):
+        # Load counter.json (config file with time counter values)
+        if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/counter.json'):
+            with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/counter.json') as jc:
+                jC = json.load(jc)
+            hour_e = jC["hour"]
+            min_e = jC["minutes"]
+            sec_e = jC["seconds"]
+        else:
+            hour_e = "0"
+            min_e = "1"
+            sec_e = "0"
+        # Layout
         self.timerBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=3)
         self.timerBox.set_margin_start(50)
         self.timerBox.set_margin_end(50)
-        
+        # Hour entry and label
         self.hour_entry = Gtk.Entry()
-        self.hour_entry.set_text("0")
+        self.hour_entry.set_text(hour_e)
         self.hour_entry.set_alignment(xalign=1)
         self.timerBox.append(self.hour_entry)
 
         label = Gtk.Label(label = "h")
         label.set_hexpand(False)
         self.timerBox.append(label)
-
+        # Minute entry and label
         self.minute_entry = Gtk.Entry()
-        self.minute_entry.set_text("1")
+        self.minute_entry.set_text(min_e)
         self.minute_entry.set_alignment(xalign=1)
         self.timerBox.append(self.minute_entry)
         
         label = Gtk.Label(label = "m")        
         label.set_hexpand(False)
         self.timerBox.append(label)
-
+        # Second entry and label
         self.secs_entry = Gtk.Entry()
-        self.secs_entry.set_text("0")
+        self.secs_entry.set_text(sec_e)
         self.secs_entry.set_alignment(xalign=1)
         self.timerBox.append(self.secs_entry)
         
@@ -253,7 +265,6 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.timerBox.append(label)
         
         self.mainBox.append(self.timerBox)
-
 
     # Theme setup
     def theme(self):
@@ -265,8 +276,7 @@ class TimerWindow(Gtk.ApplicationWindow):
                 self.style_manager.set_color_scheme(
                     color_scheme=Adw.ColorScheme.PREFER_DARK
                 )
-    
-
+                
     # Resizable of Window
     def resizable(self):
         if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/window.json'):
@@ -392,7 +402,12 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.button2_style_context.add_class('suggested-action')
         self.button1_style_context.remove_class('suggested-action')
         self.counter = timedelta(hours = int(self.hour_entry.get_text()), minutes = int(self.minute_entry.get_text()), seconds = int(self.secs_entry.get_text()))
-        
+        # Save time counter values
+        hour = self.hour_entry.get_text()
+        minute = self.minute_entry.get_text()
+        sec = self.secs_entry.get_text()
+        with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/counter.json', 'w') as c:
+            c.write('{\n "hour": "%s",\n "minutes": "%s",\n "seconds": "%s"\n}' % (hour, minute, sec))
         print('\a')
         self.label.set_markup("{}\n<big><b>{}</b></big>".format(
             time_text,
