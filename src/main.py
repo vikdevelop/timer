@@ -371,6 +371,7 @@ class TimerWindow(Gtk.ApplicationWindow):
     def on_buttonStop_clicked(self, widget, *args):
         """ button "clicked" in event buttonStop. """
         self.stop_timer(timing_ended)
+        print(timing_ended)
 
     def on_SpinnerWindow_destroy(self, widget, *args):
         """ procesing closing window """
@@ -408,7 +409,8 @@ class TimerWindow(Gtk.ApplicationWindow):
         sec = self.secs_entry.get_text()
         with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/counter.json', 'w') as c:
             c.write('{\n "hour": "%s",\n "minutes": "%s",\n "seconds": "%s"\n}' % (hour, minute, sec))
-        print('\a')
+        # Play beep
+        os.popen("ffplay -nodisp /app/share/beeps/Oxygen-Sys-App-Message.ogg > /dev/null 2>&1 && killall ffplay")
         self.label.set_markup("{}\n<big><b>{}</b></big>".format(
             time_text,
             strfdelta(self.counter, "{hours} h {minutes} m {seconds} s")
@@ -427,8 +429,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.button2_style_context.remove_class('suggested-action')
         self.button1_style_context.add_class('suggested-action')
         self.label.set_label(alabeltext)
-        print('\a')
-        print(timing_ended)
+        os.popen("ffplay -nodisp /app/share/beeps/Oxygen-Sys-App-Message.ogg > /dev/null 2>&1 && killall ffplay")
 
 class MyApp(Adw.Application):
     def __init__(self, **kwargs):
