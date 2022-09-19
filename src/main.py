@@ -26,6 +26,7 @@ class Dialog_settings(Gtk.Dialog):
         self.use_header_bar = True
         self.set_modal(modal=True)
         self.connect('response', self.dialog_response)
+        self.set_default_size(500, 400)
 
         # Buttons
         self.add_buttons(
@@ -40,16 +41,21 @@ class Dialog_settings(Gtk.Dialog):
         
         content_area = self.get_content_area()
         content_area.set_orientation(orientation=Gtk.Orientation.VERTICAL)
-        content_area.set_spacing(spacing=12)
-        content_area.set_margin_top(margin=12)
-        content_area.set_margin_end(margin=12)
-        content_area.set_margin_bottom(margin=12)
-        content_area.set_margin_start(margin=12)
+        content_area.set_spacing(spacing=20)
+        content_area.set_margin_top(margin=20)
+        content_area.set_margin_end(margin=20)
+        content_area.set_margin_bottom(margin=20)
+        content_area.set_margin_start(margin=20)
         
-        # Spinner size desc
-        label = Gtk.Label(xalign=0, yalign=0)
-        label.set_markup(spinner + "\n" + spinner_size_desc)
-        content_area.append(child=label)
+        # Preferences Page
+        adw_preferences_page = Adw.PreferencesPage.new()
+        content_area.append(child=adw_preferences_page)
+        
+        adw_preferences_group = Adw.PreferencesGroup.new()
+        adw_preferences_group.set_title(title=preferences)
+        adw_preferences_group.set_description(description=restart_timer_desc)
+        #adw_preferences_group.set_header_suffix(suffix=button_flat)
+        adw_preferences_page.add(group=adw_preferences_group)
         
         # ComboBox  
         sizes = [
@@ -97,49 +103,56 @@ class Dialog_settings(Gtk.Dialog):
         else:
             combobox_text.set_active(index_=7)
         combobox_text.connect('changed', self.on_combo_box_text_changed)
-        content_area.append(child=combobox_text)
         
-        # Label about resizable of Window
-        label2 = Gtk.Label(xalign=0, yalign=0)
-        label2.set_markup("<b>" + resizable_of_window + "</b>")
-        content_area.append(child=label2)
+        adw_action_row_00 = Adw.ActionRow.new()
+        adw_action_row_00.set_icon_name(icon_name='content-loading-symbolic')
+        adw_action_row_00.set_title(title=spinner)
+        adw_action_row_00.set_subtitle(subtitle=spinner_size_desc)
+        adw_action_row_00.add_suffix(widget=combobox_text)
+        adw_preferences_group.add(child=adw_action_row_00)
         
-        # Check button about resizable of Window     
-        check_button = Gtk.CheckButton.new_with_label(label=resizable_of_window)
-        if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/window.json'):
-            with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/window.json') as r:
-                jR = json.load(r)
-            resizable = jR["resizable"]
-            if resizable == "true":
-                check_button.set_active(True)
-        check_button.connect('toggled', self.on_check_button_toggled)
-        content_area.append(child=check_button)
-        
-        # Label about theme
-        label3 = Gtk.Label(yalign=0, xalign=0)
-        label3.set_markup("<b>%s</b>\n%s" % (theme, theme_desc))
-        content_area.append(child=label3)
-        
-        # Dark/light switcher
-        switcher = Gtk.CheckButton.new_with_label(label=dark_theme)
+        switch_01 = Gtk.Switch.new()
         if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/theme.json'):
             with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/theme.json') as r:
                 jR = json.load(r)
             dark = jR["theme"]
             if dark == "dark":
-                switcher.set_active(True)
-        switcher.connect('toggled', self.on_switcher_toggled)
-        content_area.append(child=switcher)
+                switch_01.set_active(True)
+        switch_01.set_valign(align=Gtk.Align.CENTER)
+        switch_01.connect('notify::active', self.on_switch_01_toggled)
+
+        adw_action_row_01 = Adw.ActionRow.new()
+        adw_action_row_01.set_icon_name(icon_name='weather-clear-night-symbolic')
+        adw_action_row_01.set_title(title=dark_theme)
+        adw_action_row_01.set_subtitle(subtitle=theme_desc)
+        adw_action_row_01.add_suffix(widget=switch_01)
+        adw_preferences_group.add(child=adw_action_row_01)
+
+        switch_02 = Gtk.Switch.new()
+        if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/window.json'):
+            with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/window.json') as r:
+                jR = json.load(r)
+            resizable = jR["resizable"]
+            if resizable == "true":
+                switch_02.set_active(True)
+        switch_02.set_valign(align=Gtk.Align.CENTER)
+        switch_02.connect('notify::active', self.on_switch_02_toggled)
+
+        adw_action_row_02 = Adw.ActionRow.new()
+        adw_action_row_02.set_icon_name(icon_name='window-maximize-symbolic')
+        adw_action_row_02.set_title(
+            title=resizable_of_window
+        )
+        adw_action_row_02.set_subtitle(subtitle=resizable_of_window)
+        adw_action_row_02.add_suffix(widget=switch_02)
+        adw_action_row_02.set_activatable_widget(widget=switch_02)
+        adw_preferences_group.add(child=adw_action_row_02)
         
-        # Label about restart
-        label4 = Gtk.Label()
-        label4.set_markup(restart_timer_desc)
-        content_area.append(child=label4)
         self.show()
     
     # Save app theme configuration
-    def on_switcher_toggled(self, switcher):
-        if switcher.get_active():
+    def on_switch_01_toggled(self, switch01, GParamBoolean):
+        if switch01.get_active():
             with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/theme.json', 'w') as t:
                 t.write('{\n "theme": "dark"\n}')
         else:
@@ -147,8 +160,8 @@ class Dialog_settings(Gtk.Dialog):
                 t.write('{\n "theme": "system"\n}')
     
     # Save resizable window configuration
-    def on_check_button_toggled(self, checkbutton):
-        if checkbutton.get_active():
+    def on_switch_02_toggled(self, switch02, GParamBoolean):
+        if switch02.get_active():
             with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/window.json', 'w') as w:
                 w.write('{\n "resizable": "true"\n}')
         else:
