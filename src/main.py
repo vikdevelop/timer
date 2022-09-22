@@ -41,11 +41,11 @@ class Dialog_settings(Gtk.Dialog):
         
         content_area = self.get_content_area()
         content_area.set_orientation(orientation=Gtk.Orientation.VERTICAL)
-        content_area.set_spacing(spacing=20)
-        content_area.set_margin_top(margin=20)
-        content_area.set_margin_end(margin=20)
-        content_area.set_margin_bottom(margin=20)
-        content_area.set_margin_start(margin=20)
+        content_area.set_spacing(spacing=12)
+        content_area.set_margin_top(margin=12)
+        content_area.set_margin_end(margin=12)
+        content_area.set_margin_bottom(margin=12)
+        content_area.set_margin_start(margin=12)
         
         # Preferences Page
         adw_preferences_page = Adw.PreferencesPage.new()
@@ -140,10 +140,8 @@ class Dialog_settings(Gtk.Dialog):
 
         adw_action_row_02 = Adw.ActionRow.new()
         adw_action_row_02.set_icon_name(icon_name='window-maximize-symbolic')
-        adw_action_row_02.set_title(
-            title=resizable_of_window
-        )
-        adw_action_row_02.set_subtitle(subtitle=resizable_of_window)
+        adw_action_row_02.set_title(title=resizable_of_window)
+        #adw_action_row_02.set_subtitle(subtitle=resizable_of_window)
         adw_action_row_02.add_suffix(widget=switch_02)
         adw_action_row_02.set_activatable_widget(widget=switch_02)
         adw_preferences_group.add(child=adw_action_row_02)
@@ -171,6 +169,7 @@ class Dialog_settings(Gtk.Dialog):
     def on_combo_box_text_changed(self, comboboxtext):
         with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/spinner.json', 'w') as s:
             s.write('{\n "spinner-size": "%s"\n}' % comboboxtext.get_active_text())
+    
     # Close button clicked action
     def dialog_response(self, dialog, response):
         if response == Gtk.ResponseType.CANCEL:
@@ -255,7 +254,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.hour_entry.set_alignment(xalign=1)
         self.timerBox.append(self.hour_entry)
 
-        label = Gtk.Label(label = "h")
+        label = Gtk.Label(label = hours)
         label.set_hexpand(False)
         self.timerBox.append(label)
         # Minute entry and label
@@ -264,7 +263,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.minute_entry.set_alignment(xalign=1)
         self.timerBox.append(self.minute_entry)
         
-        label = Gtk.Label(label = "m")        
+        label = Gtk.Label(label = mins)        
         label.set_hexpand(False)
         self.timerBox.append(label)
         # Second entry and label
@@ -273,7 +272,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.secs_entry.set_alignment(xalign=1)
         self.timerBox.append(self.secs_entry)
         
-        label = Gtk.Label(label = "s")        
+        label = Gtk.Label(label = secs)        
         label.set_hexpand(False)
         self.timerBox.append(label)
         
@@ -405,7 +404,7 @@ class TimerWindow(Gtk.ApplicationWindow):
             return False
         self.label.set_markup("{}\n<big><b>{}</b></big>".format(
             time_text,
-            strfdelta(self.counter, "{hours} h {minutes} m {seconds} s")
+            strfdelta(self.counter, "{hours} %s {minutes} %s {seconds} %s" % (hours, mins, secs))
         ))
         return True
 
@@ -426,7 +425,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         os.popen("paplay /app/share/beeps/Oxygen.ogg > /dev/null 2>&1")
         self.label.set_markup("{}\n<big><b>{}</b></big>".format(
             time_text,
-            strfdelta(self.counter, "{hours} h {minutes} m {seconds} s")
+            strfdelta(self.counter, "{hours} %s {minutes} %s {seconds} %s" % (hours, mins, secs))
         ))
         self.spinner.start()
         self.timeout_id = GLib.timeout_add(250, self.on_timeout, None)
