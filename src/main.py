@@ -26,7 +26,7 @@ class Dialog_settings(Gtk.Dialog):
         self.use_header_bar = True
         self.set_modal(modal=True)
         self.connect('response', self.dialog_response)
-        self.set_default_size(500, 400)
+        self.set_default_size(500, 350)
 
         # Buttons
         self.add_buttons(
