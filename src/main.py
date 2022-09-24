@@ -451,18 +451,19 @@ class MyApp(Adw.Application):
         self.create_action('settings', self.on_settings_action)
 
     def on_about_action(self, action, param):
-        dialog = Gtk.AboutDialog()
-        dialog.set_title(about)
-        dialog.set_name(timer_title)
+        dialog = Adw.AboutWindow()
+        dialog.set_application_name(timer_title)
         dialog.set_version("2.2")
+        dialog.set_developer_name("vikdevelop")
         dialog.set_license_type(Gtk.License(Gtk.License.GPL_3_0))
         dialog.set_comments(simple_timer)
         dialog.set_website("https://github.com/vikdevelop/timer")
-        dialog.set_website_label(source_code)
-        dialog.set_authors(["vikdevelop https://github.com/vikdevelop"])
+        dialog.set_issue_url("https://github.com/vikdevelop/timer/issues")
+        dialog.add_credit_section(contributors, ["KenyC https://github.com/KenyC", "Albano Battistella https://github.com/albanobattistella", "ViktorOn https://github.com/ViktorOn"])
         dialog.set_translator_credits(translator_credits)
         dialog.set_copyright("© 2022 vikdevelop")
-        dialog.set_logo_icon_name("com.github.vikdevelop.timer")
+        dialog.set_developers(["vikdevelop https://github.com/vikdevelop"])
+        dialog.set_application_icon("com.github.vikdevelop.timer")
         dialog.show()
         
     def on_settings_action(self, action, param):
