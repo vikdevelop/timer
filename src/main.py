@@ -19,8 +19,7 @@ def strfdelta(tdelta, fmt):
 
 class Dialog_settings(Gtk.Dialog):
     def __init__(self, parent, **kwargs):
-        super().__init__(use_header_bar=True)
-        #self.parent = parent
+        super().__init__(use_header_bar=True, transient_for=app.get_active_window())
 
         self.set_title(title=preferences)
         self.use_header_bar = True
@@ -451,7 +450,7 @@ class MyApp(Adw.Application):
         self.create_action('settings', self.on_settings_action)
 
     def on_about_action(self, action, param):
-        dialog = Adw.AboutWindow()
+        dialog = Adw.AboutWindow(transient_for=app.get_active_window())
         dialog.set_application_name(timer_title)
         dialog.set_version("2.2")
         dialog.set_developer_name("vikdevelop")
