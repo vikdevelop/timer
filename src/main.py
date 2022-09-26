@@ -421,7 +421,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/counter.json', 'w') as c:
             c.write('{\n "hour": "%s",\n "minutes": "%s",\n "seconds": "%s"\n}' % (hour, minute, sec))
         # Play beep
-        os.popen("paplay /app/share/beeps/Oxygen.ogg > /dev/null 2>&1")
+        os.popen("ffplay -nodisp -autoexit /app/share/beeps/Oxygen.ogg > /dev/null 2>&1")
         self.label.set_markup("{}\n<big><b>{}</b></big>".format(
             time_text,
             strfdelta(self.counter, "{hours} %s {minutes} %s {seconds} %s" % (hours, mins, secs))
@@ -440,7 +440,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.button2_style_context.remove_class('suggested-action')
         self.button1_style_context.add_class('suggested-action')
         self.label.set_label(alabeltext)
-        os.popen("paplay /app/share/beeps/Oxygen.ogg > /dev/null 2>&1")
+        os.popen("ffplay -nodisp -autoexit /app/share/beeps/Oxygen.ogg > /dev/null 2>&1")
 
 class MyApp(Adw.Application):
     def __init__(self, **kwargs):
