@@ -213,24 +213,28 @@ class TimerWindow(Gtk.ApplicationWindow):
         # Entry
         self.make_timer_box()
         
+        self.listbox = Gtk.ListBox.new()
+        self.listbox.set_selection_mode(mode=Gtk.SelectionMode.NONE)
+        self.listbox.get_style_context().add_class(class_name='boxed-list')
+        self.mainBox.append(self.listbox)
+        
         # Start timer button
         self.buttonStart = Gtk.Button(label=run_timer)
         self.buttonStart.connect("clicked", self.on_buttonStart_clicked)
         self.button1_style_context = self.buttonStart.get_style_context()
         self.button1_style_context.add_class('suggested-action')
-        self.mainBox.append(self.buttonStart)
+        self.listbox.append(self.buttonStart)
         
         # Stop timer button
         self.buttonStop = Gtk.Button(label=stop_timer)
         self.buttonStop.set_sensitive(False)
         self.button2_style_context = self.buttonStop.get_style_context()
         self.buttonStop.connect("clicked", self.on_buttonStop_clicked)
-        self.mainBox.append(self.buttonStop)
+        self.listbox.append(self.buttonStop)
 
         self.timeout_id = None
         self.connect("destroy", self.on_SpinnerWindow_destroy)
     
-
     def make_timer_box(self):
         # Load counter.json (config file with time counter values)
         if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/counter.json'):
@@ -247,6 +251,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.timerBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=3)
         self.timerBox.set_margin_start(50)
         self.timerBox.set_margin_end(50)
+        
         # Hour entry and label
         self.hour_entry = Gtk.Entry()
         self.hour_entry.set_text(hour_e)
