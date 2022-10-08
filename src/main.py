@@ -25,7 +25,7 @@ class Dialog_settings(Gtk.Dialog):
         self.use_header_bar = True
         self.set_modal(modal=True)
         self.connect('response', self.dialog_response)
-        self.set_default_size(500, 350)
+        self.set_default_size(500, 415)
 
         # Buttons
         self.add_buttons(
@@ -103,11 +103,38 @@ class Dialog_settings(Gtk.Dialog):
             combobox_text.set_active(index_=7)
         combobox_text.connect('changed', self.on_combo_box_text_changed)
         
+        adw_action_row_0 = Adw.ActionRow.new()
+        adw_action_row_0.set_icon_name(icon_name='content-loading-symbolic')
+        adw_action_row_0.set_title(title=spinner)
+        adw_action_row_0.set_subtitle(subtitle=spinner_size_desc)
+        adw_action_row_0.add_suffix(widget=combobox_text)
+        adw_preferences_group.add(child=adw_action_row_0)
+        
+        # ComboBox - Actions
+        actions = [
+            default, 'Shut down', 'Reboot'
+        ]
+        combobox_text_s = Gtk.ComboBoxText.new()
+        for text in actions:
+            combobox_text_s.append_text(text=text)
+        if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/actions.json'):
+            with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/actions.json') as p:
+                jsonSpinner = json.load(p)
+            combobox_s = jsonSpinner["action"]
+            if combobox_s == default:
+                combobox_text_s.set_active(index_=0)
+            elif combobox_s == "Shut down":
+                combobox_text_s.set_active(index_=1)
+            elif combobox_s == "Reboot":
+                combobox_text_s.set_active(index_=2)
+        else:
+            combobox_text_s.set_active(index_=0)
+        combobox_text_s.connect('changed', self.on_combo_box_text_s_changed)
+        
         adw_action_row_00 = Adw.ActionRow.new()
-        adw_action_row_00.set_icon_name(icon_name='content-loading-symbolic')
-        adw_action_row_00.set_title(title=spinner)
-        adw_action_row_00.set_subtitle(subtitle=spinner_size_desc)
-        adw_action_row_00.add_suffix(widget=combobox_text)
+        adw_action_row_00.set_icon_name(icon_name='timer-symbolic')
+        adw_action_row_00.set_title(title="Action after timing")
+        adw_action_row_00.add_suffix(widget=combobox_text_s)
         adw_preferences_group.add(child=adw_action_row_00)
         
         switch_01 = Gtk.Switch.new()
@@ -163,6 +190,11 @@ class Dialog_settings(Gtk.Dialog):
                 w.write('{\n "resizable": "true"\n}')
         else:
             os.remove(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/window.json')
+    
+    # Save Combobox configuration
+    def on_combo_box_text_s_changed(self, comboboxtexts):
+        with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/actions.json', 'w') as a:
+            a.write('{\n "action": "%s"\n}' % comboboxtexts.get_active_text())
     
     # Save Combobox configuration
     def on_combo_box_text_changed(self, comboboxtext):
@@ -403,7 +435,16 @@ class TimerWindow(Gtk.ApplicationWindow):
         if self.counter <= self.zero_counter:
             self.stop_timer(timing_finished)
             self.label.set_markup("<b>" + timing_finished + "</b>")
-            subprocess.call(['notify-send',timer_title,timing_finished,'-i','com.github.vikdevelop.timer'])
+            if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/actions.json'):
+                with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/actions.json') as a:
+                    jA = json.load(a)
+                action = jA["action"]
+                if action == default:
+                    subprocess.call(['notify-send',timer_title,timing_finished,'-i','com.github.vikdevelop.timer'])
+                elif action == "Shut down":
+                    os.system('dbus-send --system --print-reply --dest=org.freedesktop.login1 /org/freedesktop/login1 "org.freedesktop.login1.Manager.PowerOff" boolean:true')
+                elif action == "Reboot":
+                    os.system('dbus-send --system --print-reply --dest=org.freedesktop.login1 /org/freedesktop/login1 "org.freedesktop.login1.Manager.Reboot" boolean:true')
             print(timing_finished)
             return False
         self.label.set_markup("{}\n<big><b>{}</b></big>".format(
