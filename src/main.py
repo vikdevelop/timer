@@ -137,6 +137,7 @@ class Dialog_settings(Gtk.Dialog):
         adw_action_row_00.add_suffix(widget=combobox_text_s)
         adw_preferences_group.add(child=adw_action_row_00)
         
+        # Adw ActionRow - Theme configuration
         switch_01 = Gtk.Switch.new()
         if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/theme.json'):
             with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/theme.json') as r:
@@ -153,7 +154,8 @@ class Dialog_settings(Gtk.Dialog):
         adw_action_row_01.set_subtitle(subtitle=theme_desc)
         adw_action_row_01.add_suffix(widget=switch_01)
         adw_preferences_group.add(child=adw_action_row_01)
-
+        
+        # Adw ActionRow - Resizable of Window configuration
         switch_02 = Gtk.Switch.new()
         if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/window.json'):
             with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/window.json') as r:
@@ -205,7 +207,12 @@ class Dialog_settings(Gtk.Dialog):
     def dialog_response(self, dialog, response):
         if response == Gtk.ResponseType.CANCEL:
             dialog.close()
+            self.restart_timer()
             print(preferences_saved)
+            
+    def restart_timer(self):
+        python = sys.executable
+        os.execl(python, python, *sys.argv)
 
 print(timer_running)
 class TimerWindow(Gtk.ApplicationWindow):
