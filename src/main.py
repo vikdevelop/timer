@@ -25,7 +25,7 @@ class Dialog_settings(Gtk.Dialog):
         self.use_header_bar = True
         self.set_modal(modal=True)
         self.connect('response', self.dialog_response)
-        self.set_default_size(500, 415)
+        self.set_default_size(500, 360)
 
         # Buttons
         self.add_buttons(
@@ -51,8 +51,8 @@ class Dialog_settings(Gtk.Dialog):
         content_area.append(child=adw_preferences_page)
         
         adw_preferences_group = Adw.PreferencesGroup.new()
-        adw_preferences_group.set_title(title=preferences)
-        adw_preferences_group.set_description(description=restart_timer_desc)
+        #adw_preferences_group.set_title(title=preferences)
+        #adw_preferences_group.set_description(description=restart_timer_desc)
         #adw_preferences_group.set_header_suffix(suffix=button_flat)
         adw_preferences_page.add(group=adw_preferences_group)
         
