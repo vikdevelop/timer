@@ -112,7 +112,7 @@ class Dialog_settings(Gtk.Dialog):
         
         # ComboBox - Actions
         actions = [
-            default, 'Shut down', 'Reboot'
+            default, shut_down, reboot
         ]
         combobox_text_s = Gtk.ComboBoxText.new()
         for text in actions:
@@ -123,9 +123,9 @@ class Dialog_settings(Gtk.Dialog):
             combobox_s = jsonSpinner["action"]
             if combobox_s == default:
                 combobox_text_s.set_active(index_=0)
-            elif combobox_s == "Shut down":
+            elif combobox_s == shut_down:
                 combobox_text_s.set_active(index_=1)
-            elif combobox_s == "Reboot":
+            elif combobox_s == reboot:
                 combobox_text_s.set_active(index_=2)
         else:
             combobox_text_s.set_active(index_=0)
