@@ -454,8 +454,7 @@ class TimerWindow(Gtk.ApplicationWindow):
                     os.system('dbus-send --system --print-reply --dest=org.freedesktop.login1 /org/freedesktop/login1 "org.freedesktop.login1.Manager.Reboot" boolean:true')
             print(timing_finished)
             return False
-        self.label.set_markup("{}\n<big><b>{}</b></big>".format(
-            time_text,
+        self.label.set_markup("<big><b>{}</b></big>".format(
             strfdelta(self.counter, "{hours} %s {minutes} %s {seconds} %s" % (hours, mins, secs))
         ))
         return True
@@ -475,8 +474,7 @@ class TimerWindow(Gtk.ApplicationWindow):
             c.write('{\n "hour": "%s",\n "minutes": "%s",\n "seconds": "%s"\n}' % (hour, minute, sec))
         # Play beep
         os.popen("ffplay -nodisp -autoexit /app/share/beeps/Oxygen.ogg > /dev/null 2>&1")
-        self.label.set_markup("{}\n<big><b>{}</b></big>".format(
-            time_text,
+        self.label.set_markup("<big><b>{}</b></big>".format(
             strfdelta(self.counter, "{hours} %s {minutes} %s {seconds} %s" % (hours, mins, secs))
         ))
         self.spinner.start()
