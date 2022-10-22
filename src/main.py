@@ -452,6 +452,9 @@ class TimerWindow(Gtk.ApplicationWindow):
                     os.system('dbus-send --system --print-reply --dest=org.freedesktop.login1 /org/freedesktop/login1 "org.freedesktop.login1.Manager.PowerOff" boolean:true')
                 elif action == "Reboot":
                     os.system('dbus-send --system --print-reply --dest=org.freedesktop.login1 /org/freedesktop/login1 "org.freedesktop.login1.Manager.Reboot" boolean:true')
+            else:
+                # default action
+                subprocess.call(['notify-send',timer_title,timing_finished,'-i','com.github.vikdevelop.timer'])
             print(timing_finished)
             return False
         self.label.set_markup("<big><b>{}</b></big>".format(
