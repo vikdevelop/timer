@@ -103,12 +103,12 @@ class Dialog_settings(Gtk.Dialog):
             combobox_text.set_active(index_=7)
         combobox_text.connect('changed', self.on_combo_box_text_changed)
         
-        adw_action_row_0 = Adw.ActionRow.new()
-        adw_action_row_0.set_icon_name(icon_name='content-loading-symbolic')
-        adw_action_row_0.set_title(title=spinner)
-        adw_action_row_0.set_subtitle(subtitle=spinner_size_desc)
-        adw_action_row_0.add_suffix(widget=combobox_text)
-        adw_preferences_group.add(child=adw_action_row_0)
+        adw_action_row_00 = Adw.ActionRow.new()
+        adw_action_row_00.set_icon_name(icon_name='content-loading-symbolic')
+        adw_action_row_00.set_title(title=spinner)
+        adw_action_row_00.set_subtitle(subtitle=spinner_size_desc)
+        adw_action_row_00.add_suffix(widget=combobox_text)
+        adw_preferences_group.add(child=adw_action_row_00)
         
         # ComboBox - Actions
         actions = [
@@ -131,11 +131,11 @@ class Dialog_settings(Gtk.Dialog):
             combobox_text_s.set_active(index_=0)
         combobox_text_s.connect('changed', self.on_combo_box_text_s_changed)
         
-        adw_action_row_00 = Adw.ActionRow.new()
-        adw_action_row_00.set_icon_name(icon_name='timer-symbolic')
-        adw_action_row_00.set_title(title="Action after timing")
-        adw_action_row_00.add_suffix(widget=combobox_text_s)
-        adw_preferences_group.add(child=adw_action_row_00)
+        adw_action_row_01 = Adw.ActionRow.new()
+        adw_action_row_01.set_icon_name(icon_name='timer-symbolic')
+        adw_action_row_01.set_title(title=action_after_timing)
+        adw_action_row_01.add_suffix(widget=combobox_text_s)
+        adw_preferences_group.add(child=adw_action_row_01)
         
         # Adw ActionRow - Theme configuration
         switch_01 = Gtk.Switch.new()
@@ -148,12 +148,12 @@ class Dialog_settings(Gtk.Dialog):
         switch_01.set_valign(align=Gtk.Align.CENTER)
         switch_01.connect('notify::active', self.on_switch_01_toggled)
 
-        adw_action_row_01 = Adw.ActionRow.new()
-        adw_action_row_01.set_icon_name(icon_name='weather-clear-night-symbolic')
-        adw_action_row_01.set_title(title=dark_theme)
-        adw_action_row_01.set_subtitle(subtitle=theme_desc)
-        adw_action_row_01.add_suffix(widget=switch_01)
-        adw_preferences_group.add(child=adw_action_row_01)
+        adw_action_row_02 = Adw.ActionRow.new()
+        adw_action_row_02.set_icon_name(icon_name='weather-clear-night-symbolic')
+        adw_action_row_02.set_title(title=dark_theme)
+        adw_action_row_02.set_subtitle(subtitle=theme_desc)
+        adw_action_row_02.add_suffix(widget=switch_01)
+        adw_preferences_group.add(child=adw_action_row_02)
         
         # Adw ActionRow - Resizable of Window configuration
         switch_02 = Gtk.Switch.new()
@@ -166,13 +166,13 @@ class Dialog_settings(Gtk.Dialog):
         switch_02.set_valign(align=Gtk.Align.CENTER)
         switch_02.connect('notify::active', self.on_switch_02_toggled)
 
-        adw_action_row_02 = Adw.ActionRow.new()
-        adw_action_row_02.set_icon_name(icon_name='window-maximize-symbolic')
-        adw_action_row_02.set_title(title=resizable_of_window)
-        #adw_action_row_02.set_subtitle(subtitle=resizable_of_window)
-        adw_action_row_02.add_suffix(widget=switch_02)
-        adw_action_row_02.set_activatable_widget(widget=switch_02)
-        adw_preferences_group.add(child=adw_action_row_02)
+        adw_action_row_03 = Adw.ActionRow.new()
+        adw_action_row_03.set_icon_name(icon_name='window-maximize-symbolic')
+        adw_action_row_03.set_title(title=resizable_of_window)
+        #adw_action_row_03.set_subtitle(subtitle=resizable_of_window)
+        adw_action_row_03.add_suffix(widget=switch_02)
+        adw_action_row_03.set_activatable_widget(widget=switch_02)
+        adw_preferences_group.add(child=adw_action_row_03)
         
         self.show()
     
