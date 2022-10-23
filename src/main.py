@@ -506,7 +506,7 @@ class MyApp(Adw.Application):
     def on_about_action(self, action, param):
         dialog = Adw.AboutWindow(transient_for=app.get_active_window())
         dialog.set_application_name(timer_title)
-        dialog.set_version("2.2")
+        dialog.set_version("2.3")
         dialog.set_developer_name("vikdevelop")
         dialog.set_license_type(Gtk.License(Gtk.License.GPL_3_0))
         dialog.set_comments(simple_timer)
