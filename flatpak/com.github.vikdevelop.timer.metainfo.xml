@@ -39,6 +39,16 @@
     </categories>
     
     <releases>
+        <release version="2.3" date="2022-10-23">
+            <description>
+                <p>Changes:</p>
+                <ul>
+                    <li>There is no longer a need to restart the Timer after making changes to the preferences</li>
+                    <li>Added option of action after finished timing to preferences (e.g. reboot system after finished timing)</li>
+                    <li>Other minor UI changes</li>
+                </ul>
+            </description>
+        </relase>
         <release version="2.2" date="2022-09-30">
             <description>
                 <p>Changes:</p>
