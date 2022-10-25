@@ -448,9 +448,9 @@ class TimerWindow(Gtk.ApplicationWindow):
                 action = jA["action"]
                 if action == default:
                     subprocess.call(['notify-send',timer_title,timing_finished,'-i','com.github.vikdevelop.timer'])
-                elif action == "Shut down":
+                elif action == shut_down:
                     os.system('dbus-send --system --print-reply --dest=org.freedesktop.login1 /org/freedesktop/login1 "org.freedesktop.login1.Manager.PowerOff" boolean:true')
-                elif action == "Reboot":
+                elif action == reboot:
                     os.system('dbus-send --system --print-reply --dest=org.freedesktop.login1 /org/freedesktop/login1 "org.freedesktop.login1.Manager.Reboot" boolean:true')
             else:
                 # default action
