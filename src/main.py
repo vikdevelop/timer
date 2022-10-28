@@ -464,17 +464,12 @@ class TimerWindow(Gtk.ApplicationWindow):
 
     def start_timer(self):
         """ Run Timer. """
+        self.check_and_save()
         self.buttonStart.set_sensitive(False)
         self.buttonStop.set_sensitive(True)
         self.button2_style_context.add_class('suggested-action')
         self.button1_style_context.remove_class('suggested-action')
         self.counter = timedelta(hours = int(self.hour_entry.get_text()), minutes = int(self.minute_entry.get_text()), seconds = int(self.secs_entry.get_text()))
-        # Save time counter values
-        hour = self.hour_entry.get_text()
-        minute = self.minute_entry.get_text()
-        sec = self.secs_entry.get_text()
-        with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/counter.json', 'w') as c:
-            c.write('{\n "hour": "%s",\n "minutes": "%s",\n "seconds": "%s"\n}' % (hour, minute, sec))
         # Play beep
         os.popen("ffplay -nodisp -autoexit /app/share/beeps/Oxygen.ogg > /dev/null 2>&1")
         self.label.set_markup("<big><b>{}</b></big>".format(
@@ -482,7 +477,17 @@ class TimerWindow(Gtk.ApplicationWindow):
         ))
         self.spinner.start()
         self.timeout_id = GLib.timeout_add(250, self.on_timeout, None)
-        
+    
+    def check_and_save(self):
+        hour = self.hour_entry.get_text()
+        minute = self.minute_entry.get_text()
+        sec = self.secs_entry.get_text()
+        if hour or minute or sec == "":
+            subprocess.call(['notify-send',incorrect_value,'-i','com.github.vikdevelop.timer'])
+        # Save time counter values
+        with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/counter.json', 'w') as c:
+            c.write('{\n "hour": "%s",\n "minutes": "%s",\n "seconds": "%s"\n}' % (hour, minute, sec))
+    
     def stop_timer(self, alabeltext):
         """ Stop Timer """
         if self.timeout_id:
