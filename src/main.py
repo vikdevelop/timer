@@ -483,7 +483,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         minute = self.minute_entry.get_text()
         sec = self.secs_entry.get_text()
         if hour or minute or sec == "":
-            subprocess.call(['notify-send',incorrect_value,'-i','com.github.vikdevelop.timer'])
+            subprocess.call(['notify-send',blank_value,blank_values_desc,'-i','com.github.vikdevelop.timer'])
         # Save time counter values
         with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/counter.json', 'w') as c:
             c.write('{\n "hour": "%s",\n "minutes": "%s",\n "seconds": "%s"\n}' % (hour, minute, sec))
