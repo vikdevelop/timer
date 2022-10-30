@@ -4,13 +4,13 @@
     <id>com.github.vikdevelop.timer</id>
     <launchable type="desktop-id">com.github.vikdevelop.timer.desktop</launchable>
     <name>Timer</name>
-    <summary>Countdown time in Linux conveniently.</summary>
+    <summary>Simple Countdown Timer</summary>
     <metadata_license>CC0-1.0</metadata_license>
     <project_license>GPL-3.0-or-later</project_license>
     <developer_name>vikdevelop</developer_name>
     
     <description>
-      <p>A timer that allows timing in seconds, minutes and hours.</p>
+      <p>Timer is an open-source and simple application. It enables countdown timing in hours/minutes/seconds. After finished timing is available actions like reboot/shutdown system, or send notification and play beep.</p>
     </description>
     
     <url type="homepage">https://github.com/vikdevelop/timer</url>
