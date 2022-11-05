@@ -181,6 +181,17 @@ class Dialog_settings(Gtk.Dialog):
         adw_preferences_group.add(child=adw_action_row_03)
         
         # Adw ActionRow - custom notification
+        ## Gtk.Switch
+        switch_03 = Gtk.Switch.new()
+        if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/notification.json'):
+            with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/notification.json') as r:
+                jR = json.load(r)
+            n = jR["custom-notification"]
+            if n == "true":
+                switch_03.set_active(True)
+        switch_03.set_valign(align=Gtk.Align.CENTER)
+        switch_03.connect('notify::active', self.on_switch_03_toggled)
+        
         ## Adw.EntryRow
         self.entry = Adw.EntryRow()
         self.apply_entry_text()
@@ -188,13 +199,14 @@ class Dialog_settings(Gtk.Dialog):
         self.entry.set_enable_emoji_completion(True)
         self.entry.connect('changed', self.on_entry_text_changed)
         
-        # Adw.ActionRow
-        adw_action_row_04 = Adw.ActionRow.new()
-        adw_action_row_04.set_icon_name(icon_name='notification-symbolic')
-        adw_action_row_04.set_title(title=custom_notification)
-        adw_action_row_04.add_suffix(widget=self.entry)
-        adw_action_row_04.set_activatable_widget(widget=self.entry)
-        adw_preferences_group.add(child=adw_action_row_04)
+        ## Adw.ActionRow
+        self.adw_action_row_04 = Adw.ActionRow.new()
+        self.set_suffix()
+        self.adw_action_row_04.set_icon_name(icon_name='notification-symbolic')
+        self.adw_action_row_04.set_title(title=custom_notification)
+        self.adw_action_row_04.add_suffix(widget=switch_03)
+        self.adw_action_row_04.set_activatable_widget(widget=switch_03)
+        adw_preferences_group.add(child=self.adw_action_row_04)
         
         self.show()
     
@@ -207,6 +219,10 @@ class Dialog_settings(Gtk.Dialog):
             with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/theme.json', 'w') as t:
                 t.write('{\n "theme": "system"\n}')
     
+    def set_suffix(self):
+        if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/allow-notification.json'):
+            self.adw_action_row_04.add_suffix(widget=self.entry)
+
     # Save entry text (custom notification text)
     def on_entry_text_changed(self, entry):
         entry = self.entry.get_text()
@@ -220,6 +236,17 @@ class Dialog_settings(Gtk.Dialog):
                 jN = json.load(n)
             text = jN["text"]
             self.entry.set_text(text)
+    
+    # Gtk.Switch toggled
+    def on_switch_03_toggled(self, switch03, GParamBoolean):
+        if switch03.get_active():
+            with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/allow-notification.json', 'w') as w:
+                w.write('{\n "allow-custom-notification": "true"\n}')
+            self.adw_action_row_04.add_suffix(widget=self.entry)
+        else:
+            os.remove(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/notification.json')
+            os.remove(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/allow-notification.json')
+            self.adw_action_row_04.remove(widget=self.entry)
     
     # Save resizable window configuration
     def on_switch_02_toggled(self, switch02, GParamBoolean):
