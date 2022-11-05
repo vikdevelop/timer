@@ -191,7 +191,7 @@ class Dialog_settings(Gtk.Dialog):
         # Adw.ActionRow
         adw_action_row_04 = Adw.ActionRow.new()
         adw_action_row_04.set_icon_name(icon_name='notification-symbolic')
-        adw_action_row_04.set_title(title="Custom notification text")
+        adw_action_row_04.set_title(title=custom_notification)
         adw_action_row_04.add_suffix(widget=self.entry)
         adw_action_row_04.set_activatable_widget(widget=self.entry)
         adw_preferences_group.add(child=adw_action_row_04)
