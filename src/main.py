@@ -584,7 +584,10 @@ class TimerWindow(Gtk.ApplicationWindow):
             with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/notification.json') as r:
                 jR = json.load(r)
             notification = jR["text"]
-            subprocess.call(['notify-send',timer_title,notification,'-i','com.github.vikdevelop.timer'])
+            if notification == "":
+                subprocess.call(['notify-send',timer_title,timing_finished,'-i','com.github.vikdevelop.timer'])
+            else:
+                subprocess.call(['notify-send',timer_title,notification,'-i','com.github.vikdevelop.timer'])
         else:
             subprocess.call(['notify-send',timer_title,timing_finished,'-i','com.github.vikdevelop.timer'])
     
