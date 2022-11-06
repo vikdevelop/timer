@@ -10,7 +10,13 @@
     <developer_name>vikdevelop</developer_name>
     
     <description>
-      <p>Timer is an open-source and simple application. It enables countdown timing in hours/minutes/seconds. After finished timing is available actions like reboot/shutdown system, or send notification and play beep.</p>
+      <p>Timer is an open-source and simple application. It enables countdown timing in hours/minutes/seconds. This is a features:</p>
+      <ul>
+          <li>After finished timing possible reboot/shut down system, play beep and send notification or mute volume</li>
+          <li>It is possible allow/disable playing beep</li>
+          <li>Set custom notification text</li>
+          <li>and more...</li>
+      </ul>
     </description>
     
     <url type="homepage">https://github.com/vikdevelop/timer</url>
