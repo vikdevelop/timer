@@ -114,7 +114,7 @@ class Dialog_settings(Gtk.Dialog):
         
         # ComboBox - Actions
         actions = [
-            default, shut_down, reboot, mute_volume
+            default, shut_down, reboot, mute_volume, suspend
         ]
         combobox_text_s = Gtk.ComboBoxText.new()
         for text in actions:
@@ -131,6 +131,8 @@ class Dialog_settings(Gtk.Dialog):
                 combobox_text_s.set_active(index_=2)
             elif combobox_s == mute_volume:
                 combobox_text_s.set_active(index_=3)
+            elif combobox_S == suspend:
+                combobox_text_s.set_active(index_=4)
         else:
             combobox_text_s.set_active(index_=0)
         combobox_text_s.connect('changed', self.on_combo_box_text_s_changed)
@@ -576,6 +578,11 @@ class TimerWindow(Gtk.ApplicationWindow):
             elif action == mute_volume:
                 self.notification()
                 os.system('pactl set-sink-volume @DEFAULT_SINK@ 0%')
+            elif action == suspend:
+                self.play_beep()
+                os.system('dbus-send --system --print-reply \
+        --dest=org.freedesktop.login1 /org/freedesktop/login1 \
+        "org.freedesktop.login1.Manager.Suspend" boolean:true')
         else:
             self.play_beep()
             self.notification()
@@ -633,7 +640,7 @@ class MyApp(Adw.Application):
     def on_about_action(self, action, param):
         dialog = Adw.AboutWindow(transient_for=app.get_active_window())
         dialog.set_application_name(timer_title)
-        dialog.set_version("2.3")
+        dialog.set_version("2.4")
         dialog.set_developer_name("vikdevelop")
         dialog.set_license_type(Gtk.License(Gtk.License.GPL_3_0))
         dialog.set_comments(simple_timer)
