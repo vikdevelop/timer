@@ -131,7 +131,7 @@ class Dialog_settings(Gtk.Dialog):
                 combobox_text_s.set_active(index_=2)
             elif combobox_s == mute_volume:
                 combobox_text_s.set_active(index_=3)
-            elif combobox_S == suspend:
+            elif combobox_s == suspend:
                 combobox_text_s.set_active(index_=4)
         else:
             combobox_text_s.set_active(index_=0)
