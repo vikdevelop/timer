@@ -209,6 +209,8 @@ class Dialog_settings(Gtk.Dialog):
                 switch_03.set_active(False)
             else:
                 switch_03.set_active(True)
+        else:
+            switch_03.set_active(True)
         switch_03.set_valign(align=Gtk.Align.CENTER)
         switch_03.connect('notify::active', self.on_switch_03_toggled)
         
