@@ -114,7 +114,7 @@ class Dialog_settings(Gtk.Dialog):
         
         # ComboBox - Actions
         actions = [
-            default, shut_down, reboot, mute_volume, suspend
+            default, shut_down, reboot, suspend
         ]
         combobox_text_s = Gtk.ComboBoxText.new()
         for text in actions:
@@ -575,9 +575,6 @@ class TimerWindow(Gtk.ApplicationWindow):
             elif action == reboot:
                 self.play_beep()
                 os.system('dbus-send --system --print-reply --dest=org.freedesktop.login1 /org/freedesktop/login1 "org.freedesktop.login1.Manager.Reboot" boolean:true')
-            elif action == mute_volume:
-                self.notification()
-                os.system('pactl set-sink-volume @DEFAULT_SINK@ 0%')
             elif action == suspend:
                 self.play_beep()
                 os.system('dbus-send --system --print-reply \
