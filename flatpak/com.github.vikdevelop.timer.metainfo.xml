@@ -13,7 +13,7 @@
       <p>Timer is an open-source and simple application. It enables countdown timing in hours/minutes/seconds.</p>
       <p>Features:</p>
       <ul>
-          <li>After finished timing possible reboot/shut down system, play beep and send notification, suspend or mute volume</li>
+          <li>After finished timing possible reboot/shut down system, play beep and send notification or suspend</li>
           <li>It is possible allow/disable playing beep</li>
           <li>Set custom notification text</li>
           <li>and more...</li>
@@ -52,7 +52,7 @@
                 <ul>
                     <li>it is now possible set custom notification text</li>
                     <li>added option of disable beep to preferences</li>
-                    <li>added new actions after finished timing: mute volume and suspend</li>
+                    <li>added new action after finished timing: suspend</li>
                     <li>minor UI changes</li>
                 </ul>
             </description>
