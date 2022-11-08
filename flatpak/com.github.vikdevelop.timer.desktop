@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Timer
-Name[cs]=Časovač
-Name[fr]=Minuteur
+Name[cs]=Časovač # from translations/cs.py
+Name[it]=Timer # from translations/it.py
+Name[ru]=Таймер # from translations/ru.py
 Type=Application
 Icon=com.github.vikdevelop.timer
 Comment=Simple timer
-Comment[cs]=Jednoduchý Časovač
-Comment[fr]=Minuterie simple
+Comment[cs]=Jednoduchý Časovač # from translations/cs.py
+Comment[it]=Timer semplice # from translations/it.py
+Comment[ru]=Простой таймер # from translations/ru.py
 Exec=timer.sh
 Categories=Utilities

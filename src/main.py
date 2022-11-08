@@ -17,6 +17,7 @@ def strfdelta(tdelta, fmt):
     d["minutes"], d["seconds"] = divmod(rem, 60)
     return fmt.format(**d)
 
+# Settings dialog
 class Dialog_settings(Gtk.Dialog):
     def __init__(self, parent, **kwargs):
         super().__init__(use_header_bar=True, transient_for=app.get_active_window())
@@ -25,7 +26,7 @@ class Dialog_settings(Gtk.Dialog):
         self.use_header_bar = True
         self.set_modal(modal=True)
         self.connect('response', self.dialog_response)
-        self.set_default_size(500, 360)
+        self.set_default_size(500, 460)
 
         # Buttons
         self.add_buttons(
@@ -38,6 +39,7 @@ class Dialog_settings(Gtk.Dialog):
         )
         btn_cancel.get_style_context().add_class(class_name='destructive-action')
         
+        # Layout
         content_area = self.get_content_area()
         content_area.set_orientation(orientation=Gtk.Orientation.VERTICAL)
         content_area.set_spacing(spacing=12)
@@ -56,7 +58,7 @@ class Dialog_settings(Gtk.Dialog):
         #adw_preferences_group.set_header_suffix(suffix=button_flat)
         adw_preferences_page.add(group=adw_preferences_group)
         
-        # ComboBox  
+        # ComboBox - spinner size
         sizes = [
             '5', '10', '15', '20', '25', '30', '35', '40 (%s)' % default, '45', '50', '55', '60', '65', '70', '75', '80'
         ]
@@ -112,7 +114,7 @@ class Dialog_settings(Gtk.Dialog):
         
         # ComboBox - Actions
         actions = [
-            default, shut_down, reboot
+            default, shut_down, reboot, suspend
         ]
         combobox_text_s = Gtk.ComboBoxText.new()
         for text in actions:
@@ -127,6 +129,10 @@ class Dialog_settings(Gtk.Dialog):
                 combobox_text_s.set_active(index_=1)
             elif combobox_s == reboot:
                 combobox_text_s.set_active(index_=2)
+            elif combobox_s == mute_volume:
+                combobox_text_s.set_active(index_=3)
+            elif combobox_s == suspend:
+                combobox_text_s.set_active(index_=4)
         else:
             combobox_text_s.set_active(index_=0)
         combobox_text_s.connect('changed', self.on_combo_box_text_s_changed)
@@ -138,6 +144,7 @@ class Dialog_settings(Gtk.Dialog):
         adw_preferences_group.add(child=adw_action_row_01)
         
         # Adw ActionRow - Theme configuration
+        ## Gtk.Switch
         switch_01 = Gtk.Switch.new()
         if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/theme.json'):
             with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/theme.json') as r:
@@ -147,7 +154,8 @@ class Dialog_settings(Gtk.Dialog):
                 switch_01.set_active(True)
         switch_01.set_valign(align=Gtk.Align.CENTER)
         switch_01.connect('notify::active', self.on_switch_01_toggled)
-
+        
+        ## Adw.ActionRow
         adw_action_row_02 = Adw.ActionRow.new()
         adw_action_row_02.set_icon_name(icon_name='weather-clear-night-symbolic')
         adw_action_row_02.set_title(title=dark_theme)
@@ -156,6 +164,7 @@ class Dialog_settings(Gtk.Dialog):
         adw_preferences_group.add(child=adw_action_row_02)
         
         # Adw ActionRow - Resizable of Window configuration
+        ## Gtk.Switch
         switch_02 = Gtk.Switch.new()
         if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/window.json'):
             with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/window.json') as r:
@@ -165,7 +174,8 @@ class Dialog_settings(Gtk.Dialog):
                 switch_02.set_active(True)
         switch_02.set_valign(align=Gtk.Align.CENTER)
         switch_02.connect('notify::active', self.on_switch_02_toggled)
-
+        
+        ## Adw.ActionRow
         adw_action_row_03 = Adw.ActionRow.new()
         adw_action_row_03.set_icon_name(icon_name='window-maximize-symbolic')
         adw_action_row_03.set_title(title=resizable_of_window)
@@ -173,6 +183,47 @@ class Dialog_settings(Gtk.Dialog):
         adw_action_row_03.add_suffix(widget=switch_02)
         adw_action_row_03.set_activatable_widget(widget=switch_02)
         adw_preferences_group.add(child=adw_action_row_03)
+        
+        # Adw ActionRow - custom notification
+        ## Adw.EntryRow
+        self.entry = Adw.EntryRow()
+        self.apply_entry_text()
+        self.entry.set_show_apply_button(True)
+        self.entry.set_enable_emoji_completion(True)
+        self.entry.connect('changed', self.on_entry_text_changed)
+        
+        ## Adw.ActionRow
+        adw_action_row_04 = Adw.ActionRow.new()
+        adw_action_row_04.set_icon_name(icon_name='notification-symbolic')
+        adw_action_row_04.set_title(title=custom_notification)
+        adw_action_row_04.add_suffix(widget=self.entry)
+        adw_action_row_04.set_activatable_widget(widget=self.entry)
+        adw_preferences_group.add(child=adw_action_row_04)
+        
+        # Adw ActionRow - play beep
+        ## Gtk.Switch
+        switch_03 = Gtk.Switch.new()
+        if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/beep.json'):
+            with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/beep.json') as r:
+                jR = json.load(r)
+            beep = jR["play-beep"]
+            if beep == "false":
+                switch_03.set_active(False)
+            else:
+                switch_03.set_active(True)
+        else:
+            switch_03.set_active(True)
+        switch_03.set_valign(align=Gtk.Align.CENTER)
+        switch_03.connect('notify::active', self.on_switch_03_toggled)
+        
+        ## Adw.ActionRow
+        adw_action_row_05 = Adw.ActionRow.new()
+        adw_action_row_05.set_icon_name(icon_name='sound-symbolic')
+        adw_action_row_05.set_title(title=play_beep)
+        #adw_action_row_05.set_subtitle(subtitle=)
+        adw_action_row_05.add_suffix(widget=switch_03)
+        adw_action_row_05.set_activatable_widget(widget=switch_03)
+        adw_preferences_group.add(child=adw_action_row_05)
         
         self.show()
     
@@ -184,6 +235,20 @@ class Dialog_settings(Gtk.Dialog):
         else:
             with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/theme.json', 'w') as t:
                 t.write('{\n "theme": "system"\n}')
+
+    # Save entry text (custom notification text)
+    def on_entry_text_changed(self, entry):
+        entry = self.entry.get_text()
+        with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/notification.json', 'w') as n:
+            n.write('{\n "custom-notification": "true",\n "text": "%s"\n}' % entry)
+    
+    # Apply entry text (custom notification text)
+    def apply_entry_text(self):
+        if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/notification.json'):
+            with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/notification.json') as n:
+                jN = json.load(n)
+            text = jN["text"]
+            self.entry.set_text(text)
     
     # Save resizable window configuration
     def on_switch_02_toggled(self, switch02, GParamBoolean):
@@ -193,12 +258,21 @@ class Dialog_settings(Gtk.Dialog):
         else:
             os.remove(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/window.json')
     
-    # Save Combobox configuration
+    # Save playing beep configuration
+    def on_switch_03_toggled(self, switch03, GParamBoolean):
+        if switch03.get_active():
+            with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/beep.json', 'w') as t:
+                t.write('{\n "play-beep": "true"\n}')
+        else:
+            with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/beep.json', 'w') as t:
+                t.write('{\n "play-beep": "false"\n}')
+    
+    # Save Combobox (actions) configuration
     def on_combo_box_text_s_changed(self, comboboxtexts):
         with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/actions.json', 'w') as a:
             a.write('{\n "action": "%s"\n}' % comboboxtexts.get_active_text())
     
-    # Save Combobox configuration
+    # Save Combobox (spinner size) configuration
     def on_combo_box_text_changed(self, comboboxtext):
         with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/spinner.json', 'w') as s:
             s.write('{\n "spinner-size": "%s"\n}' % comboboxtext.get_active_text())
@@ -209,12 +283,14 @@ class Dialog_settings(Gtk.Dialog):
             dialog.close()
             self.restart_timer()
             print(preferences_saved)
-            
+    
+    # restart timer function
     def restart_timer(self):
         python = sys.executable
         os.execl(python, python, *sys.argv)
 
 print(timer_running)
+# Timer Application window
 class TimerWindow(Gtk.ApplicationWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -252,6 +328,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         # Entry
         self.make_timer_box()
         
+        # Gtk.ListBox layout for start and stop button
         self.listbox = Gtk.ListBox.new()
         self.listbox.set_selection_mode(mode=Gtk.SelectionMode.NONE)
         self.listbox.get_style_context().add_class(class_name='boxed-list')
@@ -274,6 +351,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.timeout_id = None
         self.connect("destroy", self.on_SpinnerWindow_destroy)
     
+    # Entries of seconds, minutes and hours
     def make_timer_box(self):
         # Load counter.json (config file with time counter values)
         if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/counter.json'):
@@ -296,25 +374,24 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.hour_entry.set_text(hour_e)
         self.hour_entry.set_alignment(xalign=1)
         self.timerBox.append(self.hour_entry)
-
         label = Gtk.Label(label = hours)
         label.set_hexpand(False)
         self.timerBox.append(label)
+        
         # Minute entry and label
         self.minute_entry = Gtk.Entry()
         self.minute_entry.set_text(min_e)
         self.minute_entry.set_alignment(xalign=1)
         self.timerBox.append(self.minute_entry)
-        
         label = Gtk.Label(label = mins)        
         label.set_hexpand(False)
         self.timerBox.append(label)
+        
         # Second entry and label
         self.secs_entry = Gtk.Entry()
         self.secs_entry.set_text(sec_e)
         self.secs_entry.set_alignment(xalign=1)
         self.timerBox.append(self.secs_entry)
-        
         label = Gtk.Label(label = secs)        
         label.set_hexpand(False)
         self.timerBox.append(label)
@@ -419,10 +496,12 @@ class TimerWindow(Gtk.ApplicationWindow):
             self.set_default_size(340, 340)
             self.set_size_request(340, 340)
     
+    # Start button action
     def on_buttonStart_clicked(self, widget, *args):
         """ button "clicked" in event buttonStart. """
         self.start_timer()
-
+    
+    # Stop button action
     def on_buttonStop_clicked(self, widget, *args):
         """ button "clicked" in event buttonStop. """
         self.stop_timer(timing_ended)
@@ -434,7 +513,8 @@ class TimerWindow(Gtk.ApplicationWindow):
             GLib.source_remove(self.timeout_id)
             self.timeout_id = None
         Gtk.main_quit()
-
+    
+    # On timeout function
     tick_counter = timedelta(milliseconds = 250) # static object so we don't recreate the object every time
     zero_counter = timedelta()
     def on_timeout(self, *args, **kwargs):
@@ -442,47 +522,31 @@ class TimerWindow(Gtk.ApplicationWindow):
         if self.counter <= self.zero_counter:
             self.stop_timer(timing_finished)
             self.label.set_markup("<b>" + timing_finished + "</b>")
-            if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/actions.json'):
-                with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/actions.json') as a:
-                    jA = json.load(a)
-                action = jA["action"]
-                if action == default:
-                    subprocess.call(['notify-send',timer_title,timing_finished,'-i','com.github.vikdevelop.timer'])
-                elif action == shut_down:
-                    os.system('dbus-send --system --print-reply --dest=org.freedesktop.login1 /org/freedesktop/login1 "org.freedesktop.login1.Manager.PowerOff" boolean:true')
-                elif action == reboot:
-                    os.system('dbus-send --system --print-reply --dest=org.freedesktop.login1 /org/freedesktop/login1 "org.freedesktop.login1.Manager.Reboot" boolean:true')
-            else:
-                # default action
-                subprocess.call(['notify-send',timer_title,timing_finished,'-i','com.github.vikdevelop.timer'])
+            self.session()
             print(timing_finished)
             return False
         self.label.set_markup("<big><b>{}</b></big>".format(
             strfdelta(self.counter, "{hours} %s {minutes} %s {seconds} %s" % (hours, mins, secs))
         ))
         return True
-
+    
+    # Start timer function
     def start_timer(self):
         """ Run Timer. """
+        self.check_and_save()
         self.buttonStart.set_sensitive(False)
         self.buttonStop.set_sensitive(True)
-        self.button2_style_context.add_class('suggested-action')
+        self.button2_style_context.add_class('destructive-action')
         self.button1_style_context.remove_class('suggested-action')
         self.counter = timedelta(hours = int(self.hour_entry.get_text()), minutes = int(self.minute_entry.get_text()), seconds = int(self.secs_entry.get_text()))
-        # Save time counter values
-        hour = self.hour_entry.get_text()
-        minute = self.minute_entry.get_text()
-        sec = self.secs_entry.get_text()
-        with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/counter.json', 'w') as c:
-            c.write('{\n "hour": "%s",\n "minutes": "%s",\n "seconds": "%s"\n}' % (hour, minute, sec))
-        # Play beep
-        os.popen("ffplay -nodisp -autoexit /app/share/beeps/Oxygen.ogg > /dev/null 2>&1")
+        self.play_beep()
         self.label.set_markup("<big><b>{}</b></big>".format(
             strfdelta(self.counter, "{hours} %s {minutes} %s {seconds} %s" % (hours, mins, secs))
         ))
         self.spinner.start()
         self.timeout_id = GLib.timeout_add(250, self.on_timeout, None)
         
+    # Stop timer function
     def stop_timer(self, alabeltext):
         """ Stop Timer """
         if self.timeout_id:
@@ -491,22 +555,89 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.spinner.stop()
         self.buttonStart.set_sensitive(True)
         self.buttonStop.set_sensitive(False)
-        self.button2_style_context.remove_class('suggested-action')
+        self.button2_style_context.remove_class('destructive-action')
         self.button1_style_context.add_class('suggested-action')
         self.label.set_label(alabeltext)
-        os.popen("ffplay -nodisp -autoexit /app/share/beeps/Oxygen.ogg > /dev/null 2>&1")
+        #self.play_beep()
+    
+    # Session
+    def session(self):
+        if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/actions.json'):
+            with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/actions.json') as a:
+                jA = json.load(a)
+            action = jA["action"]
+            if action == default:
+                self.play_beep()
+                self.notification()
+            elif action == shut_down:
+                self.play_beep()
+                os.system('dbus-send --system --print-reply --dest=org.freedesktop.login1 /org/freedesktop/login1 "org.freedesktop.login1.Manager.PowerOff" boolean:true')
+            elif action == reboot:
+                self.play_beep()
+                os.system('dbus-send --system --print-reply --dest=org.freedesktop.login1 /org/freedesktop/login1 "org.freedesktop.login1.Manager.Reboot" boolean:true')
+            elif action == suspend:
+                self.play_beep()
+                os.system('dbus-send --system --print-reply \
+        --dest=org.freedesktop.login1 /org/freedesktop/login1 \
+        "org.freedesktop.login1.Manager.Suspend" boolean:true')
+        else:
+            self.play_beep()
+            self.notification()
+    
+    # Notification function
+    def notification(self):
+        if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/notification.json'):
+            with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/notification.json') as r:
+                jR = json.load(r)
+            notification = jR["text"]
+            if notification == "":
+                subprocess.call(['notify-send',timer_title,timing_finished,'-i','com.github.vikdevelop.timer'])
+            else:
+                subprocess.call(['notify-send',timer_title,notification,'-i','com.github.vikdevelop.timer'])
+        else:
+            subprocess.call(['notify-send',timer_title,timing_finished,'-i','com.github.vikdevelop.timer'])
+    
+    # Checking whether the entered values are correct and then saving them
+    def check_and_save(self):
+        hour = self.hour_entry.get_text()
+        minute = self.minute_entry.get_text()
+        sec = self.secs_entry.get_text()
+        if hour == "":
+            subprocess.call(['notify-send',blank_value,blank_values_desc,'-i','com.github.vikdevelop.timer'])
+        elif minute == "":
+            subprocess.call(['notify-send',blank_value,blank_values_desc,'-i','com.github.vikdevelop.timer'])
+        elif sec == "":
+            subprocess.call(['notify-send',blank_value,blank_values_desc,'-i','com.github.vikdevelop.timer'])
+        # Save time counter values
+        with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/counter.json', 'w') as c:
+            c.write('{\n "hour": "%s",\n "minutes": "%s",\n "seconds": "%s"\n}' % (hour, minute, sec))
+            
+    # Play beep          
+    def play_beep(self):
+        if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/beep.json'):
+            with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/beep.json') as r:
+                jR = json.load(r)
+            beep = jR["play-beep"]
+            if beep == "false":
+                print("")
+            else:
+                os.popen("ffplay -nodisp -autoexit /app/share/beeps/Oxygen.ogg > /dev/null 2>&1")
+        else:
+            os.popen("ffplay -nodisp -autoexit /app/share/beeps/Oxygen.ogg > /dev/null 2>&1")
 
+# Adw Application class
 class MyApp(Adw.Application):
     def __init__(self, **kwargs):
         super().__init__(**kwargs, flags=Gio.ApplicationFlags.FLAGS_NONE)
         self.connect('activate', self.on_activate)
         self.create_action('about', self.on_about_action)
         self.create_action('settings', self.on_settings_action)
-
+    
+    # Run About dialog
     def on_about_action(self, action, param):
         dialog = Adw.AboutWindow(transient_for=app.get_active_window())
         dialog.set_application_name(timer_title)
-        dialog.set_version("2.3")
+        dialog.set_version("2.4")
         dialog.set_developer_name("vikdevelop")
         dialog.set_license_type(Gtk.License(Gtk.License.GPL_3_0))
         dialog.set_comments(simple_timer)
@@ -518,7 +649,8 @@ class MyApp(Adw.Application):
         dialog.set_developers(["vikdevelop https://github.com/vikdevelop"])
         dialog.set_application_icon("com.github.vikdevelop.timer")
         dialog.show()
-        
+    
+    # Run settings dialog
     def on_settings_action(self, action, param):
         self.dialog = Dialog_settings(self)
 

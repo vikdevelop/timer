@@ -4,13 +4,20 @@
     <id>com.github.vikdevelop.timer</id>
     <launchable type="desktop-id">com.github.vikdevelop.timer.desktop</launchable>
     <name>Timer</name>
-    <summary>Countdown time in Linux conveniently.</summary>
+    <summary>Simple Countdown Timer</summary>
     <metadata_license>CC0-1.0</metadata_license>
     <project_license>GPL-3.0-or-later</project_license>
     <developer_name>vikdevelop</developer_name>
     
     <description>
-      <p>A timer that allows timing in seconds, minutes and hours.</p>
+      <p>Timer is an open-source and simple application. It enables countdown timing in hours/minutes/seconds.</p>
+      <p>Features:</p>
+      <ul>
+          <li>After finished timing possible reboot/shut down system, play beep and send notification or suspend</li>
+          <li>It is possible allow/disable playing beep</li>
+          <li>Set custom notification text</li>
+          <li>and more...</li>
+      </ul>
     </description>
     
     <url type="homepage">https://github.com/vikdevelop/timer</url>
@@ -19,16 +26,16 @@
     
     <screenshots>
         <screenshot type="default">
-            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_1.png</image>
+            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-4_1.png</image>
         </screenshot>
         <screenshot>
-            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2.png</image>
+            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-4_2.png</image>
         </screenshot>
         <screenshot>
-            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_4.png</image>
+            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-4_3.png</image>
         </screenshot>
         <screenshot>
-            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_3.png</image>
+            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-4_4.png</image>
         </screenshot>
     </screenshots>
     
@@ -39,6 +46,17 @@
     </categories>
     
     <releases>
+        <release version="2.4" date="2022-11-08">
+            <description>
+                <p>Changes:</p>
+                <ul>
+                    <li>it is now possible set custom notification text</li>
+                    <li>added option of disable beep to preferences</li>
+                    <li>added new action after finished timing: suspend</li>
+                    <li>minor UI changes</li>
+                </ul>
+            </description>
+        </release>
         <release version="2.3" date="2022-10-23">
             <description>
                 <p>Changes:</p>
