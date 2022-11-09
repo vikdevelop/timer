@@ -1,6 +1,6 @@
 {
     "timer_title": "Timer",
-    "timer_running": "Timer is running ...",
+    "timer_running": "Timer is running …",
     "run_timer": "Start timer",
     "stop_timer": "Stop timer",
     "timing_finished": "Timing has been finished!",
@@ -16,7 +16,7 @@
     "resizable_of_window": "Resizable of Window",
     "default": "default",
     "preferences_saved": "Preferences was saved!",
-    "theme_desc": "= Use this option if Timer doesn't follow the system theme.",
+    "theme_desc": "Use this option if Timer doesn't follow the system theme.",
     "dark_theme": "Dark theme",
     "contributors": "Contributors",
     "hours": "h",
