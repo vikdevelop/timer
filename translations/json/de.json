@@ -24,7 +24,7 @@
     "secs": "Sek.",
     "shut_down": "Abschalten",
     "reboot": "Neustart",
-    "action_after_timing": "Aktion nach beendeter Zeitmessung",
+    "action_after_timing": "Aktion nach Ablauf des Timers",
     "blank_value": "Sie haben leere Werte eingegeben!",
     "blank_values_desc": "Bitte tragen Sie sie ein.",
     "custom_notification": "Benutzerdefinierter Benachrichtigungstext",
