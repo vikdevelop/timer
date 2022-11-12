@@ -28,7 +28,7 @@ if jT["about_app"] == "":
     about = "About app"
  
 if jT["simple_timer"] == "":
-    simple_timer = "simple_timer"
+    simple_timer = "Simple timer"
 
 if jT["preferences"] == "":
     preferences = "Preferences"
@@ -76,7 +76,7 @@ if jT["shut_down"] == "":
     shut_down = "Shut down"
     
 if jT["reboot"] == "":
-    reboot = "reboot"
+    reboot = "Reboot"
 
 if jT["action_after_timing"] == "":
     action_after_timing = "Action after finished timer"
