@@ -522,10 +522,10 @@ class TimerWindow(Gtk.ApplicationWindow):
     def on_timeout(self, *args, **kwargs):
         self.counter -= self.tick_counter
         if self.counter <= self.zero_counter:
-            self.stop_timer(timing_finished)
-            self.label.set_markup("<b>" + timing_finished + "</b>")
+            self.stop_timer(jT["timing_finished"] or finished)
+            self.label.set_markup("<b>" + jT["timing_finished"] or finished + "</b>")
             self.session()
-            print(timing_finished)
+            print(jT["timing_finished"] or finished)
             return False
         self.label.set_markup("<big><b>{}</b></big>".format(
             strfdelta(self.counter, "{hours} %s {minutes} %s {seconds} %s" % (jT["hours"] or hours, jT["mins"] or mins, jT["secs"] or secs))
@@ -595,7 +595,7 @@ class TimerWindow(Gtk.ApplicationWindow):
             if notification == "":
                 subprocess.call(['notify-send',jT["timer_title"] or title,jT["timing_finished"] or finished,'-i','com.github.vikdevelop.timer'])
             else:
-                subprocess.call(['notify-send',jT["timer_title"],text,'-i','com.github.vikdevelop.timer'])
+                subprocess.call(['notify-send',jT["timer_title"],notification,'-i','com.github.vikdevelop.timer'])
         else:
             subprocess.call(['notify-send',jT["timer_title"] or title,jT["timing_finished"] or finished,'-i','com.github.vikdevelop.timer'])
     
