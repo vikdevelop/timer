@@ -25,11 +25,12 @@
     "shut_down": "Завершить",
     "reboot": "Перезагрузить",
     "action_after_timing": "Действие после завершения таймера",
-    "blank_value": "",
-    "blank_values_desc": "",
-    "custom_notification": "",
-    "mute_volume": "",
-    "play_beep": "",
-    "suspend": "",
-    "translator_credits": "ViktorOn https://github.com/viktoron"
+    "blank_value": "You have entered blank values!",
+    "blank_values_desc": "Please fill them in.",
+    "custom_notification": "Custom notification text",
+    "mute_volume": "Mute volume",
+    "play_beep": "Play beep",
+    "suspend": "Suspend",
+    "translator_credits": "ViktorOn https://github.com/viktoron",
+    "app_desc": "<b>Timer</b> is an open-source and simple application.\\nIt enables timing in <i>seconds/minutes/hours</i> and: \\n - after finished timing possible reboot/shut down system, play beep and send notification or suspend system\\n - it is possible allow/disable playing beep \\n - set custom notification text \\n and more …"
 }
