@@ -31,5 +31,6 @@
     "mute_volume": "Mettre en sourdine",
     "play_beep": "Émettre un bip",
     "suspend": "Suspendre",
-    "translator_credits": "Allan Nordhøy https://github.com/comradekingu"
+    "translator_credits": "Allan Nordhøy https://github.com/comradekingu",
+    "app_desc": "<b>Timer</b> is an open-source and simple application.\\nIt enables timing in <i>seconds/minutes/hours</i> and: \\n - after finished timing possible reboot/shut down system, play beep and send notification or suspend system\\n - it is possible allow/disable playing beep \\n - set custom notification text \\n and more …"
 }
