@@ -642,7 +642,7 @@ class MyApp(Adw.Application):
         dialog.set_version("2.4")
         dialog.set_developer_name("vikdevelop")
         dialog.set_license_type(Gtk.License(Gtk.License.GPL_3_0))
-        dialog.set_comments(jT["simple_timer"] or simple_timer)
+        dialog.set_comments(jT["app_desc"] or app_desc)
         dialog.set_website("https://github.com/vikdevelop/timer")
         dialog.set_issue_url("https://github.com/vikdevelop/timer/issues")
         dialog.add_credit_section(jT["contributors"] or contributors, ["KenyC https://github.com/KenyC", "Albano Battistella https://github.com/albanobattistella", "ViktorOn https://github.com/ViktorOn", "Allan Nordhøy https://github.com/comradekingu"])
