@@ -31,5 +31,6 @@
     "mute_volume": "Ztlumit zvuk",
     "play_beep": "Přehrát pípnutí",
     "suspend": "Uspat",
-    "translator_credits": "vikdevelop https://github.com/vikdevelop"
+    "translator_credits": "vikdevelop https://github.com/vikdevelop",
+    "app_desc": "<b>Časovač</b> je jednoduchá aplikace s otevřeným zdrojovým kódem.\\numožňuje měření času v <i>sekundách/minutách/hodinách</i> a: \\n - po ukončení časování je možné restartovat/vypnout systém, přehrát zvukový signál a odeslat oznámení nebo uspat systém \\n - je možné povolit/zakázat přehrávání zvukového signálu \\n - nastavit vlastní text oznámení \\n a další …"
 }
