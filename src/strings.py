@@ -99,5 +99,8 @@ if jT["play_beep"] == "":
 if jT["suspend"] == "":
     suspend = "Suspend"
     
+if jT["app_desc"] == "":
+    app_desc = "<b>Timer</b> is an open-source and simple application.\nIt enables timing in <i>seconds/minutes/hours</i> and: \n - after finished timing possible reboot/shut down system, play beep and send notification or suspend\n - it is possible allow/disable playing beep \n - set custom notification text \n and more.."
+    
 if jT["translator_credits"] == "":
     translator_credits = "Unknown translator"
