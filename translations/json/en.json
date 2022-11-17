@@ -31,6 +31,5 @@
     "mute_volume": "Mute volume",
     "play_beep": "Play beep",
     "suspend": "Suspend",
-    "translator_credits": "vikdevelop https://github.com/vikdevelop",
-    "app_desc": "<b>Timer</b> is an open-source and simple application.\\nIt enables timing in <i>seconds/minutes/hours</i> and: \\n - after finished timing possible reboot/shut down system, play beep and send notification or suspend system\\n - it is possible allow/disable playing beep \\n - set custom notification text \\n and more …"
+    "translator_credits": "vikdevelop https://github.com/vikdevelop"
 }
