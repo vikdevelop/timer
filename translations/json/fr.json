@@ -31,5 +31,10 @@
     "mute_volume": "Mettre en sourdine",
     "play_beep": "Émettre un bip",
     "suspend": "Suspendre",
-    "translator_credits": "J. Lavoie https://hosted.weblate.org/user/Edanas"
+    "translator_credits": "J. Lavoie https://hosted.weblate.org/user/Edanas",
+    "summary": "Summary",
+    "summary_desc": "Overview of Timer Set Values",
+    "go_to_preferences": "Go to Preferences",
+    "yes": "Yes",
+    "no": "No"
 }
