@@ -50,7 +50,7 @@
             <description>
                 <p>Changes:</p>
                 <ul>
-                    <li>For all translators: you can now translate the Timer project via Weblate - https://hosted.weblate.org/engage/vikdevelop</li>
+                    <li>For all translators: you can now translate the Timer project via Weblate. Link is under button "Contribute to Translations" (GNOME Software)</li>
                     <li>Added summary section to main window. This section is an overview of Timer Set Values</li>
                     <li>Minor UI changes</li>
                 </ul>
