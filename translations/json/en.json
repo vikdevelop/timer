@@ -31,5 +31,10 @@
     "mute_volume": "Mute volume",
     "play_beep": "Play beep",
     "suspend": "Suspend",
+    "summary": "Summary",
+    "summary_desc": "Overview of Timer Set Values",
+    "go_to_preferences": "Go to Preferences",
+    "yes": "Yes",
+    "no": "No",
     "translator_credits": "vikdevelop https://github.com/vikdevelop"
 }

@@ -22,17 +22,17 @@
     
     <url type="homepage">https://github.com/vikdevelop/timer</url>
     <url type="bugtracker">https://github.com/vikdevelop/timer/issues</url>
-    <url type="translate">https://github.com/vikdevelop/timer/tree/main/translations</url>
+    <url type="translate">https://hosted.weblate.org/engage/vikdevelop/</url>
     
     <screenshots>
         <screenshot type="default">
-            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-4_1.png</image>
+            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timergtk4_timing.png</image>
         </screenshot>
         <screenshot>
-            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-4_2.png</image>
+            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timergtk4_summary.png</image>
         </screenshot>
         <screenshot>
-            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-4_3.png</image>
+            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timergtk4_finished.png</image>
         </screenshot>
         <screenshot>
             <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-4_4.png</image>
@@ -46,6 +46,16 @@
     </categories>
     
     <releases>
+        <release version="2.5" date="2022-11-18">
+            <description>
+                <p>Changes:</p>
+                <ul>
+                    <li>For all translators: you can now translate the Timer project via Weblate - https://hosted.weblate.org/engage/vikdevelop</li>
+                    <li>Added summary section to main window. This section is an overview of Timer Set Values</li>
+                    <li>Minor UI changes</li>
+                </ul>
+            </description>
+        </release>
         <release version="2.4" date="2022-11-08">
             <description>
                 <p>Changes:</p>

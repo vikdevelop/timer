@@ -328,25 +328,15 @@ class TimerWindow(Gtk.ApplicationWindow):
         # Entry
         self.make_timer_box()
         
-        # Gtk.ListBox layout for start and stop button
-        self.listbox = Gtk.ListBox.new()
-        self.listbox.set_selection_mode(mode=Gtk.SelectionMode.NONE)
-        self.listbox.get_style_context().add_class(class_name='boxed-list')
-        self.mainBox.append(self.listbox)
+        # Summary
+        self.summary()
         
         # Start timer button
         self.buttonStart = Gtk.Button(label=jT["run_timer"])
         self.buttonStart.connect("clicked", self.on_buttonStart_clicked)
         self.button1_style_context = self.buttonStart.get_style_context()
         self.button1_style_context.add_class('suggested-action')
-        self.listbox.append(self.buttonStart)
-        
-        # Stop timer button
-        self.buttonStop = Gtk.Button(label=jT["stop_timer"])
-        self.buttonStop.set_sensitive(False)
-        self.button2_style_context = self.buttonStop.get_style_context()
-        self.buttonStop.connect("clicked", self.on_buttonStop_clicked)
-        self.listbox.append(self.buttonStop)
+        self.mainBox.append(self.buttonStart)
 
         self.timeout_id = None
         self.connect("destroy", self.on_SpinnerWindow_destroy)
@@ -369,35 +359,87 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.timerBox.set_margin_start(50)
         self.timerBox.set_margin_end(50)
         
+        self.lbox = Gtk.ListBox.new()
+        self.lbox.set_selection_mode(mode=Gtk.SelectionMode.NONE)
+        self.lbox.get_style_context().add_class(class_name='boxed-list')
+        
         # Hour entry and label
-        self.hour_entry = Gtk.Entry()
+        self.hour_entry = Adw.EntryRow()
         self.hour_entry.set_text(hour_e)
+        self.hour_entry.set_title(jT["hours"])
         self.hour_entry.set_alignment(xalign=1)
         self.timerBox.append(self.hour_entry)
-        label = Gtk.Label(label = jT["hours"])
-        label.set_hexpand(False)
-        self.timerBox.append(label)
         
         # Minute entry and label
-        self.minute_entry = Gtk.Entry()
+        self.minute_entry = Adw.EntryRow()
         self.minute_entry.set_text(min_e)
+        self.minute_entry.set_title(jT["mins"])
         self.minute_entry.set_alignment(xalign=1)
         self.timerBox.append(self.minute_entry)
-        label = Gtk.Label(label = jT["mins"])        
-        label.set_hexpand(False)
-        self.timerBox.append(label)
         
         # Second entry and label
-        self.secs_entry = Gtk.Entry()
+        self.secs_entry = Adw.EntryRow()
         self.secs_entry.set_text(sec_e)
+        self.secs_entry.set_title(jT["secs"])
         self.secs_entry.set_alignment(xalign=1)
         self.timerBox.append(self.secs_entry)
-        label = Gtk.Label(label = jT["secs"])        
-        label.set_hexpand(False)
-        self.timerBox.append(label)
         
-        self.mainBox.append(self.timerBox)
+        self.lbox.append(self.timerBox)
+        self.mainBox.append(self.lbox)
+        
+    def summary(self):
+        self.listbox = Gtk.ListBox.new()
+        self.listbox.set_selection_mode(mode=Gtk.SelectionMode.NONE)
+        self.listbox.get_style_context().add_class(class_name='boxed-list')
+        self.mainBox.append(self.listbox)
 
+        self.adw_expander_row = Adw.ExpanderRow.new()
+        self.adw_expander_row.set_title(title=jT["summary"])
+        self.adw_expander_row.set_subtitle(subtitle=jT["summary_desc"])
+        self.listbox.append(child=self.adw_expander_row)
+        
+        self.label_beep = Gtk.Label.new()
+        self.non_activated_play_beep()
+        
+        self.adw_action_row_01 = Adw.ActionRow.new()
+        self.adw_action_row_01.set_icon_name(icon_name='sound-symbolic')
+        self.adw_action_row_01.set_title(title=jT["play_beep"])
+        self.adw_action_row_01.add_suffix(widget=self.label_beep)
+        self.adw_expander_row.add_row(child=self.adw_action_row_01)
+        
+        self.label_action = Gtk.Label.new()
+        self.non_activated_session()
+        
+        self.adw_action_row_02 = Adw.ActionRow.new()
+        self.adw_action_row_02.set_icon_name(icon_name='timer-symbolic')
+        self.adw_action_row_02.set_title(title=jT["action_after_timing"])
+        self.adw_action_row_02.add_suffix(widget=self.label_action)
+        self.adw_expander_row.add_row(child=self.adw_action_row_02)
+        
+        self.label_notification = Gtk.Label.new()
+        self.non_activated_notification()
+        
+        self.adw_action_row_03 = Adw.ActionRow.new()
+        self.adw_action_row_03.set_icon_name(icon_name='notification-symbolic')
+        self.adw_action_row_03.set_title(title=jT["custom_notification"])
+        self.adw_action_row_03.add_suffix(widget=self.label_notification)
+        self.adw_expander_row.add_row(child=self.adw_action_row_03)
+        
+        self.button_flat = Gtk.Button.new_with_label(label='Preferences')
+        self.button_flat.set_icon_name(icon_name='next-symbolic')
+        self.button_flat.get_style_context().add_class(class_name='flat')
+        self.button_flat.connect('clicked', self.on_button_preferences_clicked)
+        
+        self.adw_action_row_04 = Adw.ActionRow.new()
+        self.adw_action_row_04.set_icon_name(icon_name='settings-symbolic')
+        self.adw_action_row_04.set_title(title=jT["go_to_preferences"])
+        self.adw_action_row_04.add_suffix(widget=self.button_flat)
+        self.adw_expander_row.add_row(child=self.adw_action_row_04)
+        
+    # Action after clicking button in Adw actionrow 04 [self.button_flat]
+    def on_button_preferences_clicked(self, widget, *args):
+        self.preferences = Dialog_settings(self)
+    
     # Theme setup
     def theme(self):
         if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/theme.json'):
@@ -427,74 +469,75 @@ class TimerWindow(Gtk.ApplicationWindow):
             spinner = jsonObject["spinner-size"]
             if spinner == "5":
                 self.spinner.set_size_request(5,5)
-                self.set_default_size(300, 300)
-                self.set_size_request(300, 300)
+                self.set_default_size(340, 320)
+                self.set_size_request(340, 320)
             if spinner == "10":
                 self.spinner.set_size_request(10,10)
-                self.set_default_size(300, 300)
-                self.set_size_request(300, 300)
+                self.set_default_size(340, 320)
+                self.set_size_request(340, 320)
             if spinner == "15":
                 self.spinner.set_size_request(15,15)
-                self.set_default_size(300, 300)
-                self.set_size_request(300, 300)
+                self.set_default_size(340, 320)
+                self.set_size_request(340, 320)
             if spinner == "20":
                 self.spinner.set_size_request(20,20)
-                self.set_default_size(320, 320)
-                self.set_size_request(320, 320)
+                self.set_default_size(360, 340)
+                self.set_size_request(360, 340)
             if spinner == "25":
                 self.spinner.set_size_request(25,25)
-                self.set_default_size(320, 320)
-                self.set_size_request(320, 320)
+                self.set_default_size(360, 340)
+                self.set_size_request(360, 340)
             if spinner == "30":
                 self.spinner.set_size_request(30,30)
-                self.set_default_size(340, 340)
-                self.set_size_request(340, 340)
+                self.set_default_size(380, 360)
+                self.set_size_request(380, 360)
             if spinner == "35":
                 self.spinner.set_size_request(35,35)
-                self.set_default_size(340, 340)
-                self.set_size_request(340, 340)
+                self.set_default_size(380, 360)
+                self.set_size_request(380, 360)
             if spinner == "40 (%s)" % (jT["default"]):
                 self.spinner.set_size_request(40,40)
-                self.set_default_size(340, 340)
-                self.set_size_request(340, 340)
+                self.set_default_size(380, 360)
+                self.set_size_request(380, 360)
             if spinner == "45":
                 self.spinner.set_size_request(45,45)
-                self.set_default_size(340, 340)
-                self.set_size_request(340, 340)
+                self.set_default_size(380, 360)
+                self.set_size_request(380, 360)
             if spinner == "50":
                 self.spinner.set_size_request(50,50)
-                self.set_default_size(350, 350)
-                self.set_size_request(350, 350)
+                self.set_default_size(390, 370)
+                self.set_size_request(390, 370)
             if spinner == "55":
                 self.spinner.set_size_request(55,55)
-                self.set_default_size(350, 350)
-                self.set_size_request(350, 350)
+                self.set_default_size(390, 370)
+                self.set_size_request(390, 370)
             if spinner == "60":
                 self.spinner.set_size_request(60,60)
-                self.set_default_size(360, 360)
-                self.set_size_request(360, 360)
+                self.set_default_size(400, 380)
+                self.set_size_request(400, 380)
             if spinner == "65":
                 self.spinner.set_size_request(65,65)
-                self.set_default_size(360, 360)
-                self.set_size_request(360, 360)
+                self.set_default_size(400, 380)
+                self.set_size_request(400, 380)
             if spinner == "70":
                 self.spinner.set_size_request(70,70)
-                self.set_default_size(370, 370)
-                self.set_size_request(370, 370)
+                self.set_default_size(410, 390)
+                self.set_size_request(410, 390)
             if spinner == "75":
                 self.spinner.set_size_request(75,75)
-                self.set_default_size(370, 370)
-                self.set_size_request(370, 370)
+                self.set_default_size(410, 390)
+                self.set_size_request(410, 390)
             if spinner == "80":
                 self.spinner.set_size_request(80,80)
-                self.set_default_size(400, 400)
-                self.set_size_request(400, 400)
+                self.set_default_size(440, 420)
+                self.set_size_request(440, 420)
         else:
             # default spinner size
             self.spinner.set_size_request(40,40)
             # default size of Window
             self.set_default_size(340, 340)
             self.set_size_request(340, 340)
+            self.label_spinner.set_text('40 (%s)' % jT["default"])
     
     # Start button action
     def on_buttonStart_clicked(self, widget, *args):
@@ -534,10 +577,13 @@ class TimerWindow(Gtk.ApplicationWindow):
     def start_timer(self):
         """ Run Timer. """
         self.check_and_save()
-        self.buttonStart.set_sensitive(False)
-        self.buttonStop.set_sensitive(True)
+        # Stop timer button
+        self.buttonStop = Gtk.Button(label=jT["stop_timer"])
+        self.button2_style_context = self.buttonStop.get_style_context()
         self.button2_style_context.add_class('destructive-action')
-        self.button1_style_context.remove_class('suggested-action')
+        self.buttonStop.connect("clicked", self.on_buttonStop_clicked)
+        self.mainBox.append(self.buttonStop)
+        self.mainBox.remove(self.buttonStart)
         self.counter = timedelta(hours = int(self.hour_entry.get_text()), minutes = int(self.minute_entry.get_text()), seconds = int(self.secs_entry.get_text()))
         self.play_beep()
         self.label.set_markup("<big><b>{}</b></big>".format(
@@ -553,12 +599,26 @@ class TimerWindow(Gtk.ApplicationWindow):
             GLib.source_remove(self.timeout_id)
             self.timeout_id = None
         self.spinner.stop()
-        self.buttonStart.set_sensitive(True)
-        self.buttonStop.set_sensitive(False)
-        self.button2_style_context.remove_class('destructive-action')
-        self.button1_style_context.add_class('suggested-action')
+        self.mainBox.append(self.buttonStart)
+        self.mainBox.remove(self.buttonStop)
         self.label.set_label(alabeltext)
         #self.play_beep()
+    
+    def non_activated_session(self):
+        if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/actions.json'):
+            with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/actions.json') as a:
+                jA = json.load(a)
+            action = jA["action"]
+            if action == jT["default"]:
+                self.label_action.set_text(jT["default"])
+            elif action == jT["shut_down"]:
+                self.label_action.set_text(jT["shut_down"])
+            elif action == jT["reboot"]:
+                self.label_action.set_text(jT["reboot"])
+            elif action == jT["suspend"]:
+                self.label_action.set_text(jT["suspend"])
+        else:
+            self.label_action.set_text(jT["default"])
     
     # Session
     def session(self):
@@ -583,6 +643,18 @@ class TimerWindow(Gtk.ApplicationWindow):
         else:
             self.play_beep()
             self.notification()
+    
+    def non_activated_notification(self):
+        if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/notification.json'):
+            with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/notification.json') as r:
+                jR = json.load(r)
+            notification = jR["text"]
+            if notification == "":
+                self.label_notification.set_text(jT["default"])
+            else:
+                self.label_notification.set_text(notification)
+        else:
+            self.label_notification.set_text(notification)
     
     # Notification function
     def notification(self):
@@ -612,6 +684,19 @@ class TimerWindow(Gtk.ApplicationWindow):
         with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/counter.json', 'w') as c:
             c.write('{\n "hour": "%s",\n "minutes": "%s",\n "seconds": "%s"\n}' % (hour, minute, sec))
             
+            
+    def non_activated_play_beep(self):
+        if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/beep.json'):
+            with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/beep.json') as r:
+                jR = json.load(r)
+            beep = jR["play-beep"]
+            if beep == "false":
+                self.label_beep.set_text(jT["no"])
+            else:
+                self.label_beep.set_text(jT["yes"])
+        else:
+            self.label_beep.set_text(jT["yes"])
+    
     # Play beep          
     def play_beep(self):
         if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/beep.json'):
@@ -637,13 +722,12 @@ class MyApp(Adw.Application):
     def on_about_action(self, action, param):
         dialog = Adw.AboutWindow(transient_for=app.get_active_window())
         dialog.set_application_name(jT["timer_title"])
-        dialog.set_version("2.4")
+        dialog.set_version("2.5")
         dialog.set_developer_name("vikdevelop")
         dialog.set_license_type(Gtk.License(Gtk.License.GPL_3_0))
-        dialog.set_comments(jT["app_desc"])
         dialog.set_website("https://github.com/vikdevelop/timer")
         dialog.set_issue_url("https://github.com/vikdevelop/timer/issues")
-        dialog.add_credit_section(jT["contributors"], ["KenyC https://github.com/KenyC", "Albano Battistella https://github.com/albanobattistella", "ViktorOn https://github.com/ViktorOn", "Allan Nordhøy https://github.com/comradekingu"])
+        dialog.add_credit_section(jT["contributors"], ["KenyC https://github.com/KenyC", "Albano Battistella https://github.com/albanobattistella", "ViktorOn https://github.com/ViktorOn", "Allan Nordhøy https://github.com/comradekingu", "J. Lavoie (Weblate) https://hosted.weblate.org/user/Edanas"])
         dialog.set_translator_credits(jT["translator_credits"])
         dialog.set_copyright("© 2022 vikdevelop")
         dialog.set_developers(["vikdevelop https://github.com/vikdevelop"])
