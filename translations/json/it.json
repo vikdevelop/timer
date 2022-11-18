@@ -32,9 +32,9 @@
     "play_beep": "Riproduci segnale acustico",
     "suspend": "Sospendi",
     "translator_credits": "Albano Battistella https://github.com/albanobattistella",
-    "summary": "Summary",
-    "summary_desc": "Overview of Timer Set Values",
-    "yes": "Yes",
+    "summary": "Riepilogo",
+    "summary_desc": "Panoramica dei valori di impostazione del timer",
+    "yes": "Si",
     "no": "No",
-    "go_to_preferences": "Go to Preferences"
+    "go_to_preferences": "Vai alle Preferenze"
 }
