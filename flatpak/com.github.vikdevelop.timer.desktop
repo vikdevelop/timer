@@ -29,7 +29,7 @@ Comment[de]=Einfacher Timer
 Comment[fi]=Yksinkertainen ajastin
 ## from translations/json/fr.json
 Comment[fr]=Minuterie simple
-## from translations/json/fr.json
+## from translations/json/nb_NO.json
 Comment[nb_NO]=Enkelt tidsur
 Type=Application
 Icon=com.github.vikdevelop.timer
