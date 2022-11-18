@@ -537,7 +537,6 @@ class TimerWindow(Gtk.ApplicationWindow):
             # default size of Window
             self.set_default_size(340, 340)
             self.set_size_request(340, 340)
-            self.label_spinner.set_text('40 (%s)' % jT["default"])
     
     # Start button action
     def on_buttonStart_clicked(self, widget, *args):
@@ -654,7 +653,7 @@ class TimerWindow(Gtk.ApplicationWindow):
             else:
                 self.label_notification.set_text(notification)
         else:
-            self.label_notification.set_text(notification)
+            self.label_notification.set_text(jT["default"])
     
     # Notification function
     def notification(self):
