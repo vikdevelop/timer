@@ -31,5 +31,10 @@
     "mute_volume": "Forstum lydstyrken",
     "play_beep": "Spill pipetone",
     "suspend": "Hvilemodus",
-    "translator_credits": "Allan Nordhøy https://hosted.weblate.org/user/kingu/"
+    "translator_credits": "Allan Nordhøy https://hosted.weblate.org/user/kingu/",
+    "summary": "Summary",
+    "summary_desc": "Overview of Timer Set Values",
+    "go_to_preferences": "Go to Preferences",
+    "yes": "Yes",
+    "no": "No"
 }

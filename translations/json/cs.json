@@ -31,5 +31,10 @@
     "mute_volume": "Ztlumit zvuk",
     "play_beep": "Přehrát pípnutí",
     "suspend": "Uspat",
-    "translator_credits": "vikdevelop https://github.com/vikdevelop"
+    "translator_credits": "vikdevelop https://github.com/vikdevelop",
+    "summary": "Souhrn",
+    "summary_desc": "Přehled nastavených hodnot časovače",
+    "go_to_preferences": "Přejít do předvoleb",
+    "yes": "Ano",
+    "no": "Ne"
 }

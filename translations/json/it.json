@@ -31,5 +31,10 @@
     "mute_volume": "Muta volume",
     "play_beep": "Riproduci segnale acustico",
     "suspend": "Sospendi",
-    "translator_credits": "Albano Battistella https://github.com/albanobattistella"
+    "translator_credits": "Albano Battistella https://github.com/albanobattistella",
+    "summary": "Summary",
+    "summary_desc": "Overview of Timer Set Values",
+    "yes": "Yes",
+    "no": "No",
+    "go_to_preferences": "Go to Preferences"
 }

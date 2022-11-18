@@ -31,5 +31,10 @@
     "mute_volume": "Mykistä äänenvoimakkuus",
     "play_beep": "Toista äänimerkki",
     "suspend": "Keskeytä",
-    "translator_credits": "J. Lavoie https://hosted.weblate.org/user/Edanas"
+    "translator_credits": "J. Lavoie https://hosted.weblate.org/user/Edanas",
+    "summary": "Summary",
+    "summary_desc": "Overview of Timer Set Values",
+    "go_to_preferences": "Go to Preferences",
+    "yes": "Yes",
+    "no": "No"
 }
