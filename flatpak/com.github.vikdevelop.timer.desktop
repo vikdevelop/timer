@@ -1,19 +1,37 @@
 [Desktop Entry]
+# Name
 Name=Timer
-# from translations/cs.py
+## from translations/json/cs.json
 Name[cs]=Časovač
-# from translations/it.py
+## from translations/json/it.json
 Name[it]=Timer
-# from translations/ru.py
+## from translations/json/ru.json
 Name[ru]=Таймер
+## from translations/json/de.json
+Name[de]=Timer
+## from translations/json/fi.json
+Name[fi]=Ajastin
+## from translations/json/fr.json
+Name[fr]=Minuterie
+## from translations/json/nb_NO.json
+Name[nb_NO]=Tidsur
+# Comment
+Comment=Simple timer
+## from translations/json/cs.json
+Comment[cs]=Jednoduchý Časovač
+## from translations/json/it.json
+Comment[it]=Timer semplice
+## from translations/json/ru.json
+Comment[ru]=Простой таймер
+## from translations/json/de.json
+Comment[de]=Einfacher Timer
+## from translations/json/fi.json
+Comment[fi]=Yksinkertainen ajastin
+## from translations/json/fr.json
+Comment[fr]=Minuterie simple
+## from translations/json/fr.json
+Comment[nb_NO]=Enkelt tidsur
 Type=Application
 Icon=com.github.vikdevelop.timer
-Comment=Simple timer
-# from translations/cs.py
-Comment[cs]=Jednoduchý Časovač
-# from translations/it.py
-Comment[it]=Timer semplice
-# from translations/ru.py
-Comment[ru]=Простой таймер
 Exec=timer.sh
-Categories=Utilities
+Categories=Utility
