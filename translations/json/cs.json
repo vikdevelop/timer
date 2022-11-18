@@ -32,9 +32,9 @@
     "play_beep": "Přehrát pípnutí",
     "suspend": "Uspat",
     "translator_credits": "vikdevelop https://github.com/vikdevelop",
-    "summary": "Summary",
-    "summary_desc": "Overview of Timer Set Values",
-    "go_to_preferences": "Go to Preferences",
-    "yes": "Yes",
-    "no": "No"
+    "summary": "Souhrn",
+    "summary_desc": "Přehled nastavených hodnot časovače",
+    "go_to_preferences": "Přejít do předvoleb",
+    "yes": "Ano",
+    "no": "Ne"
 }
