@@ -2,7 +2,7 @@ import subprocess
 import json
 # Czech
 if subprocess.getoutput("locale | grep 'LANG'") == 'LANG=cs_CZ.UTF-8':
-    with open('/app/translations/ru.json') as t:
+    with open('/app/translations/cs.json') as t:
         jT = json.load(t)
 # Italian
 elif subprocess.getoutput("locale | grep 'LANG'") == 'LANG=it_IT.UTF-8':
