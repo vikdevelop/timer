@@ -129,10 +129,8 @@ class Dialog_settings(Gtk.Dialog):
                 combobox_text_s.set_active(index_=1)
             elif combobox_s == jT["reboot"]:
                 combobox_text_s.set_active(index_=2)
-            elif combobox_s == jT["mute_volume"]:
-                combobox_text_s.set_active(index_=3)
             elif combobox_s == jT["suspend"]:
-                combobox_text_s.set_active(index_=4)
+                combobox_text_s.set_active(index_=3)
         else:
             combobox_text_s.set_active(index_=0)
         combobox_text_s.connect('changed', self.on_combo_box_text_s_changed)
@@ -532,11 +530,9 @@ class TimerWindow(Gtk.ApplicationWindow):
                 self.set_default_size(440, 420)
                 self.set_size_request(440, 420)
         else:
-            # default spinner size
             self.spinner.set_size_request(40,40)
-            # default size of Window
-            self.set_default_size(340, 340)
-            self.set_size_request(340, 340)
+            self.set_default_size(385, 360)
+            self.set_size_request(385, 360)
     
     # Start button action
     def on_buttonStart_clicked(self, widget, *args):
@@ -726,7 +722,7 @@ class MyApp(Adw.Application):
         dialog.set_license_type(Gtk.License(Gtk.License.GPL_3_0))
         dialog.set_website("https://github.com/vikdevelop/timer")
         dialog.set_issue_url("https://github.com/vikdevelop/timer/issues")
-        dialog.add_credit_section(jT["contributors"], ["KenyC https://github.com/KenyC", "Albano Battistella https://github.com/albanobattistella", "ViktorOn https://github.com/ViktorOn", "Allan Nordhøy https://github.com/comradekingu", "J. Lavoie (Weblate) https://hosted.weblate.org/user/Edanas"])
+        dialog.add_credit_section(jT["contributors"], ["Albano Battistella https://github.com/albanobattistella", "Allan Nordhøy https://hosted.weblate.org/user/kingu/", "J. Lavoie https://hosted.weblate.org/user/Edanas", "rene-coty https://github.com/rene-coty", "KenyC https://github.com/KenyC", "ViktorOn https://github.com/ViktorOn"])
         dialog.set_translator_credits(jT["translator_credits"])
         dialog.set_copyright("© 2022 vikdevelop")
         dialog.set_developers(["vikdevelop https://github.com/vikdevelop"])
