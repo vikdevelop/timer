@@ -216,7 +216,7 @@ class Dialog_settings(Gtk.Dialog):
         
         ## Adw.ActionRow
         adw_action_row_05 = Adw.ActionRow.new()
-        adw_action_row_05.set_icon_name(icon_name='sound-symbolic')
+        adw_action_row_05.set_icon_name(icon_name='folder-music-symbolic')
         adw_action_row_05.set_title(title=jT["play_beep"])
         #adw_action_row_05.set_subtitle(subtitle=)
         adw_action_row_05.add_suffix(widget=switch_03)
