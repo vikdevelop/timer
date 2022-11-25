@@ -25,7 +25,6 @@
     "shut_down": "Abschalten",
     "reboot": "Neustart",
     "action_after_timing": "Aktion nach Ablauf des Timers",
-    "blank_values_desc": "Bitte tragen Sie sie ein.",
     "custom_notification": "Benutzerdefinierter Benachrichtigungstext",
     "play_beep": "Signalton abspielen",
     "suspend": "aussetzen",
