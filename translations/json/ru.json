@@ -28,7 +28,6 @@
     "blank_value": "Вы ввели пустые значения!",
     "blank_values_desc": "Пожалуйста, заполните их.",
     "custom_notification": "Пользовательский текст уведомления",
-    "mute_volume": "Отключить звук",
     "play_beep": "Воспроизведение звукового сигнала",
     "suspend": "Ждущий режим",
     "translator_credits": "ViktorOn https://github.com/viktoron",
