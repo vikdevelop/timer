@@ -25,7 +25,6 @@
     "shut_down": "Shut down",
     "reboot": "Reboot",
     "action_after_timing": "Action after finished timer",
-    "blank_value": "You have entered blank values!",
     "blank_values_desc": "Please fill them in.",
     "custom_notification": "Custom notification text",
     "play_beep": "Play beep",
