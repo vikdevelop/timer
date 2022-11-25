@@ -354,8 +354,8 @@ class TimerWindow(Gtk.ApplicationWindow):
             sec_e = "0"
         # Layout
         self.timerBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=3)
-        self.timerBox.set_margin_start(50)
-        self.timerBox.set_margin_end(50)
+        self.timerBox.set_margin_start(40)
+        self.timerBox.set_margin_end(40)
         
         self.lbox = Gtk.ListBox.new()
         self.lbox.set_selection_mode(mode=Gtk.SelectionMode.NONE)
@@ -409,7 +409,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.non_activated_session()
         
         self.adw_action_row_02 = Adw.ActionRow.new()
-        self.adw_action_row_02.set_icon_name(icon_name='timer-symbolic')
+        self.adw_action_row_02.set_icon_name(icon_name='com.github.vikdevelop.timer')
         self.adw_action_row_02.set_title(title=jT["action_after_timing"])
         self.adw_action_row_02.add_suffix(widget=self.label_action)
         self.adw_expander_row.add_row(child=self.adw_action_row_02)
@@ -467,72 +467,72 @@ class TimerWindow(Gtk.ApplicationWindow):
             spinner = jsonObject["spinner-size"]
             if spinner == "5":
                 self.spinner.set_size_request(5,5)
-                self.set_default_size(340, 320)
-                self.set_size_request(340, 320)
+                self.set_default_size(330, 310)
+                self.set_size_request(330, 310)
             if spinner == "10":
                 self.spinner.set_size_request(10,10)
-                self.set_default_size(340, 320)
-                self.set_size_request(340, 320)
+                self.set_default_size(330, 310)
+                self.set_size_request(330, 310)
             if spinner == "15":
                 self.spinner.set_size_request(15,15)
-                self.set_default_size(340, 320)
-                self.set_size_request(340, 320)
+                self.set_default_size(330, 310)
+                self.set_size_request(330, 310)
             if spinner == "20":
                 self.spinner.set_size_request(20,20)
-                self.set_default_size(360, 340)
-                self.set_size_request(360, 340)
+                self.set_default_size(350, 330)
+                self.set_size_request(350, 330)
             if spinner == "25":
                 self.spinner.set_size_request(25,25)
-                self.set_default_size(360, 340)
-                self.set_size_request(360, 340)
+                self.set_default_size(350, 330)
+                self.set_size_request(350, 330)
             if spinner == "30":
                 self.spinner.set_size_request(30,30)
-                self.set_default_size(380, 360)
-                self.set_size_request(380, 360)
+                self.set_default_size(360, 340)
+                self.set_size_request(360, 340)
             if spinner == "35":
                 self.spinner.set_size_request(35,35)
-                self.set_default_size(380, 360)
-                self.set_size_request(380, 360)
+                self.set_default_size(360, 340)
+                self.set_size_request(360, 340)
             if spinner == "40 (%s)" % (jT["default"]):
                 self.spinner.set_size_request(40,40)
-                self.set_default_size(380, 360)
-                self.set_size_request(380, 360)
+                self.set_default_size(370, 350)
+                self.set_size_request(370, 350)
             if spinner == "45":
                 self.spinner.set_size_request(45,45)
-                self.set_default_size(380, 360)
-                self.set_size_request(380, 360)
+                self.set_default_size(370, 350)
+                self.set_size_request(370, 350)
             if spinner == "50":
                 self.spinner.set_size_request(50,50)
-                self.set_default_size(390, 370)
-                self.set_size_request(390, 370)
+                self.set_default_size(380, 360)
+                self.set_size_request(380, 360)
             if spinner == "55":
                 self.spinner.set_size_request(55,55)
-                self.set_default_size(390, 370)
-                self.set_size_request(390, 370)
+                self.set_default_size(380, 360)
+                self.set_size_request(380, 360)
             if spinner == "60":
                 self.spinner.set_size_request(60,60)
-                self.set_default_size(400, 380)
-                self.set_size_request(400, 380)
+                self.set_default_size(390, 360)
+                self.set_size_request(390, 360)
             if spinner == "65":
                 self.spinner.set_size_request(65,65)
-                self.set_default_size(400, 380)
-                self.set_size_request(400, 380)
+                self.set_default_size(390, 360)
+                self.set_size_request(390, 360)
             if spinner == "70":
                 self.spinner.set_size_request(70,70)
-                self.set_default_size(410, 390)
-                self.set_size_request(410, 390)
+                self.set_default_size(400, 380)
+                self.set_size_request(400, 380)
             if spinner == "75":
                 self.spinner.set_size_request(75,75)
-                self.set_default_size(410, 390)
-                self.set_size_request(410, 390)
+                self.set_default_size(400, 380)
+                self.set_size_request(400, 380)
             if spinner == "80":
                 self.spinner.set_size_request(80,80)
-                self.set_default_size(440, 420)
-                self.set_size_request(440, 420)
+                self.set_default_size(430, 410)
+                self.set_size_request(430, 410)
         else:
             self.spinner.set_size_request(40,40)
-            self.set_default_size(385, 360)
-            self.set_size_request(385, 360)
+            self.set_default_size(370, 350)
+            self.set_size_request(370, 350)
     
     # Start button action
     def on_buttonStart_clicked(self, widget, *args):
@@ -580,7 +580,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.mainBox.append(self.buttonStop)
         self.mainBox.remove(self.buttonStart)
         self.counter = timedelta(hours = int(self.hour_entry.get_text()), minutes = int(self.minute_entry.get_text()), seconds = int(self.secs_entry.get_text()))
-        self.play_beep()
+        #self.play_beep()
         self.label.set_markup("<big><b>{}</b></big>".format(
             strfdelta(self.counter, "{hours} %s {minutes} %s {seconds} %s" % (jT["hours"], jT["mins"], jT["secs"]))
         ))
@@ -666,20 +666,16 @@ class TimerWindow(Gtk.ApplicationWindow):
     
     # Checking whether the entered values are correct and then saving them
     def check_and_save(self):
-        hour = self.hour_entry.get_text()
-        minute = self.minute_entry.get_text()
-        sec = self.secs_entry.get_text()
-        if hour == "":
-            subprocess.call(['notify-send',jT["blank_value"],jT["blank_values_desc"],'-i','com.github.vikdevelop.timer'])
-        elif minute == "":
-            subprocess.call(['notify-send',jT["blank_value"],jT["blank_values_desc"],'-i','com.github.vikdevelop.timer'])
-        elif sec == "":
-            subprocess.call(['notify-send',jT["blank_value"],jT["blank_values_desc"],'-i','com.github.vikdevelop.timer'])
+        if self.hour_entry.get_text() == "":
+            self.hour_entry.set_text('0')
+        elif self.minute_entry.get_text() == "":
+            self.minute_entry.set_text('0')
+        elif self.secs_entry.get_text() == "":
+            self.secs_entry.set_text('0')
         # Save time counter values
         with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/counter.json', 'w') as c:
-            c.write('{\n "hour": "%s",\n "minutes": "%s",\n "seconds": "%s"\n}' % (hour, minute, sec))
-            
-            
+            c.write('{\n' + f' "hour": "{self.hour_entry.get_text()}",\n'+ f' "minutes": "{self.minute_entry.get_text()}",\n' + f' "seconds": "{self.secs_entry.get_text()}"' + '\n}')
+                 
     def non_activated_play_beep(self):
         if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/beep.json'):
             with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/beep.json') as r:
@@ -704,7 +700,7 @@ class TimerWindow(Gtk.ApplicationWindow):
                 os.popen("ffplay -nodisp -autoexit /app/share/beeps/Oxygen.ogg > /dev/null 2>&1")
         else:
             os.popen("ffplay -nodisp -autoexit /app/share/beeps/Oxygen.ogg > /dev/null 2>&1")
-
+        
 # Adw Application class
 class MyApp(Adw.Application):
     def __init__(self, **kwargs):
@@ -717,7 +713,7 @@ class MyApp(Adw.Application):
     def on_about_action(self, action, param):
         dialog = Adw.AboutWindow(transient_for=app.get_active_window())
         dialog.set_application_name(jT["timer_title"])
-        dialog.set_version("2.5")
+        dialog.set_version("2.6")
         dialog.set_developer_name("vikdevelop")
         dialog.set_license_type(Gtk.License(Gtk.License.GPL_3_0))
         dialog.set_website("https://github.com/vikdevelop/timer")
