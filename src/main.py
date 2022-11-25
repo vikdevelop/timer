@@ -400,7 +400,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.non_activated_play_beep()
         
         self.adw_action_row_01 = Adw.ActionRow.new()
-        self.adw_action_row_01.set_icon_name(icon_name='sound-symbolic')
+        self.adw_action_row_01.set_icon_name(icon_name='folder-music-symbolic')
         self.adw_action_row_01.set_title(title=jT["play_beep"])
         self.adw_action_row_01.add_suffix(widget=self.label_beep)
         self.adw_expander_row.add_row(child=self.adw_action_row_01)
@@ -409,7 +409,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.non_activated_session()
         
         self.adw_action_row_02 = Adw.ActionRow.new()
-        self.adw_action_row_02.set_icon_name(icon_name='com.github.vikdevelop.timer')
+        self.adw_action_row_02.set_icon_name(icon_name='timer-symbolic')
         self.adw_action_row_02.set_title(title=jT["action_after_timing"])
         self.adw_action_row_02.add_suffix(widget=self.label_action)
         self.adw_expander_row.add_row(child=self.adw_action_row_02)
@@ -424,12 +424,12 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.adw_expander_row.add_row(child=self.adw_action_row_03)
         
         self.button_flat = Gtk.Button.new_with_label(label='Preferences')
-        self.button_flat.set_icon_name(icon_name='next-symbolic')
+        self.button_flat.set_icon_name(icon_name='go-next-symbolic')
         self.button_flat.get_style_context().add_class(class_name='flat')
         self.button_flat.connect('clicked', self.on_button_preferences_clicked)
         
         self.adw_action_row_04 = Adw.ActionRow.new()
-        self.adw_action_row_04.set_icon_name(icon_name='settings-symbolic')
+        self.adw_action_row_04.set_icon_name(icon_name='settings-app-symbolic')
         self.adw_action_row_04.set_title(title=jT["go_to_preferences"])
         self.adw_action_row_04.add_suffix(widget=self.button_flat)
         self.adw_expander_row.add_row(child=self.adw_action_row_04)
