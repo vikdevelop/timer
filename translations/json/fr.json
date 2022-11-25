@@ -25,7 +25,6 @@
     "shut_down": "Éteindre",
     "reboot": "Redémarrer",
     "action_after_timing": "Action après la fin de la minuterie",
-    "blank_value": "Vous avez saisi des valeurs vides !",
     "blank_values_desc": "Veuillez les compléter.",
     "custom_notification": "Texte de notification personnalisé",
     "play_beep": "Émettre un bip",
