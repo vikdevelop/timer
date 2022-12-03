@@ -65,7 +65,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         # Entry
         self.make_timer_box()
         
-        # Summary
+        # Properities
         self.properities()
         
         # Start timer button
@@ -126,12 +126,13 @@ class TimerWindow(Gtk.ApplicationWindow):
         
         self.adw_action_row_time = Adw.ActionRow.new()
         self.adw_action_row_time.set_icon_name(icon_name='com.github.vikdevelop.timer')
+        #self.adw_action_row_time.set_title(title="Time")
         self.adw_action_row_time.add_suffix(widget=self.timerBox)
         self.lbox.append(child=self.adw_action_row_time)
         
+        #self.lbox.append(self.timerBox)
         self.mainBox.append(self.lbox)
-    
-    # Properities
+        
     def properities(self):
         self.adw_expander_row = Adw.ExpanderRow.new()
         self.adw_expander_row.set_title(title=jT["preferences"])
@@ -438,7 +439,8 @@ class TimerWindow(Gtk.ApplicationWindow):
     # Stop button action
     def on_buttonStop_clicked(self, widget, *args):
         """ button "clicked" in event buttonStop. """
-        self.stop_timer(jT["timing_ended"])
+        self.stop_timer()
+        self.stopped_toast()
         print(jT["timing_ended"])
 
     def on_SpinnerWindow_destroy(self, widget, *args):
@@ -454,8 +456,8 @@ class TimerWindow(Gtk.ApplicationWindow):
     def on_timeout(self, *args, **kwargs):
         self.counter -= self.tick_counter
         if self.counter <= self.zero_counter:
-            self.stop_timer(jT["timing_finished"])
-            self.label.set_markup("<b>" + jT["timing_finished"]+ "</b>")
+            self.stop_timer()
+            #self.label.set_markup("<b>" + jT["timing_finished"]+ "</b>")
             self.session()
             print(jT["timing_finished"])
             return False
@@ -488,7 +490,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.timeout_id = GLib.timeout_add(250, self.on_timeout, None)
         
     # Stop timer function
-    def stop_timer(self, alabeltext):
+    def stop_timer(self):
         """ Stop Timer """
         if self.timeout_id:
             GLib.source_remove(self.timeout_id)
@@ -497,10 +499,42 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.headerbar.remove(self.buttonStop)
         self.headerbar.pack_start(self.buttonStart)
         self.mainBox.append(self.lbox)
-        self.b_label.set_text("\n\n")
+        self.b_label.set_text("\n\n\n")
         self.mainBox.remove(self.timingBox)
-        self.label.set_label(alabeltext)
+        #self.label.set_label(alabeltext)
         #self.play_beep()
+        
+    def add_toast(self):
+        self.toast_overlay = Adw.ToastOverlay.new()
+        self.toast_overlay.set_margin_top(margin=12)
+        self.toast_overlay.set_margin_end(margin=12)
+        self.toast_overlay.set_margin_bottom(margin=12)
+        self.toast_overlay.set_margin_start(margin=12)
+        self.mainBox.append(self.toast_overlay)
+        
+        self.toast_finished = Adw.Toast.new(title='')
+        self.toast_finished.set_title(title=jT["timing_finished"])
+        self.toast_finished.connect('dismissed', self.on_toast_dismissed)
+        self.toast_overlay.add_toast(self.toast_finished)
+        
+    def stopped_toast(self):
+        self.toast_overlay_02 = Adw.ToastOverlay.new()
+        self.toast_overlay_02.set_margin_top(margin=12)
+        self.toast_overlay_02.set_margin_end(margin=12)
+        self.toast_overlay_02.set_margin_bottom(margin=12)
+        self.toast_overlay_02.set_margin_start(margin=12)
+        self.mainBox.append(self.toast_overlay_02)
+        
+        self.toast_stopped = Adw.Toast.new(title='')
+        self.toast_stopped.set_title(title=jT["timing_ended"])
+        self.toast_stopped.connect('dismissed', self.on_toast_dismissed)
+        self.toast_overlay_02.add_toast(self.toast_stopped)
+        
+    def on_toast_dismissed(self, toast):
+        try:
+            self.mainBox.remove(self.toast_overlay)
+        except AttributeError:
+            self.mainBox.remove(self.toast_overlay_02)
     
     def non_activated_session(self):
         self.b_label.set_text("\n")
@@ -531,6 +565,7 @@ class TimerWindow(Gtk.ApplicationWindow):
             action = jA["action"]
             if action == jT["default"]:
                 self.play_beep()
+                self.add_toast()
                 self.notification()
             elif action == jT["shut_down"]:
                 self.play_beep()
@@ -548,6 +583,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         "org.freedesktop.login1.Manager.Suspend" boolean:true')
         else:
             self.play_beep()
+            self.add_toast()
             self.notification()
     
     # Notification function
