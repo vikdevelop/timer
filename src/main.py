@@ -26,8 +26,8 @@ class TimerWindow(Gtk.ApplicationWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.resizable()
-        self.set_default_size(360, 360)
-        self.set_size_request(360,360)
+        self.set_default_size(400, 400)
+        self.set_size_request(400, 400)
         self.application = kwargs.get('application')
         self.style_manager = self.application.get_style_manager()
         self.theme()
@@ -37,8 +37,10 @@ class TimerWindow(Gtk.ApplicationWindow):
         
         # Gtk.Box() layout
         self.mainBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
-        self.mainBox.set_margin_start(20)
-        self.mainBox.set_margin_end(20)
+        self.mainBox.set_halign(Gtk.Align.CENTER)
+        self.mainBox.set_valign(Gtk.Align.CENTER)
+        self.mainBox.set_margin_start(44)
+        self.mainBox.set_margin_end(44)
         self.set_child(self.mainBox)
         
         # App menu
@@ -56,9 +58,6 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.spinner = Gtk.Spinner()
         self.spinner_size()
         
-        self.b_label = Gtk.Label.new(str="\n\n\n")
-        self.mainBox.append(self.b_label)
-        
         self.label = Gtk.Label()
         self.label_action = Gtk.Label()
         
@@ -69,16 +68,6 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.properities()
         
         # Start timer button
-        """
-        self.buttonStart = Gtk.Button.new()
-        self.buttonStart.set_icon_name("media-playback-start-symbolic")
-        self.buttonStart.connect("clicked", self.on_buttonStart_clicked)
-        self.button1_style_context = self.buttonStart.get_style_context()
-        self.button1_style_context.add_class('suggested-action')
-        self.button1_style_context.add_class(class_name='circular')
-        self.headerbar.pack_start(self.buttonStart)
-        self.click_events = []
-        """
         self.buttonStart = Gtk.Button.new()
         self.start_button_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
         self.start_button_box.set_halign(Gtk.Align.CENTER)
@@ -513,12 +502,11 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.headerbar.remove(self.buttonStop)
         self.headerbar.pack_start(self.buttonStart)
         self.mainBox.append(self.lbox)
-        self.b_label.set_text("\n\n\n")
         self.mainBox.remove(self.timingBox)
         #self.label.set_label(alabeltext)
         #self.play_beep()
         
-    def add_toast(self):
+    def stopped_toast(self):
         self.toast_overlay = Adw.ToastOverlay.new()
         self.toast_overlay.set_margin_top(margin=12)
         self.toast_overlay.set_margin_end(margin=12)
@@ -526,32 +514,15 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.toast_overlay.set_margin_start(margin=12)
         self.mainBox.append(self.toast_overlay)
         
-        self.toast_finished = Adw.Toast.new(title='')
-        self.toast_finished.set_title(title=jT["timing_finished"])
-        self.toast_finished.connect('dismissed', self.on_toast_dismissed)
-        self.toast_overlay.add_toast(self.toast_finished)
-        
-    def stopped_toast(self):
-        self.toast_overlay_02 = Adw.ToastOverlay.new()
-        self.toast_overlay_02.set_margin_top(margin=12)
-        self.toast_overlay_02.set_margin_end(margin=12)
-        self.toast_overlay_02.set_margin_bottom(margin=12)
-        self.toast_overlay_02.set_margin_start(margin=12)
-        self.mainBox.append(self.toast_overlay_02)
-        
         self.toast_stopped = Adw.Toast.new(title='')
         self.toast_stopped.set_title(title=jT["timing_ended"])
         self.toast_stopped.connect('dismissed', self.on_toast_dismissed)
-        self.toast_overlay_02.add_toast(self.toast_stopped)
+        self.toast_overlay.add_toast(self.toast_stopped)
         
     def on_toast_dismissed(self, toast):
-        try:
-            self.mainBox.remove(self.toast_overlay)
-        except AttributeError:
-            self.mainBox.remove(self.toast_overlay_02)
+        self.mainBox.remove(self.toast_overlay)
     
     def non_activated_session(self):
-        self.b_label.set_text("\n")
         self.timingBox.append(self.spinner)
         self.timingBox.append(self.label_action)
         self.timingBox.append(self.label)
@@ -579,7 +550,6 @@ class TimerWindow(Gtk.ApplicationWindow):
             action = jA["action"]
             if action == jT["default"]:
                 self.play_beep()
-                self.add_toast()
                 self.notification()
             elif action == jT["shut_down"]:
                 self.play_beep()
@@ -597,7 +567,6 @@ class TimerWindow(Gtk.ApplicationWindow):
         "org.freedesktop.login1.Manager.Suspend" boolean:true')
         else:
             self.play_beep()
-            self.add_toast()
             self.notification()
     
     # Notification function
