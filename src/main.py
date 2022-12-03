@@ -512,6 +512,8 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.toast_overlay.set_margin_end(margin=12)
         self.toast_overlay.set_margin_bottom(margin=12)
         self.toast_overlay.set_margin_start(margin=12)
+        self.mainBox.set_halign(Gtk.Align.START)
+        self.mainBox.set_valign(Gtk.Align.END)
         self.mainBox.append(self.toast_overlay)
         
         self.toast_stopped = Adw.Toast.new(title='')
@@ -520,6 +522,8 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.toast_overlay.add_toast(self.toast_stopped)
         
     def on_toast_dismissed(self, toast):
+        self.mainBox.set_halign(Gtk.Align.CENTER)
+        self.mainBox.set_valign(Gtk.Align.CENTER)
         self.mainBox.remove(self.toast_overlay)
     
     def non_activated_session(self):
