@@ -69,6 +69,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.properities()
         
         # Start timer button
+        """
         self.buttonStart = Gtk.Button.new()
         self.buttonStart.set_icon_name("media-playback-start-symbolic")
         self.buttonStart.connect("clicked", self.on_buttonStart_clicked)
@@ -77,7 +78,18 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.button1_style_context.add_class(class_name='circular')
         self.headerbar.pack_start(self.buttonStart)
         self.click_events = []
-
+        """
+        self.buttonStart = Gtk.Button.new()
+        self.start_button_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
+        self.start_button_box.set_halign(Gtk.Align.CENTER)
+        self.start_button_box.append(Gtk.Image.new_from_icon_name( \
+            'media-playback-start-symbolic'))
+        self.start_button_box.append(Gtk.Label.new(jT["run_timer"]))
+        self.buttonStart.set_child(self.start_button_box)
+        self.buttonStart.add_css_class('suggested-action')
+        self.buttonStart.connect('clicked', self.on_buttonStart_clicked)
+        self.headerbar.pack_start(self.buttonStart)
+        
         self.timeout_id = None
         self.connect("destroy", self.on_SpinnerWindow_destroy)
     
@@ -136,7 +148,7 @@ class TimerWindow(Gtk.ApplicationWindow):
     def properities(self):
         self.adw_expander_row = Adw.ExpanderRow.new()
         self.adw_expander_row.set_title(title=jT["preferences"])
-        self.adw_expander_row.set_subtitle(subtitle="Preferences Descritpion")
+        self.adw_expander_row.set_subtitle(subtitle=jT["preferences_desc"])
         self.lbox.append(child=self.adw_expander_row)
         
         # ComboBox - spinner size
@@ -472,10 +484,12 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.check_and_save()
         # Stop timer button
         self.buttonStop = Gtk.Button.new()
-        self.buttonStop.set_icon_name("media-playback-stop-symbolic")
-        self.button2_style_context = self.buttonStop.get_style_context()
-        self.button2_style_context.add_class('destructive-action')
-        self.button2_style_context.add_class(class_name='circular')
+        self.stop_button_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
+        self.stop_button_box.append(Gtk.Image.new_from_icon_name( \
+            'media-playback-stop-symbolic'))
+        self.stop_button_box.append(Gtk.Label.new(jT["stop_timer"]))
+        self.buttonStop.set_child(self.stop_button_box)
+        self.buttonStop.add_css_class('destructive-action')
         self.buttonStop.connect("clicked", self.on_buttonStop_clicked)
         self.headerbar.pack_start(self.buttonStop)
         self.headerbar.remove(self.buttonStart)
