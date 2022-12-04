@@ -90,7 +90,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.start_button_box.set_halign(Gtk.Align.CENTER)
         self.start_button_box.append(Gtk.Image.new_from_icon_name( \
             'media-playback-start-symbolic'))
-        self.start_button_box.append(Gtk.Label.new(jT["run_timer"]))
+        self.start_button_box.append(Gtk.Label.new(jT["start"]))
         self.buttonStart.set_child(self.start_button_box)
         self.buttonStart.add_css_class('suggested-action')
         self.buttonStart.connect('clicked', self.on_buttonStart_clicked)
@@ -492,7 +492,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.stop_button_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
         self.stop_button_box.append(Gtk.Image.new_from_icon_name( \
             'media-playback-stop-symbolic'))
-        self.stop_button_box.append(Gtk.Label.new(jT["stop_timer"]))
+        self.stop_button_box.append(Gtk.Label.new(jT["stop"]))
         self.buttonStop.set_child(self.stop_button_box)
         self.buttonStop.add_css_class('destructive-action')
         self.buttonStop.connect("clicked", self.on_buttonStop_clicked)
