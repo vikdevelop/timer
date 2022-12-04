@@ -1,7 +1,5 @@
 import subprocess
 import json
-import fileinput
-import sys
 # Czech
 if subprocess.getoutput("locale | grep 'LANG'") == 'LANG=cs_CZ.UTF-8':
     with open('/app/translations/cs.json') as t:
