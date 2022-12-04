@@ -40,7 +40,7 @@ property_01 = '                <property name="title" translatable="true" contex
 property_02 = '                <property name="title" translatable="true" context="shortcut window">Start timing</property>'
 property_03 = '                <property name="title" translatable="true" context="shortcut window">Stop timing</property>'
 property_04 = '                <property name="title" translatable="true" context="shortcut window">Quit</property>'
-for line in fileinput.input('/home/viktor/Stažené/Timer_design-Beta/src/ui/shortcuts.ui', inplace=1):
+for line in fileinput.input('/app/src/ui/shortcuts.ui', inplace=1):
     if property_01 in line:
         line = line.replace(property_01,f'                <property name="title" translatable="true" context="shortcut window">{jT["keyboard_shortcuts"]}</property>')
     sys.stdout.write(line)
