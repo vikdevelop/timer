@@ -22,7 +22,7 @@ def strfdelta(tdelta, fmt):
 CONFIG = os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data'
 
 # Keyboard Shortcuts Window
-ShortcutsWindow = str(('/home/viktor/Stažené/Timer_design-Beta/src/ui/shortcuts.ui'))
+ShortcutsWindow = str(('/app/src/ui/shortcuts.ui'))
 
 @Gtk.Template(filename=ShortcutsWindow)
 class ShortcutsWindow(Gtk.ShortcutsWindow):
