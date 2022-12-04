@@ -18,9 +18,22 @@ def strfdelta(tdelta, fmt):
     d["minutes"], d["seconds"] = divmod(rem, 60)
     return fmt.format(**d)
 
+# Path for config files
 CONFIG = os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data'
 
+# Keyboard Shortcuts Window
+ShortcutsWindow = str(('/home/viktor/Stažené/Timer_design-Beta/src/ui/shortcuts.ui'))
+
+@Gtk.Template(filename=ShortcutsWindow)
+class ShortcutsWindow(Gtk.ShortcutsWindow):
+    __gtype_name__ = 'ShortcutsWindow'
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+# Print about timer status
 print(jT["timer_running"])
+
 # Timer Application window
 class TimerWindow(Gtk.ApplicationWindow):
     def __init__(self, *args, **kwargs):
@@ -35,6 +48,10 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.headerbar = Gtk.HeaderBar.new()
         self.set_titlebar(titlebar=self.headerbar)
         
+        keycont = Gtk.EventControllerKey()
+        keycont.connect('key-pressed', self.keyboard_shortcuts, self)
+        self.add_controller(keycont)
+        
         # Gtk.Box() layout
         self.mainBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
         self.mainBox.set_halign(Gtk.Align.CENTER)
@@ -45,7 +62,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         
         # App menu
         menu_button_model = Gio.Menu()
-        #menu_button_model.append(jT["preferences"], 'app.settings')
+        menu_button_model.append("Keyboard shortcuts", 'app.shortcuts')
         menu_button_model.append(jT["about_app"], 'app.about')
         menu_button = Gtk.MenuButton.new()
         menu_button.set_icon_name(icon_name='open-menu-symbolic')
@@ -133,7 +150,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         
         #self.lbox.append(self.timerBox)
         self.mainBox.append(self.lbox)
-        
+    
     def properities(self):
         self.adw_expander_row = Adw.ExpanderRow.new()
         self.adw_expander_row.set_title(title=jT["preferences"])
@@ -271,7 +288,6 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.entry.connect('changed', self.on_entry_text_changed)
         
         ## Adw.ActionRow
-        
         adw_action_row_04 = Adw.ActionRow.new()
         adw_action_row_04.set_icon_name(icon_name='notification-symbolic')
         adw_action_row_04.set_title(title=jT["custom_notification"])
@@ -600,8 +616,8 @@ class TimerWindow(Gtk.ApplicationWindow):
             
     # Play beep          
     def play_beep(self):
-        if os.path.exists(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/beep.json'):
-            with open(os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data/beep.json') as r:
+        if os.path.exists(f'{CONFIG}/beep.json'):
+            with open(f'{CONFIG}/beep.json') as r:
                 jR = json.load(r)
             beep = jR["play-beep"]
             if beep == "false":
@@ -610,14 +626,32 @@ class TimerWindow(Gtk.ApplicationWindow):
                 os.popen("ffplay -nodisp -autoexit /app/share/beeps/Oxygen.ogg > /dev/null 2>&1")
         else:
             os.popen("ffplay -nodisp -autoexit /app/share/beeps/Oxygen.ogg > /dev/null 2>&1")
+            
+    def keyboard_shortcuts(self, keyval, keycode, state, user_data, win):
+        if keycode == ord('q'):
+            win.close()
+            
+        if keycode == ord('s'):
+            self.start_timer()
+        
+        if keycode == ord('z'):
+            self.stop_timer()
+            
+        if keycode == ord('h'):
+            shortcuts_window = ShortcutsWindow(transient_for=app.get_active_window())
+            shortcuts_window.present()
         
 # Adw Application class
 class MyApp(Adw.Application):
     def __init__(self, **kwargs):
         super().__init__(**kwargs, flags=Gio.ApplicationFlags.FLAGS_NONE)
         self.connect('activate', self.on_activate)
+        self.create_action('shortcuts', self.on_shortcuts_action)
         self.create_action('about', self.on_about_action)
-        self.create_action('settings', self.on_settings_action)
+    
+    def on_shortcuts_action(self, action, param):
+        shortcuts_window = ShortcutsWindow(transient_for=self.get_active_window())
+        shortcuts_window.present()
     
     # Run About dialog
     def on_about_action(self, action, param):
@@ -628,16 +662,12 @@ class MyApp(Adw.Application):
         dialog.set_license_type(Gtk.License(Gtk.License.GPL_3_0))
         dialog.set_website("https://github.com/vikdevelop/timer")
         dialog.set_issue_url("https://github.com/vikdevelop/timer/issues")
-        dialog.add_credit_section(jT["contributors"], ["Albano Battistella https://github.com/albanobattistella", "Allan Nordhøy https://hosted.weblate.org/user/kingu/", "J. Lavoie https://hosted.weblate.org/user/Edanas", "rene-coty https://github.com/rene-coty", "KenyC https://github.com/KenyC", "ViktorOn https://github.com/ViktorOn"])
+        dialog.add_credit_section(jT["contributors"], ["Albano Battistella https://github.com/albanobattistella", "Allan Nordhøy https://hosted.weblate.org/user/kingu/", "J. Lavoie https://hosted.weblate.org/user/Edanas", "KenyC https://github.com/KenyC", "linuxmasterclub https://hosted.weblate.org/user/linuxmasterclub/", "rene-coty https://github.com/rene-coty", "ViktorOn https://github.com/ViktorOn"])
         dialog.set_translator_credits(jT["translator_credits"])
         dialog.set_copyright("© 2022 vikdevelop")
         dialog.set_developers(["vikdevelop https://github.com/vikdevelop"])
         dialog.set_application_icon("com.github.vikdevelop.timer")
         dialog.show()
-    
-    # Run settings dialog
-    def on_settings_action(self, action, param):
-        self.dialog = Dialog_settings(self)
 
     def create_action(self, name, callback, shortcuts=None):
         action = Gio.SimpleAction.new(name, None)
