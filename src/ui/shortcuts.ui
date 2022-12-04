@@ -9,7 +9,7 @@
         <property name="max-height">10</property>
         <child>
           <object class="GtkShortcutsGroup">
-            <property name="title" translatable="true" context="shortcut window">General</property>
+            <property name="title" translatable="true" context="shortcut window"></property>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="title" translatable="true" context="shortcut window">Show Keyboard shortcuts</property>
