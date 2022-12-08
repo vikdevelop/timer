@@ -12,6 +12,101 @@ gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 from gi.repository import Gtk, GLib, Adw, Gio
 
+# Settings dialog
+class Dialog_keys(Gtk.Dialog):
+    def __init__(self, parent, **kwargs):
+        super().__init__(use_header_bar=True, transient_for=app.get_active_window())
+
+        self.set_title(title=jT["keyboard_shortcuts"])
+        self.use_header_bar = True
+        self.set_modal(modal=True)
+        self.set_resizable(False)
+        self.connect('response', self.dialog_response)
+        self.set_default_size(340, 300)
+
+        # Buttons
+        self.add_buttons(
+            #"CLOSE", Gtk.ResponseType.CANCEL,
+        )
+        
+        # Layout
+        content_area = self.get_content_area()
+        content_area.set_orientation(orientation=Gtk.Orientation.VERTICAL)
+        content_area.set_spacing(spacing=12)
+        content_area.set_margin_top(margin=25)
+        content_area.set_margin_end(margin=50)
+        content_area.set_margin_bottom(margin=25)
+        content_area.set_margin_start(margin=50)
+        content_area.set_halign(Gtk.Align.CENTER)
+        content_area.set_valign(Gtk.Align.CENTER)
+        
+        box_1 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        
+        button_sc = Gtk.Button.new_with_label("Ctrl")
+        box_1.append(button_sc)
+        
+        label_plus = Gtk.Label.new(str="+")
+        box_1.append(label_plus)
+        
+        button_s = Gtk.Button.new_with_label("S")
+        box_1.append(button_s)
+        
+        label_start = Gtk.Label.new(str=jT["run_timer"])
+        box_1.append(label_start)
+        
+        box_2 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        
+        button_tc = Gtk.Button.new_with_label("Ctrl")
+        box_2.append(button_tc)
+        
+        label_plus = Gtk.Label.new(str="+")
+        box_2.append(label_plus)
+        
+        button_t = Gtk.Button.new_with_label("Z")
+        box_2.append(button_t)
+        
+        label_stop = Gtk.Label.new(str=jT["stop_timer"])
+        box_2.append(label_stop)
+        
+        box_3 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        
+        button = Gtk.Button.new_with_label("Ctrl")
+        box_3.append(button)
+        
+        label_plus = Gtk.Label.new(str="+")
+        box_3.append(label_plus)
+        
+        button_q = Gtk.Button.new_with_label("Q")
+        box_3.append(button_q)
+        
+        label_quit = Gtk.Label.new(str=jT["quit"])
+        box_3.append(label_quit)
+        
+        box_4 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        
+        button_hc = Gtk.Button.new_with_label("Ctrl")
+        box_4.append(button_hc)
+        
+        label_plus = Gtk.Label.new(str="+")
+        box_4.append(label_plus)
+        
+        button_h = Gtk.Button.new_with_label("H")
+        box_4.append(button_h)
+        
+        label_shortcuts = Gtk.Label.new(str=f'{jT["show"]}' % jT["keyboard_shortcuts"])
+        box_4.append(label_shortcuts)
+        
+        content_area.append(box_1)
+        content_area.append(box_2)
+        content_area.append(box_3)
+        content_area.append(box_4)
+        
+        self.show()
+    # Close button clicked action
+    def dialog_response(self, dialog, response):
+        if response == Gtk.ResponseType.CANCEL:
+            dialog.close()
+
 def strfdelta(tdelta, fmt):
     d = {"days": tdelta.days}
     d["hours"], rem = divmod(tdelta.seconds, 3600)
@@ -20,7 +115,6 @@ def strfdelta(tdelta, fmt):
 
 # Path for config files
 CONFIG = os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data'
-
 # Print about timer status
 print(jT["timer_running"])
 
@@ -37,7 +131,11 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.set_title(title=jT["timer_title"])
         self.headerbar = Gtk.HeaderBar.new()
         self.set_titlebar(titlebar=self.headerbar)
-        
+
+        keycont = Gtk.EventControllerKey()
+        keycont.connect('key-pressed', self.keys, self)
+        self.add_controller(keycont)
+
         # Gtk.Box() layout
         self.mainBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
         self.mainBox.set_halign(Gtk.Align.CENTER)
@@ -48,6 +146,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         
         # App menu
         menu_button_model = Gio.Menu()
+        menu_button_model.append(jT["keyboard_shortcuts"], 'app.shortcuts')
         menu_button_model.append(jT["about_app"], 'app.about')
         menu_button = Gtk.MenuButton.new()
         menu_button.set_icon_name(icon_name='open-menu-symbolic')
@@ -73,7 +172,6 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.buttonStart = Gtk.Button.new()
         self.start_button_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
         self.start_button_box.set_halign(Gtk.Align.CENTER)
-        self.buttonStart.set_tooltip_text(jT["run_timer"])
         self.start_button_box.append(Gtk.Image.new_from_icon_name( \
             'media-playback-start-symbolic'))
         self.start_button_box.append(Gtk.Label.new(jT["start"]))
@@ -479,7 +577,6 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.stop_button_box.append(Gtk.Image.new_from_icon_name( \
             'media-playback-stop-symbolic'))
         self.stop_button_box.append(Gtk.Label.new(jT["stop"]))
-        self.buttonStop.set_tooltip_text(jT["stop_timer"])
         self.buttonStop.set_child(self.stop_button_box)
         self.buttonStop.add_css_class('destructive-action')
         self.buttonStop.connect("clicked", self.on_buttonStop_clicked)
@@ -613,13 +710,27 @@ class TimerWindow(Gtk.ApplicationWindow):
                 os.popen("ffplay -nodisp -autoexit /app/share/beeps/Oxygen.ogg > /dev/null 2>&1")
         else:
             os.popen("ffplay -nodisp -autoexit /app/share/beeps/Oxygen.ogg > /dev/null 2>&1")
+            
+    def keys(self, keyval, keycode, state, user_data, win):
+        if keycode == ord('q'):
+            win.close()
+        if keycode == ord('s'):
+            self.start_timer()
+        if keycode == ord('z'):
+            self.stop_timer()
+        if keycode == ord('h'):
+            self.keys = Dialog_keys(self)
         
 # Adw Application class
 class MyApp(Adw.Application):
     def __init__(self, **kwargs):
         super().__init__(**kwargs, flags=Gio.ApplicationFlags.FLAGS_NONE)
         self.connect('activate', self.on_activate)
+        self.create_action('shortcuts', self.on_shortcuts_action)
         self.create_action('about', self.on_about_action)
+    
+    def on_shortcuts_action(self, action, param):
+        self.keys = Dialog_keys(self)
     
     # Run About dialog
     def on_about_action(self, action, param):
