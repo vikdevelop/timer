@@ -180,6 +180,16 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.buttonStart.connect('clicked', self.on_buttonStart_clicked)
         self.headerbar.pack_start(self.buttonStart)
         
+        # Stop timer button
+        self.buttonStop = Gtk.Button.new()
+        self.stop_button_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
+        self.stop_button_box.append(Gtk.Image.new_from_icon_name( \
+            'media-playback-stop-symbolic'))
+        self.stop_button_box.append(Gtk.Label.new(jT["stop"]))
+        self.buttonStop.set_child(self.stop_button_box)
+        self.buttonStop.add_css_class('destructive-action')
+        self.buttonStop.connect("clicked", self.on_buttonStop_clicked)
+        
         self.timeout_id = None
         self.connect("destroy", self.on_SpinnerWindow_destroy)
     
@@ -571,15 +581,6 @@ class TimerWindow(Gtk.ApplicationWindow):
     def start_timer(self):
         """ Run Timer. """
         self.check_and_save()
-        # Stop timer button
-        self.buttonStop = Gtk.Button.new()
-        self.stop_button_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
-        self.stop_button_box.append(Gtk.Image.new_from_icon_name( \
-            'media-playback-stop-symbolic'))
-        self.stop_button_box.append(Gtk.Label.new(jT["stop"]))
-        self.buttonStop.set_child(self.stop_button_box)
-        self.buttonStop.add_css_class('destructive-action')
-        self.buttonStop.connect("clicked", self.on_buttonStop_clicked)
         self.headerbar.pack_start(self.buttonStop)
         self.headerbar.remove(self.buttonStart)
         self.mainBox.remove(self.lbox)
@@ -715,12 +716,13 @@ class TimerWindow(Gtk.ApplicationWindow):
     def keys(self, keyval, keycode, state, user_data, win):
         if keycode == ord('q'):
             win.close()
-        if keycode == ord('s'):
-            self.start_timer()
-        if keycode == ord('z'):
-            self.stop_timer()
         if keycode == ord('h'):
             self.keys = Dialog_keys(self)
+        if keycode == ord('s'):
+            self.start_timer()
+            return True
+        if keycode == ord('z'):
+            self.stop_timer()
         
 # Adw Application class
 class MyApp(Adw.Application):
