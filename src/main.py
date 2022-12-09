@@ -618,6 +618,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         
         self.toast_stopped = Adw.Toast.new(title='')
         self.toast_stopped.set_title(title=jT["timing_ended"])
+        self.toast_stopped.set_timeout(4)
         self.toast_stopped.connect('dismissed', self.on_toast_dismissed)
         self.toast_overlay.add_toast(self.toast_stopped)
         
