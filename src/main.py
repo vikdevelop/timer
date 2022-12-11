@@ -166,7 +166,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.make_timer_box()
         
         # Properities
-        self.properities()
+        self.properties()
         
         # Start timer button
         self.buttonStart = Gtk.Button.new()
@@ -179,6 +179,19 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.buttonStart.add_css_class('suggested-action')
         self.buttonStart.connect('clicked', self.on_buttonStart_clicked)
         self.headerbar.pack_start(self.buttonStart)
+        
+        # Reset timer button
+        self.buttonReset = Gtk.Button.new()
+        self.reset_button_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
+        self.reset_button_box.set_halign(Gtk.Align.CENTER)
+        self.reset_button_box.append(Gtk.Image.new_from_icon_name( \
+            'view-refresh-symbolic'))
+        #self.reset_button_box.append(Gtk.Label.new("Reset"))
+        self.buttonReset.set_tooltip_text(jT["reset"])
+        self.buttonReset.set_child(self.reset_button_box)
+        self.buttonReset.add_css_class('flat')
+        self.buttonReset.connect('clicked', self.on_buttonReset_clicked)
+        self.headerbar.pack_end(self.buttonReset)
         
         # Stop timer button
         self.buttonStop = Gtk.Button.new()
@@ -245,7 +258,8 @@ class TimerWindow(Gtk.ApplicationWindow):
         #self.lbox.append(self.timerBox)
         self.mainBox.append(self.lbox)
     
-    def properities(self):
+    # Properties
+    def properties(self):
         self.adw_expander_row = Adw.ExpanderRow.new()
         self.adw_expander_row.set_title(title=jT["preferences"])
         self.adw_expander_row.set_subtitle(subtitle=jT["preferences_desc"])
@@ -553,6 +567,9 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.stop_timer()
         self.stopped_toast()
         print(jT["timing_ended"])
+        
+    def on_buttonReset_clicked(self, widget, *args):
+        self.reset_timer()
 
     def on_SpinnerWindow_destroy(self, widget, *args):
         """ procesing closing window """
@@ -607,6 +624,11 @@ class TimerWindow(Gtk.ApplicationWindow):
         #self.label.set_label(alabeltext)
         #self.play_beep()
         
+    def reset_timer(self):
+        self.hour_entry.set_text('0')
+        self.minute_entry.set_text('0')
+        self.secs_entry.set_text('0')
+        
     def stopped_toast(self):
         self.toast_overlay = Adw.ToastOverlay.new()
         self.toast_overlay.set_margin_top(margin=12)
@@ -619,7 +641,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         
         self.toast_stopped = Adw.Toast.new(title='')
         self.toast_stopped.set_title(title=jT["timing_ended"])
-        self.toast_stopped.set_timeout(4)
+        self.toast_stopped.set_timeout(3)
         self.toast_stopped.connect('dismissed', self.on_toast_dismissed)
         self.toast_overlay.add_toast(self.toast_stopped)
         
@@ -723,6 +745,8 @@ class TimerWindow(Gtk.ApplicationWindow):
             return True
         if keycode == ord('z'):
             self.stop_timer()
+        if keycode == ord('r'):
+            self.reset_timer()
         
 # Adw Application class
 class MyApp(Adw.Application):
