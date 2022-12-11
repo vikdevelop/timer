@@ -93,13 +93,28 @@ class Dialog_keys(Gtk.Dialog):
         button_h = Gtk.Button.new_with_label("H")
         box_4.append(button_h)
         
-        label_shortcuts = Gtk.Label.new(str=f'{jT["show"]}' % jT["keyboard_shortcuts"])
+        label_shortcuts = Gtk.Label.new(str=jT["show"])
         box_4.append(label_shortcuts)
+        
+        box_5 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        
+        button_rc = Gtk.Button.new_with_label("Ctrl")
+        box_5.append(button_rc)
+        
+        label_plus = Gtk.Label.new(str="+")
+        box_5.append(label_plus)
+        
+        button_r = Gtk.Button.new_with_label("R")
+        box_5.append(button_r)
+        
+        label_reset = Gtk.Label.new(str=jT["reset"])
+        box_5.append(label_reset)
         
         content_area.append(box_1)
         content_area.append(box_2)
         content_area.append(box_3)
         content_area.append(box_4)
+        content_area.append(box_5)
         
         self.show()
     # Close button clicked action
@@ -745,6 +760,7 @@ class TimerWindow(Gtk.ApplicationWindow):
             return True
         if keycode == ord('z'):
             self.stop_timer()
+            self.stopped_toast()
         if keycode == ord('r'):
             self.reset_timer()
         
