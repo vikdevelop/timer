@@ -57,7 +57,7 @@ class Dialog_keys(Gtk.Dialog):
         label_plus = Gtk.Label.new(str="+")
         box_2.append(label_plus)
         
-        button_t = Gtk.Button.new_with_label("Z")
+        button_t = Gtk.Button.new_with_label("C")
         box_2.append(button_t)
         
         label_stop = Gtk.Label.new(str=jT["stop_timer"])
@@ -85,7 +85,7 @@ class Dialog_keys(Gtk.Dialog):
         label_plus = Gtk.Label.new(str="+")
         box_4.append(label_plus)
         
-        button_h = Gtk.Button.new_with_label("H")
+        button_h = Gtk.Button.new_with_label("?")
         box_4.append(button_h)
         
         label_shortcuts = Gtk.Label.new(str=jT["show"])
@@ -754,14 +754,14 @@ class TimerWindow(Gtk.ApplicationWindow):
     def keys(self, keyval, keycode, state, user_data, win):
         if keycode == ord('q'):
             win.close()
-        if keycode == ord('h'):
+        if keycode == ord('?'):
             self.keys = Dialog_keys(self)
         if keycode == ord('s'):
             self.menu_button.set_can_focus(True)
             self.menu_button.do_focus(self.menu_button, True)
             self.start_timer()
             return True
-        if keycode == ord('z'):
+        if keycode == ord('c'):
             self.stop_timer()
             self.stopped_toast()
         if keycode == ord('r'):
