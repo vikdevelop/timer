@@ -23,11 +23,6 @@ class Dialog_keys(Gtk.Dialog):
         self.set_resizable(False)
         self.connect('response', self.dialog_response)
         self.set_default_size(340, 300)
-
-        # Buttons
-        self.add_buttons(
-            #"CLOSE", Gtk.ResponseType.CANCEL,
-        )
         
         # Layout
         content_area = self.get_content_area()
@@ -160,13 +155,14 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.set_child(self.mainBox)
         
         # App menu
-        menu_button_model = Gio.Menu()
-        menu_button_model.append(jT["keyboard_shortcuts"], 'app.shortcuts')
-        menu_button_model.append(jT["about_app"], 'app.about')
-        menu_button = Gtk.MenuButton.new()
-        menu_button.set_icon_name(icon_name='open-menu-symbolic')
-        menu_button.set_menu_model(menu_model=menu_button_model)
-        self.headerbar.pack_end(child=menu_button)
+        self.menu_button_model = Gio.Menu()
+        self.menu_button_model.append(jT["keyboard_shortcuts"], 'app.shortcuts')
+        self.menu_button_model.append(jT["about_app"], 'app.about')
+        self.menu_button = Gtk.MenuButton.new()
+        self.menu_button.set_icon_name(icon_name='open-menu-symbolic')
+        #self.menu_button.set_focus_on_click(True)
+        self.menu_button.set_menu_model(menu_model=self.menu_button_model)
+        self.headerbar.pack_end(child=self.menu_button)
         
         self.timingBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
         
@@ -192,6 +188,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.start_button_box.append(Gtk.Label.new(jT["start"]))
         self.buttonStart.set_child(self.start_button_box)
         self.buttonStart.add_css_class('suggested-action')
+        self.buttonStart.set_can_focus(False)
         self.buttonStart.connect('clicked', self.on_buttonStart_clicked)
         self.headerbar.pack_start(self.buttonStart)
         
@@ -205,6 +202,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.buttonReset.set_tooltip_text(jT["reset"])
         self.buttonReset.set_child(self.reset_button_box)
         self.buttonReset.add_css_class('flat')
+        self.buttonReset.set_can_focus(False)
         self.buttonReset.connect('clicked', self.on_buttonReset_clicked)
         self.headerbar.pack_end(self.buttonReset)
         
@@ -215,6 +213,7 @@ class TimerWindow(Gtk.ApplicationWindow):
             'media-playback-stop-symbolic'))
         self.stop_button_box.append(Gtk.Label.new(jT["stop"]))
         self.buttonStop.set_child(self.stop_button_box)
+        self.buttonStop.set_can_focus(True)
         self.buttonStop.add_css_class('destructive-action')
         self.buttonStop.connect("clicked", self.on_buttonStop_clicked)
         
@@ -756,6 +755,8 @@ class TimerWindow(Gtk.ApplicationWindow):
         if keycode == ord('h'):
             self.keys = Dialog_keys(self)
         if keycode == ord('s'):
+            self.menu_button.set_can_focus(True)
+            self.menu_button.do_focus(self.menu_button, True)
             self.start_timer()
             return True
         if keycode == ord('z'):
