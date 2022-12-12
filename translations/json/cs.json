@@ -9,7 +9,6 @@
     "about_app": "O aplikaci",
     "simple_timer": "Jednoduchý časovač",
     "preferences": "Předvolby",
-    "close": "_Zavřít",
     "spinner": "Spinner",
     "spinner_size_desc": "Vyberte velikost spinneru:",
     "select": "Vybrat",
@@ -29,9 +28,7 @@
     "play_beep": "Přehrát pípnutí",
     "suspend": "Uspat",
     "translator_credits": "vikdevelop https://github.com/vikdevelop",
-    "summary": "Souhrn",
     "summary_desc": "Přehled nastavených hodnot časovače",
-    "go_to_preferences": "Přejít do předvoleb",
     "yes": "Ano",
     "no": "Ne"
 }

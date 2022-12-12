@@ -9,7 +9,6 @@
     "about_app": "О приложении",
     "simple_timer": "Простой таймер",
     "preferences": "Настройки",
-    "close": "_Закрыть",
     "spinner": "Спиннер",
     "spinner_size_desc": "Выберите размер спиннера:",
     "select": "Выбрать",
@@ -29,9 +28,7 @@
     "play_beep": "Воспроизведение звукового сигнала",
     "suspend": "Ждущий режим",
     "translator_credits": "ViktorOn https://github.com/viktoron",
-    "summary": "Summary",
     "summary_desc": "Overview of Timer Set Values",
-    "go_to_preferences": "Перейти к настройкам",
     "yes": "Да",
     "no": "Нет"
 }
