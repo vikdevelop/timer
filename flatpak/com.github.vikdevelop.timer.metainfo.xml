@@ -16,7 +16,7 @@
           <li>After finished timing possible reboot/shut down system, play beep and send notification or suspend</li>
           <li>It is possible allow/disable playing beep</li>
           <li>Set custom notification text</li>
-          <li>and more...</li>
+          <li>Use keyboard shortcuts for start or stop timer and reset timer values</li>
       </ul>
     </description>
     
@@ -26,16 +26,19 @@
     
     <screenshots>
         <screenshot type="default">
-            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timergtk4_timing.png</image>
+            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-6_1.png</image>
         </screenshot>
         <screenshot>
-            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timergtk4_summary.png</image>
+            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-6_2.png</image>
         </screenshot>
         <screenshot>
-            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timergtk4_finished.png</image>
+            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-6_3.png</image>
         </screenshot>
         <screenshot>
-            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-4_4.png</image>
+            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-6_4.png</image>
+        </screenshot>
+        <screenshot>
+            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-6_5.png</image>
         </screenshot>
     </screenshots>
     
@@ -46,11 +49,19 @@
     </categories>
     
     <releases>
+        <release version="2.6" date="2022-12-12">
+            <description>
+                <ul>
+                    <li>New application design</li>
+                    <li>if selected action after finished timer is reboot, suspend or shut down, is delay between beep and action 2 seconds</li>
+                    <li>added keyboard shortcuts: Ctrl+S for start timer, Ctrl+C for stop timer, Ctrl+Q for quit Timer application, Ctrl+R for reset timer values and Ctrl+? for display Keyboard shortcuts window</li>
+                </ul>
+            </description>
+        </release>
         <release version="2.5" date="2022-11-18">
             <description>
                 <p>Changes:</p>
                 <ul>
-                    <li>For all translators: you can now translate the Timer project via Weblate. Link is under button "Contribute to Translations" (GNOME Software)</li>
                     <li>Added summary section to main window. This section is an overview of Timer Set Values</li>
                     <li>Minor UI changes</li>
                 </ul>

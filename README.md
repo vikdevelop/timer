@@ -1,16 +1,19 @@
 <h1>Timer</h1>
 <h2>Screenshots</h2>
-<h3>Timing</h3>
-<img src=https://github.com/vikdevelop/timer/blob/main/img/timergtk4_timing.png>
-
-<h3>Summary</h3>
-<img src=https://github.com/vikdevelop/timer/blob/main/img/timergtk4_summary.png>
-
-<h3>Timing has been finished</h3>
-<img src=https://github.com/vikdevelop/timer/blob/main/img/timergtk4_finished.png>
+<h3>Main window</h3>
+<img src=https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-6_1.png>
 
 <h3>Preferences</h3>
-<img src=https://github.com/vikdevelop/timer/blob/main/img/timer-gtk4_2-4_4.png>
+<img src=https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-6_2.png>
+
+<h3>Timing</h3>
+<img src=https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-6_3.png>
+
+<h3>Timing has been stopped</h3>
+<img src=https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-6_4.png>
+
+<h3>Keyboard shortcuts window</h3>
+<img src=https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-6_5.png>
 
 ## Translate
 For translate this project use Weblate:
