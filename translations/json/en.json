@@ -27,7 +27,6 @@
     "custom_notification": "Custom notification text",
     "play_beep": "Play beep",
     "suspend": "Suspend",
-    "no": "No",
     "notification_desc": "You will receive notification and beep in",
     "reboot_desc": "Your system will be rebooted in",
     "shut_down_desc": "Your system will be shut down in",
