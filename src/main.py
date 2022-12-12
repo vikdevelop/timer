@@ -572,12 +572,16 @@ class TimerWindow(Gtk.ApplicationWindow):
     # Start button action
     def on_buttonStart_clicked(self, widget, *args):
         """ button "clicked" in event buttonStart. """
+        self.menu_button.set_can_focus(True)
+        self.menu_button.do_focus(self.menu_button, True)
         self.start_timer()
         return True
     
     # Stop button action
     def on_buttonStop_clicked(self, widget, *args):
         """ button "clicked" in event buttonStop. """
+        self.menu_button.set_can_focus(True)
+        self.menu_button.do_focus(self.menu_button, True)
         self.stop_timer()
         self.stopped_toast()
         print(jT["timing_ended"])
@@ -665,6 +669,8 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.mainBox.set_halign(Gtk.Align.CENTER)
         self.mainBox.set_valign(Gtk.Align.CENTER)
         self.mainBox.remove(self.toast_overlay)
+        self.menu_button.set_can_focus(True)
+        self.menu_button.do_focus(self.menu_button, True)
     
     def non_activated_session(self):
         self.timingBox.append(self.spinner)
