@@ -28,7 +28,17 @@
     "play_beep": "Přehrát pípnutí",
     "suspend": "Uspat",
     "translator_credits": "vikdevelop https://github.com/vikdevelop",
-    "summary_desc": "Přehled nastavených hodnot časovače",
     "yes": "Ano",
-    "no": "Ne"
+    "no": "Ne",
+    "notification_desc": "You will receive notification and beep in",
+    "shut_down_desc": "Your system will be shut down in",
+    "suspend_desc": "Your system will be suspended in",
+    "reboot_desc": "Your system will be rebooted in",
+    "preferences_desc": "Setting timer properties",
+    "keyboard_shortcuts": "Keyboard shortcuts",
+    "start": "Start",
+    "stop": "Stop",
+    "quit": "Quit",
+    "show": "Show keyboard shortcuts",
+    "reset": "Reset"
 }
