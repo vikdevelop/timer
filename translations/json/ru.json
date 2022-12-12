@@ -28,7 +28,17 @@
     "play_beep": "Воспроизведение звукового сигнала",
     "suspend": "Ждущий режим",
     "translator_credits": "ViktorOn https://github.com/viktoron",
-    "summary_desc": "Overview of Timer Set Values",
     "yes": "Да",
-    "no": "Нет"
+    "no": "Нет",
+    "notification_desc": "You will receive notification and beep in",
+    "reboot_desc": "Your system will be rebooted in",
+    "shut_down_desc": "Your system will be shut down in",
+    "suspend_desc": "Your system will be suspended in",
+    "show": "Show keyboard shortcuts",
+    "preferences_desc": "Setting timer properties",
+    "keyboard_shortcuts": "Keyboard shortcuts",
+    "start": "Start",
+    "stop": "Stop",
+    "quit": "Quit",
+    "reset": "Reset"
 }
