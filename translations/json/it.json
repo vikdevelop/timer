@@ -9,7 +9,6 @@
     "about_app": "Informazioni sull'app",
     "simple_timer": "Timer semplice",
     "preferences": "Preferenze",
-    "close": "_Chiudi",
     "spinner": "Spinner",
     "spinner_size_desc": "Seleziona la dimensione dello spinner:",
     "select": "Seleziona",
@@ -29,9 +28,17 @@
     "play_beep": "Riproduci segnale acustico",
     "suspend": "Sospendi",
     "translator_credits": "Albano Battistella https://github.com/albanobattistella",
-    "summary": "Riepilogo",
-    "summary_desc": "Panoramica dei valori di impostazione del timer",
     "yes": "Si",
     "no": "No",
-    "go_to_preferences": "Vai alle Preferenze"
+    "notification_desc": "You will receive notification and beep in",
+    "reboot_desc": "Your system will be rebooted in",
+    "shut_down_desc": "Your system will be shut down in",
+    "suspend_desc": "Your system will be suspended in",
+    "preferences_desc": "Setting timer properties",
+    "keyboard_shortcuts": "Keyboard shortcuts",
+    "start": "Start",
+    "stop": "Stop",
+    "quit": "Quit",
+    "show": "Show keyboard shortcuts",
+    "reset": "Reset"
 }
