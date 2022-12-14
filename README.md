@@ -1,9 +1,9 @@
 <h1>Timer</h1>
-<i>Simple countdown timer that allows timing in hours/minutes/seconds, action after finished timer is possible shut down/reboot system and use keyboard shortcuts for start or stop timer or reset timer counter values.</i>
+<i>Simple countdown timer that allows timing in hours/minutes/seconds, shut down/reboot/suspend system after finished timer and use keyboard shortcuts for start or stop timer and reset timer counter values.</i>
 <br>
 <br>
 <a href="https://flathub.org/apps/details/com.github.vikdevelop.timer"><img src="https://flathub.org/assets/badges/flathub-badge-en.png" width=150 height=45></a>
-<h4>If you want to help localize the Timer project, you can use the <a href="https://hosted.weblate.org/projects/vikdevelop/timer/">Weblate</a> tool (it is possible to sign up using e.g. GitHub) </h4>
+<h4>If you want to help localize the Timer project, you can use the <a href="https://hosted.weblate.org/projects/vikdevelop/timer/">Weblate</a> tool (it is possible to sign up using e.g. GitHub or Google) </h4>
 
 <a href="https://hosted.weblate.org/engage/vikdevelop/">
 <img src="https://hosted.weblate.org/widgets/vikdevelop/-/287x66-grey.png" alt="Translation status" />
