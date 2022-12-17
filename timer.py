@@ -28,6 +28,10 @@ elif subprocess.getoutput("locale | grep 'LANG'") == 'LANG=fr_FR.UTF-8':
 elif subprocess.getoutput("locale | grep 'LANG'") == 'LANG=nb_NO.UTF-8':
     with open('/app/translations/nb_NO.json') as t:
         jT = json.load(t)
+# Ukrainian
+elif subprocess.getoutput("locale | grep 'LANG'") == 'LANG=uk_UA.UTF-8':
+    with open('/app/translations/uk.json') as t:
+        jT = json.load(t)
 # English
 else:
     with open('/app/translations/en.json') as t:
