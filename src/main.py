@@ -175,6 +175,8 @@ class TimerWindow(Gtk.ApplicationWindow):
         # Label for countdown timing and Label for describing the action in progress
         self.label = Gtk.Label()
         self.label_action = Gtk.Label()
+        self.label_action.set_wrap(True)
+        self.label_action.set_justify(Gtk.Justification.CENTER)
         
         # Entry
         self.make_timer_box()
