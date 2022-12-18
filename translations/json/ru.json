@@ -26,7 +26,7 @@
     "action_after_timing": "Действие после завершения таймера",
     "custom_notification": "Пользовательский текст уведомления",
     "play_beep": "Звуковой сигнал",
-    "suspend": "Приостановка",
+    "suspend": "Ждущий режим",
     "translator_credits": "ViktorOn https://github.com/viktoron",
     "notification_desc": "Вы получите уведомление и звуковой сигнал через",
     "reboot_desc": "Ваша система будет перезагружена через",
