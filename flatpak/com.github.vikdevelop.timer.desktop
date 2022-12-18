@@ -15,6 +15,8 @@ Name[fi]=Ajastin
 Name[fr]=Minuterie
 ## from translations/json/nb_NO.json
 Name[nb_NO]=Tidsur
+## from translations/json/uk.json
+Name[uk]=Таймер
 # Comment
 Comment=Simple timer
 ## from translations/json/cs.json
@@ -31,6 +33,8 @@ Comment[fi]=Yksinkertainen ajastin
 Comment[fr]=Minuterie simple
 ## from translations/json/nb_NO.json
 Comment[nb_NO]=Enkelt tidsur
+## from translations/json/uk.json
+Comment[uk]=Простий таймер
 Type=Application
 Icon=com.github.vikdevelop.timer
 Exec=timer.sh
