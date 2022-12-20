@@ -558,7 +558,6 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.menu_button.set_can_focus(True)
         self.menu_button.do_focus(self.menu_button, True)
         self.stop_timer()
-        self.stopped_toast()
         print(jT["timing_ended"])
     
     ## Reset button action
@@ -626,31 +625,6 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.hour_entry.set_text('0')
         self.minute_entry.set_text('0')
         self.secs_entry.set_text('0')
-    
-    # Adw.Toast that shows after clicked Stop timer button
-    def stopped_toast(self):
-        self.toast_overlay = Adw.ToastOverlay.new()
-        self.toast_overlay.set_margin_top(margin=12)
-        self.toast_overlay.set_margin_end(margin=12)
-        self.toast_overlay.set_margin_bottom(margin=12)
-        self.toast_overlay.set_margin_start(margin=12)
-        self.mainBox.set_halign(Gtk.Align.START)
-        self.mainBox.set_valign(Gtk.Align.END)
-        self.mainBox.append(self.toast_overlay)
-        
-        self.toast_stopped = Adw.Toast.new(title='')
-        self.toast_stopped.set_title(title=jT["timing_ended"])
-        self.toast_stopped.set_timeout(3)
-        self.toast_stopped.connect('dismissed', self.on_toast_dismissed)
-        self.toast_overlay.add_toast(self.toast_stopped)
-    
-    ## Adw.Toast action
-    def on_toast_dismissed(self, toast):
-        self.mainBox.set_halign(Gtk.Align.CENTER)
-        self.mainBox.set_valign(Gtk.Align.CENTER)
-        self.mainBox.remove(self.toast_overlay)
-        self.menu_button.set_can_focus(True)
-        self.menu_button.do_focus(self.menu_button, True)
     
     # Function, that allocates labels in the current timing
     def non_activated_session(self):
@@ -750,7 +724,6 @@ class TimerWindow(Gtk.ApplicationWindow):
             return True
         if keycode == ord('c'):
             self.stop_timer()
-            self.stopped_toast()
         if keycode == ord('r'):
             self.reset_timer()
         
