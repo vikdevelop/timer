@@ -336,7 +336,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         
         # Adw.ComboRow - Actions
         actions = Gtk.StringList.new(strings=[
-            jT["default"], jT["shut_down"], jT["reboot"], jT["suspend"]
+            jT["default"], jT["shut_down"], jT["reboot"], jT["suspend"], jT["play_alarm_clock"]
         ])
         
         adw_action_row_01 = Adw.ComboRow.new()
@@ -359,6 +359,8 @@ class TimerWindow(Gtk.ApplicationWindow):
                 adw_action_row_01.set_selected(2)
             elif combobox_s == jT["suspend"]:
                 adw_action_row_01.set_selected(3)
+            elif combobox_s == jT["play_alarm_clock"]:
+                adw_action_row_01.set_selected(4)
         else:
             adw_action_row_01.set_selected(0)
         
@@ -644,6 +646,8 @@ class TimerWindow(Gtk.ApplicationWindow):
                 self.label_action.set_text(jT["reboot_desc"])
             elif action == jT["suspend"]:
                 self.label_action.set_text(jT["suspend_desc"])
+            elif action == jT["play_alarm_clock"]:
+                self.label_action.set_text(jT["play_alarm_clock_desc"])
         else:
             self.label_action.set_text(jT["notification_desc"])
     
@@ -669,9 +673,36 @@ class TimerWindow(Gtk.ApplicationWindow):
                 self.play_beep()
                 time.sleep(2)
                 os.system('dbus-send --system --print-reply --dest=org.freedesktop.login1 /org/freedesktop/login1 "org.freedesktop.login1.Manager.Suspend" boolean:true')
+            elif action == jT["play_alarm_clock"]:
+                self.alarm_clock()
         else:
             self.play_beep()
             self.notification()
+            
+    ## Play alarm clock
+    def alarm_clock(self):
+        dialogRingstone = Adw.MessageDialog.new(self, jT["timing_finished"], None)
+        rBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=3)
+        rImage = Gtk.Image.new_from_icon_name("history")
+        rImage.set_pixel_size(40)
+        rBox.append(rImage)
+        rLabel = Gtk.Label.new()
+        rLabel.set_markup("{} {} {} {} {} {}".format(self.hour_entry.get_text(), jT["hours"], self.minute_entry.get_text(), jT["mins"], self.secs_entry.get_text(), jT["secs"]))
+        rBox.append(rLabel)
+        dialogRingstone.set_extra_child(rBox)
+        dialogRingstone.add_response('cancel', jT["cancel"])
+        dialogRingstone.add_response('start', jT["start_again"])
+        dialogRingstone.set_response_appearance('start', Adw.ResponseAppearance.SUGGESTED)
+        dialogRingstone.connect('response', self.start_again)
+        dialogRingstone.show()
+        os.popen("ffplay -nodisp -autoexit /app/share/beeps/Spatial.wav > /dev/null 2>&1 && ffplay -nodisp -autoexit /app/share/beeps/Spatial.wav > /dev/null 2>&1")
+        
+    def start_again(self, w, response):
+        if response == 'start':
+            self.start_timer()
+            os.popen('pkill -15 ffplay')
+        elif response == 'cancel':
+            os.popen('pkill -15 ffplay')
     
     ## Send notification after finished timer (if this action is selected in actions.json config file)
     def notification(self):
