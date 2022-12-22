@@ -17,6 +17,8 @@ Name[fr]=Minuterie
 Name[nb_NO]=Tidsur
 ## from translations/json/uk.json
 Name[uk]=Таймер
+## from translations/json/es.json
+Name[es]=Temporizador
 # Comment
 Comment=Simple timer
 ## from translations/json/cs.json
@@ -35,6 +37,8 @@ Comment[fr]=Minuterie simple
 Comment[nb_NO]=Enkelt tidsur
 ## from translations/json/uk.json
 Comment[uk]=Простий таймер
+## from translations/json/es.json
+Comment[es]=Temporizador simple
 Type=Application
 Icon=com.github.vikdevelop.timer
 Exec=timer.sh
