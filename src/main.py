@@ -35,6 +35,7 @@ class Dialog_keys(Gtk.Dialog):
         content_area.set_halign(Gtk.Align.CENTER)
         content_area.set_valign(Gtk.Align.CENTER)
         
+        # Ctrl+S shortcut
         box_1 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         
         button_sc = Gtk.Button.new_with_label("Ctrl")
@@ -49,6 +50,7 @@ class Dialog_keys(Gtk.Dialog):
         label_start = Gtk.Label.new(str=jT["run_timer"])
         box_1.append(label_start)
         
+        # Ctrl+C shortcut
         box_2 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         
         button_tc = Gtk.Button.new_with_label("Ctrl")
@@ -63,6 +65,7 @@ class Dialog_keys(Gtk.Dialog):
         label_stop = Gtk.Label.new(str=jT["stop_timer"])
         box_2.append(label_stop)
         
+        # Ctrl+Q shortcut
         box_3 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         
         button = Gtk.Button.new_with_label("Ctrl")
@@ -77,6 +80,7 @@ class Dialog_keys(Gtk.Dialog):
         label_quit = Gtk.Label.new(str=jT["quit"])
         box_3.append(label_quit)
         
+        # Ctrl+? shortcut
         box_4 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         
         button_hc = Gtk.Button.new_with_label("Ctrl")
@@ -91,6 +95,7 @@ class Dialog_keys(Gtk.Dialog):
         label_shortcuts = Gtk.Label.new(str=jT["show"])
         box_4.append(label_shortcuts)
         
+        # Ctrl+R shortcut
         box_5 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         
         button_rc = Gtk.Button.new_with_label("Ctrl")
@@ -105,11 +110,43 @@ class Dialog_keys(Gtk.Dialog):
         label_reset = Gtk.Label.new(str=jT["reset"])
         box_5.append(label_reset)
         
+        # Ctrl+D shortcut
+        box_6 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        
+        button_dc = Gtk.Button.new_with_label("Ctrl")
+        box_6.append(button_dc)
+        
+        label_plus = Gtk.Label.new(str="+")
+        box_6.append(label_plus)
+        
+        button_d = Gtk.Button.new_with_label("D")
+        box_6.append(button_d)
+        
+        label_dark = Gtk.Label.new(str=jT["activate_dark_theme"])
+        box_6.append(label_dark)
+        
+        # Ctrl+L shortcut
+        box_7 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        
+        button_lc = Gtk.Button.new_with_label("Ctrl")
+        box_7.append(button_lc)
+        
+        label_plus = Gtk.Label.new(str="+")
+        box_7.append(label_plus)
+        
+        button_l = Gtk.Button.new_with_label("L")
+        box_7.append(button_l)
+        
+        label_light = Gtk.Label.new(str=jT["activate_light_theme"])
+        box_7.append(label_light)
+        
         content_area.append(box_1)
         content_area.append(box_2)
         content_area.append(box_3)
         content_area.append(box_4)
         content_area.append(box_5)
+        content_area.append(box_6)
+        content_area.append(box_7)
         
         self.show()
     # Close button clicked action
