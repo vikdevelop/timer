@@ -625,7 +625,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         dialogRemove = Adw.MessageDialog.new(self, "Are you shure you want to delete all settings of Timer?", None)
         dialogRemove.add_response('no', jT["no"])
         dialogRemove.add_response('yes', jT["yes"])
-        dialogRemove.set_response_appearance('start', Adw.ResponseAppearance.DESTRUCTIVE)
+        dialogRemove.set_response_appearance('yes', Adw.ResponseAppearance.DESTRUCTIVE)
         dialogRemove.connect('response', self.response_dialogRemove)
         dialogRemove.show()
         
