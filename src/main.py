@@ -482,6 +482,19 @@ class TimerWindow(Gtk.ApplicationWindow):
         adw_action_row_05.add_suffix(widget=switch_03)
         adw_action_row_05.set_activatable_widget(widget=switch_03)
         self.adw_expander_row.add_row(child=adw_action_row_05)
+        
+        # Adw ActionRow - remove all timer settings
+        ## Gtk.Button
+        self.buttonDelete = Gtk.Button.new_from_icon_name('trash-symbolic')
+        self.buttonDelete.add_css_class('destructive-action')
+        self.buttonDelete.connect("clicked", self.on_buttonDelete_clicked)
+        
+        ## Adw.ActionRow
+        adw_action_row_06 = Adw.ActionRow.new()
+        adw_action_row_06.set_title(title=jT["delete_timer_settings"])
+        adw_action_row_06.add_suffix(widget=self.buttonDelete)
+        adw_action_row_06.set_activatable_widget(widget=self.buttonDelete)
+        self.adw_expander_row.add_row(child=adw_action_row_06)
     
     # Save app theme configuration
     def on_switch_01_toggled(self, switch01, GParamBoolean):
@@ -558,6 +571,10 @@ class TimerWindow(Gtk.ApplicationWindow):
                 self.style_manager.set_color_scheme(
                     color_scheme=Adw.ColorScheme.PREFER_DARK
                 )
+            elif theme == "light":
+                self.style_manager.set_color_scheme(
+                    color_scheme=Adw.ColorScheme.FORCE_LIGHT
+                )
                 
     ## Set resizable of window configuration
     def set_resizable_w(self):
@@ -602,6 +619,20 @@ class TimerWindow(Gtk.ApplicationWindow):
     ## Reset button action
     def on_buttonReset_clicked(self, widget, *args):
         self.reset_timer()
+        
+    ## Delete button action
+    def on_buttonDelete_clicked(self, widget, *args):
+        dialogRemove = Adw.MessageDialog.new(self, "Are you shure you want to delete all settings of Timer?", None)
+        dialogRemove.add_response('no', jT["no"])
+        dialogRemove.add_response('yes', jT["yes"])
+        dialogRemove.set_response_appearance('start', Adw.ResponseAppearance.DESTRUCTIVE)
+        dialogRemove.connect('response', self.response_dialogRemove)
+        dialogRemove.show()
+        
+    ### Response of dialogRemove
+    def response_dialogRemove(self, w, response):
+        if response == 'yes':
+            os.popen(f'rm {CONFIG}/*')
 
     def on_SpinnerWindow_destroy(self, widget, *args):
         """ procesing closing window """
@@ -805,7 +836,7 @@ class TimerWindow(Gtk.ApplicationWindow):
                     color_scheme=Adw.ColorScheme.FORCE_LIGHT
                 )
             with open(f'{CONFIG}/theme.json', 'w') as kT:
-                kT.write('{\n "theme": "system"\n}')
+                kT.write('{\n "theme": "light"\n}')
         
 # Adw Application class
 class MyApp(Adw.Application):
