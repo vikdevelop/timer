@@ -622,7 +622,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         
     ## Delete button action
     def on_buttonDelete_clicked(self, widget, *args):
-        dialogRemove = Adw.MessageDialog.new(self, "Are you shure you want to delete all settings of Timer?", None)
+        dialogRemove = Adw.MessageDialog.new(self, jT["dialog_remove_warning"], None)
         dialogRemove.add_response('no', jT["no"])
         dialogRemove.add_response('yes', jT["yes"])
         dialogRemove.set_response_appearance('yes', Adw.ResponseAppearance.DESTRUCTIVE)
@@ -653,8 +653,8 @@ class TimerWindow(Gtk.ApplicationWindow):
             self.session()
             print(jT["timing_finished"])
             return False
-        self.label.set_markup("<big><b>{}</b></big>".format(
-            strfdelta(self.counter, "{hours} %s {minutes} %s {seconds} %s" % (jT["hours"], jT["mins"], jT["secs"]))
+        self.label.set_markup("<big>{}</big>".format(
+            strfdelta(self.counter, "<b>{hours}</b> %s <b>{minutes}</b> %s <b>{seconds}</b> %s" % (jT["hours"], jT["mins"], jT["secs"]))
         ))
         return True
     
@@ -669,8 +669,8 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.non_activated_session()
         self.counter = timedelta(hours = int(self.hour_entry.get_text()), minutes = int(self.minute_entry.get_text()), seconds = int(self.secs_entry.get_text()))
         #self.play_beep()
-        self.label.set_markup("<big><b>{}</b></big>".format(
-            strfdelta(self.counter, "{hours} %s {minutes} %s {seconds} %s" % (jT["hours"], jT["mins"], jT["secs"]))
+        self.label.set_markup("<big>{}</big>".format(
+            strfdelta(self.counter, "<b>{hours}</b> %s <b>{minutes}</b> %s <b>{seconds}</b> %s" % (jT["hours"], jT["mins"], jT["secs"]))
         ))
         self.spinner.start()
         self.timeout_id = GLib.timeout_add(250, self.on_timeout, None)
@@ -763,7 +763,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         dialogRingstone.set_response_appearance('start', Adw.ResponseAppearance.SUGGESTED)
         dialogRingstone.connect('response', self.start_again)
         dialogRingstone.show()
-        os.popen("ffplay -nodisp -autoexit /app/share/beeps/Spatial.wav > /dev/null 2>&1 && ffplay -nodisp -autoexit /app/share/beeps/Spatial.wav > /dev/null 2>&1")
+        os.popen("for i in {1..15}; do ffplay -nodisp -autoexit /app/share/beeps/Oxygen-Im-Phone-Ring.ogg; done")
         
     def start_again(self, w, response):
         if response == 'start':
