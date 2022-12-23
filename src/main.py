@@ -12,6 +12,39 @@ gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 from gi.repository import Gtk, GLib, Adw, Gio
 
+# Units of day, minute, hour and second
+def strfdelta(tdelta, fmt):
+    d = {"days": tdelta.days}
+    d["hours"], rem = divmod(tdelta.seconds, 3600)
+    d["minutes"], d["seconds"] = divmod(rem, 60)
+    return fmt.format(**d)
+
+# Path for config files
+CONFIG = os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data'
+# Print about timer status
+print(jT["timer_running"])
+
+# Reset all timer settings dialog
+class Dialog_reset(Adw.MessageDialog):
+    def __init__(self, parent, **kwargs):
+        super().__init__(transient_for=app.get_active_window(), **kwargs)
+
+        self.set_heading(heading=jT["dialog_remove_warning"])
+        self.add_response('no', jT["no"])
+        self.add_response('yes', jT["yes"])
+        self.set_response_appearance(
+            response='yes',
+            appearance=Adw.ResponseAppearance.SUGGESTED
+        )
+        self.connect('response', self.dialog_response)
+        self.show()
+
+    def dialog_response(self, dialog, response):
+        if response == 'yes':
+            os.popen(f'rm {CONFIG}/*')
+            app = sys.executable
+            os.execl(app, app, *sys.argv)
+
 # Keyboard shortcuts dialog
 class Dialog_keys(Gtk.Dialog):
     def __init__(self, parent, **kwargs):
@@ -154,18 +187,6 @@ class Dialog_keys(Gtk.Dialog):
         if response == Gtk.ResponseType.CANCEL:
             dialog.close()
 
-# Units of day, minute, hour and second
-def strfdelta(tdelta, fmt):
-    d = {"days": tdelta.days}
-    d["hours"], rem = divmod(tdelta.seconds, 3600)
-    d["minutes"], d["seconds"] = divmod(rem, 60)
-    return fmt.format(**d)
-
-# Path for config files
-CONFIG = os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data'
-# Print about timer status
-print(jT["timer_running"])
-
 # Timer Application window
 class TimerWindow(Gtk.ApplicationWindow):
     def __init__(self, *args, **kwargs):
@@ -195,6 +216,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         
         # App menu
         self.menu_button_model = Gio.Menu()
+        self.menu_button_model.append(jT["delete_timer_settings"], 'app.reset_settings')
         self.menu_button_model.append(jT["keyboard_shortcuts"], 'app.shortcuts')
         self.menu_button_model.append(jT["about_app"], 'app.about')
         self.menu_button = Gtk.MenuButton.new()
@@ -323,123 +345,123 @@ class TimerWindow(Gtk.ApplicationWindow):
             '5', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55', '60 (%s)' % jT["default"], '65', '70', '75', '80'
         ])
         
-        adw_action_row_00 = Adw.ComboRow.new()
-        adw_action_row_00.set_icon_name(icon_name='content-loading-symbolic')
-        adw_action_row_00.set_title(title=jT["spinner"])
-        adw_action_row_00.set_model(model=sizes)
-        adw_action_row_00.set_subtitle(subtitle=jT["spinner_size_desc"])
-        adw_action_row_00.set_subtitle_lines(2)
-        adw_action_row_00.connect('notify::selected-item', self.on_combo_box_text_changed)
-        self.adw_expander_row.add_row(child=adw_action_row_00)
+        self.adw_action_row_00 = Adw.ComboRow.new()
+        self.adw_action_row_00.set_icon_name(icon_name='content-loading-symbolic')
+        self.adw_action_row_00.set_title(title=jT["spinner"])
+        self.adw_action_row_00.set_model(model=sizes)
+        self.adw_action_row_00.set_subtitle(subtitle=jT["spinner_size_desc"])
+        self.adw_action_row_00.set_subtitle_lines(2)
+        self.adw_action_row_00.connect('notify::selected-item', self.on_combo_box_text_changed)
+        self.adw_expander_row.add_row(child=self.adw_action_row_00)
         
         if os.path.exists(f'{CONFIG}/spinner.json'):
             with open(f'{CONFIG}/spinner.json') as p:
                 jsonSpinner = json.load(p)
             combobox_s = jsonSpinner["spinner-size"]
             if combobox_s == "5":
-                adw_action_row_00.set_selected(0)
+                self.adw_action_row_00.set_selected(0)
             elif combobox_s == "10":
-                adw_action_row_00.set_selected(1)
+                self.adw_action_row_00.set_selected(1)
             elif combobox_s == "15":
-                adw_action_row_00.set_selected(2)
+                self.adw_action_row_00.set_selected(2)
             elif combobox_s == "20":
-                adw_action_row_00.set_selected(3)
+                self.adw_action_row_00.set_selected(3)
             elif combobox_s == "25":
-                adw_action_row_00.set_selected(4)
+                self.adw_action_row_00.set_selected(4)
             elif combobox_s == "30":
-                adw_action_row_00.set_selected(5)
+                self.adw_action_row_00.set_selected(5)
             elif combobox_s == "35":
-                adw_action_row_00.set_selected(6)
+                self.adw_action_row_00.set_selected(6)
             elif combobox_s == "40":
-                adw_action_row_00.set_selected(7)
+                self.adw_action_row_00.set_selected(7)
             elif combobox_s == "45":
-                adw_action_row_00.set_selected(8)
+                self.adw_action_row_00.set_selected(8)
             elif combobox_s == "50":
-                adw_action_row_00.set_selected(9)
+                self.adw_action_row_00.set_selected(9)
             elif combobox_s == "55":
-                adw_action_row_00.set_selected(10)
+                self.adw_action_row_00.set_selected(10)
             elif combobox_s == '60 (%s)' % jT["default"]:
-                adw_action_row_00.set_selected(11)
+                self.adw_action_row_00.set_selected(11)
             elif combobox_s == "65":
-                adw_action_row_00.set_selected(12)
+                self.adw_action_row_00.set_selected(12)
             elif combobox_s == "70":
-                adw_action_row_00.set_selected(13)
+                self.adw_action_row_00.set_selected(13)
             elif combobox_s == "75":
-                adw_action_row_00.set_selected(14)
+                self.adw_action_row_00.set_selected(14)
             elif combobox_s == "80":
-                adw_action_row_00.set_selected(15)
+                self.adw_action_row_00.set_selected(15)
         else:
-            adw_action_row_00.set_selected(11)
+            self.adw_action_row_00.set_selected(11)
         
         # Adw.ComboRow - Actions
         actions = Gtk.StringList.new(strings=[
             jT["default"], jT["shut_down"], jT["reboot"], jT["suspend"], jT["play_alarm_clock"]
         ])
         
-        adw_action_row_01 = Adw.ComboRow.new()
-        adw_action_row_01.set_icon_name(icon_name='timer-symbolic')
-        adw_action_row_01.set_title(title=jT["action_after_timing"])
-        adw_action_row_01.set_title_lines(2)
-        adw_action_row_01.set_model(model=actions)
-        adw_action_row_01.connect('notify::selected-item', self.on_combo_box_text_s_changed)
-        self.adw_expander_row.add_row(child=adw_action_row_01)
+        self.adw_action_row_01 = Adw.ComboRow.new()
+        self.adw_action_row_01.set_icon_name(icon_name='timer-symbolic')
+        self.adw_action_row_01.set_title(title=jT["action_after_timing"])
+        self.adw_action_row_01.set_title_lines(2)
+        self.adw_action_row_01.set_model(model=actions)
+        self.adw_action_row_01.connect('notify::selected-item', self.on_combo_box_text_s_changed)
+        self.adw_expander_row.add_row(child=self.adw_action_row_01)
         
         if os.path.exists(f'{CONFIG}/actions.json'):
             with open(f'{CONFIG}/actions.json') as p:
                 jsonSpinner = json.load(p)
             combobox_s = jsonSpinner["action"]
             if combobox_s == jT["default"]:
-                adw_action_row_01.set_selected(0)
+                self.adw_action_row_01.set_selected(0)
             elif combobox_s == jT["shut_down"]:
-                adw_action_row_01.set_selected(1)
+                self.adw_action_row_01.set_selected(1)
             elif combobox_s == jT["reboot"]:
-                adw_action_row_01.set_selected(2)
+                self.adw_action_row_01.set_selected(2)
             elif combobox_s == jT["suspend"]:
-                adw_action_row_01.set_selected(3)
+                self.adw_action_row_01.set_selected(3)
             elif combobox_s == jT["play_alarm_clock"]:
-                adw_action_row_01.set_selected(4)
+                self.adw_action_row_01.set_selected(4)
         else:
-            adw_action_row_01.set_selected(0)
+            self.adw_action_row_01.set_selected(0)
         
         # Adw ActionRow - Theme configuration
         ## Gtk.Switch
-        switch_01 = Gtk.Switch.new()
+        self.switch_01 = Gtk.Switch.new()
         if os.path.exists(f'{CONFIG}/theme.json'):
             with open(f'{CONFIG}/theme.json') as r:
                 jR = json.load(r)
             dark = jR["theme"]
             if dark == "dark":
-                switch_01.set_active(True)
-        switch_01.set_valign(align=Gtk.Align.CENTER)
-        switch_01.connect('notify::active', self.on_switch_01_toggled)
+                self.switch_01.set_active(True)
+        self.switch_01.set_valign(align=Gtk.Align.CENTER)
+        self.switch_01.connect('notify::active', self.on_switch_01_toggled)
         
         ## Adw.ActionRow
-        adw_action_row_02 = Adw.ActionRow.new()
-        adw_action_row_02.set_icon_name(icon_name='weather-clear-night-symbolic')
-        adw_action_row_02.set_title(title=jT["dark_theme"])
-        adw_action_row_02.set_subtitle(subtitle=jT["theme_desc"])
-        adw_action_row_02.add_suffix(widget=switch_01)
-        self.adw_expander_row.add_row(child=adw_action_row_02)
+        self.adw_action_row_02 = Adw.ActionRow.new()
+        self.adw_action_row_02.set_icon_name(icon_name='weather-clear-night-symbolic')
+        self.adw_action_row_02.set_title(title=jT["dark_theme"])
+        self.adw_action_row_02.set_subtitle(subtitle=jT["theme_desc"])
+        self.adw_action_row_02.add_suffix(widget=self.switch_01)
+        self.adw_expander_row.add_row(child=self.adw_action_row_02)
         
         # Adw ActionRow - Resizable of Window configuration
         ## Gtk.Switch
-        switch_02 = Gtk.Switch.new()
+        self.switch_02 = Gtk.Switch.new()
         if os.path.exists(f'{CONFIG}/window.json'):
             with open(f'{CONFIG}/window.json') as r:
                 jR = json.load(r)
             resizable = jR["resizable"]
             if resizable == "true":
-                switch_02.set_active(True)
-        switch_02.set_valign(align=Gtk.Align.CENTER)
-        switch_02.connect('notify::active', self.on_switch_02_toggled)
+                self.switch_02.set_active(True)
+        self.switch_02.set_valign(align=Gtk.Align.CENTER)
+        self.switch_02.connect('notify::active', self.on_switch_02_toggled)
         
         ## Adw.ActionRow
-        adw_action_row_03 = Adw.ActionRow.new()
-        adw_action_row_03.set_icon_name(icon_name='window-maximize-symbolic')
-        adw_action_row_03.set_title(title=jT["resizable_of_window"])
-        adw_action_row_03.add_suffix(widget=switch_02)
-        adw_action_row_03.set_activatable_widget(widget=switch_02)
-        self.adw_expander_row.add_row(child=adw_action_row_03)
+        self.adw_action_row_03 = Adw.ActionRow.new()
+        self.adw_action_row_03.set_icon_name(icon_name='window-maximize-symbolic')
+        self.adw_action_row_03.set_title(title=jT["resizable_of_window"])
+        self.adw_action_row_03.add_suffix(widget=self.switch_02)
+        self.adw_action_row_03.set_activatable_widget(widget=self.switch_02)
+        self.adw_expander_row.add_row(child=self.adw_action_row_03)
         
         # Adw ActionRow - custom notification
         ## Adw.EntryRow
@@ -450,51 +472,37 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.entry.connect('changed', self.on_entry_text_changed)
         
         ## Adw.ActionRow
-        adw_action_row_04 = Adw.ActionRow.new()
-        adw_action_row_04.set_icon_name(icon_name='notification-symbolic')
-        adw_action_row_04.set_title(title=jT["custom_notification"])
-        adw_action_row_04.set_title_lines(2)
-        adw_action_row_04.add_suffix(widget=self.entry)
-        adw_action_row_04.set_activatable_widget(widget=self.entry)
-        self.adw_expander_row.add_row(child=adw_action_row_04)
+        self.adw_action_row_04 = Adw.ActionRow.new()
+        self.adw_action_row_04.set_icon_name(icon_name='notification-symbolic')
+        self.adw_action_row_04.set_title(title=jT["custom_notification"])
+        self.adw_action_row_04.set_title_lines(2)
+        self.adw_action_row_04.add_suffix(widget=self.entry)
+        self.adw_action_row_04.set_activatable_widget(widget=self.entry)
+        self.adw_expander_row.add_row(child=self.adw_action_row_04)
         
         # Adw ActionRow - play beep
         ## Gtk.Switch
-        switch_03 = Gtk.Switch.new()
+        self.switch_03 = Gtk.Switch.new()
         if os.path.exists(f'{CONFIG}/beep.json'):
             with open(f'{CONFIG}/beep.json') as r:
                 jR = json.load(r)
             beep = jR["play-beep"]
             if beep == "false":
-                switch_03.set_active(False)
+                self.switch_03.set_active(False)
             else:
-                switch_03.set_active(True)
+                self.switch_03.set_active(True)
         else:
-            switch_03.set_active(True)
-        switch_03.set_valign(align=Gtk.Align.CENTER)
-        switch_03.connect('notify::active', self.on_switch_03_toggled)
+            self.switch_03.set_active(True)
+        self.switch_03.set_valign(align=Gtk.Align.CENTER)
+        self.switch_03.connect('notify::active', self.on_switch_03_toggled)
         
         ## Adw.ActionRow
-        adw_action_row_05 = Adw.ActionRow.new()
-        adw_action_row_05.set_icon_name(icon_name='folder-music-symbolic')
-        adw_action_row_05.set_title(title=jT["play_beep"])
-        #adw_action_row_05.set_subtitle(subtitle=)
-        adw_action_row_05.add_suffix(widget=switch_03)
-        adw_action_row_05.set_activatable_widget(widget=switch_03)
-        self.adw_expander_row.add_row(child=adw_action_row_05)
-        
-        # Adw ActionRow - remove all timer settings
-        ## Gtk.Button
-        self.buttonDelete = Gtk.Button.new_from_icon_name('trash-symbolic')
-        self.buttonDelete.add_css_class('destructive-action')
-        self.buttonDelete.connect("clicked", self.on_buttonDelete_clicked)
-        
-        ## Adw.ActionRow
-        adw_action_row_06 = Adw.ActionRow.new()
-        adw_action_row_06.set_title(title=jT["delete_timer_settings"])
-        adw_action_row_06.add_suffix(widget=self.buttonDelete)
-        adw_action_row_06.set_activatable_widget(widget=self.buttonDelete)
-        self.adw_expander_row.add_row(child=adw_action_row_06)
+        self.adw_action_row_05 = Adw.ActionRow.new()
+        self.adw_action_row_05.set_icon_name(icon_name='folder-music-symbolic')
+        self.adw_action_row_05.set_title(title=jT["play_beep"])
+        #self.adw_action_row_05.set_subtitle(subtitle=)
+        self.adw_action_row_05.add_suffix(widget=self.switch_03)
+        self.adw_expander_row.add_row(child=self.adw_action_row_05)
     
     # Save app theme configuration
     def on_switch_01_toggled(self, switch01, GParamBoolean):
@@ -619,21 +627,7 @@ class TimerWindow(Gtk.ApplicationWindow):
     ## Reset button action
     def on_buttonReset_clicked(self, widget, *args):
         self.reset_timer()
-        
-    ## Delete button action
-    def on_buttonDelete_clicked(self, widget, *args):
-        dialogRemove = Adw.MessageDialog.new(self, jT["dialog_remove_warning"], None)
-        dialogRemove.add_response('no', jT["no"])
-        dialogRemove.add_response('yes', jT["yes"])
-        dialogRemove.set_response_appearance('yes', Adw.ResponseAppearance.DESTRUCTIVE)
-        dialogRemove.connect('response', self.response_dialogRemove)
-        dialogRemove.show()
-        
-    ### Response of dialogRemove
-    def response_dialogRemove(self, w, response):
-        if response == 'yes':
-            os.popen(f'rm {CONFIG}/*')
-
+    
     def on_SpinnerWindow_destroy(self, widget, *args):
         """ procesing closing window """
         if self.timeout_id:
@@ -851,6 +845,7 @@ class MyApp(Adw.Application):
         self.connect('activate', self.on_activate)
         self.create_action('shortcuts', self.on_shortcuts_action)
         self.create_action('about', self.on_about_action)
+        self.create_action('reset_settings', self.on_reset_settings_action)
     
     # Run Keyboard shortcuts dialog
     def on_shortcuts_action(self, action, param):
@@ -871,7 +866,10 @@ class MyApp(Adw.Application):
         dialog.set_developers(["vikdevelop https://github.com/vikdevelop"])
         dialog.set_application_icon("com.github.vikdevelop.timer")
         dialog.show()
-
+        
+    def on_reset_settings_action(self, action, param):
+        self.dialog_reset = Dialog_reset(self)
+        
     def create_action(self, name, callback, shortcuts=None):
         action = Gio.SimpleAction.new(name, None)
         action.connect('activate', callback)
