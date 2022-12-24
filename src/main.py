@@ -30,11 +30,11 @@ class Dialog_reset(Adw.MessageDialog):
         super().__init__(transient_for=app.get_active_window(), **kwargs)
 
         self.set_heading(heading=jT["dialog_remove_warning"])
-        self.add_response('no', jT["no"])
-        self.add_response('yes', jT["yes"])
+        self.add_response('no', jT["cancel"])
+        self.add_response('yes', jT["remove"])
         self.set_response_appearance(
             response='yes',
-            appearance=Adw.ResponseAppearance.SUGGESTED
+            appearance=Adw.ResponseAppearance.DESTRUCTIVE
         )
         self.connect('response', self.dialog_response)
         self.show()
