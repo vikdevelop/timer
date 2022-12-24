@@ -859,7 +859,14 @@ class MyApp(Adw.Application):
         dialog.set_copyright("© 2022 vikdevelop")
         dialog.set_developers(["vikdevelop https://github.com/vikdevelop"])
         dialog.set_application_icon("com.github.vikdevelop.timer")
+        self.set_translation_link(dialog)
         dialog.show()
+    
+    def set_translation_link(self, dialog):
+        if lang == 'en.json':
+            dialog.add_link("Localize Timer to more languages", "https://hosted.weblate.org/engage/vikdevelop/")
+        else:
+            dialog.add_link("Contribute to translations", "https://hosted.weblate.org/engage/vikdevelop/")
         
     def on_reset_settings_action(self, action, param):
         self.dialog_reset = Dialog_reset(self)
