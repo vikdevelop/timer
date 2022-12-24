@@ -816,6 +816,7 @@ class TimerWindow(Gtk.ApplicationWindow):
             self.start_timer()
             return True
         if keycode == ord('c'):
+            print(jT["timing_ended"])
             self.stop_timer()
         if keycode == ord('r'):
             self.reset_timer()
