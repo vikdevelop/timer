@@ -757,13 +757,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         dialogRingstone.set_response_appearance('start', Adw.ResponseAppearance.SUGGESTED)
         dialogRingstone.connect('response', self.start_again)
         dialogRingstone.show()
-        os.popen("ffplay -nodisp -autoexit /app/share/beeps/Oxygen-Im-Phone-Ring.ogg > /dev/null 2>&1 \
-        && ffplay -nodisp -autoexit /app/share/beeps/Oxygen-Im-Phone-Ring.ogg > /dev/null 2>&1 \
-        && ffplay -nodisp -autoexit /app/share/beeps/Oxygen-Im-Phone-Ring.ogg > /dev/null 2>&1 \
-        && ffplay -nodisp -autoexit /app/share/beeps/Oxygen-Im-Phone-Ring.ogg > /dev/null 2>&1 \
-        && ffplay -nodisp -autoexit /app/share/beeps/Oxygen-Im-Phone-Ring.ogg > /dev/null 2>&1 && \
-        ffplay -nodisp -autoexit /app/share/beeps/Oxygen-Im-Phone-Ring.ogg > /dev/null 2>&1 && \
-        ffplay -nodisp -autoexit /app/share/beeps/Oxygen-Im-Phone-Ring.ogg > /dev/null 2>&1")
+        os.popen("bash /app/src/alarm.sh")
         
     def start_again(self, w, response):
         if response == 'start':
