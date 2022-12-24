@@ -762,9 +762,9 @@ class TimerWindow(Gtk.ApplicationWindow):
     def start_again(self, w, response):
         if response == 'start':
             self.start_timer()
-            os.popen('pkill -15 ffplay')
+            os.popen('pkill -15 bash && pkill -15 ffplay')
         elif response == 'cancel':
-            os.popen('pkill -15 ffplay')
+            os.popen('pkill -15 bash && pkill -15 ffplay')
     
     ## Send notification after finished timer (if this action is selected in actions.json config file)
     def notification(self):
