@@ -146,13 +146,7 @@ class Dialog_keys(Gtk.Dialog):
         # Ctrl+D shortcut
         box_6 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         
-        button_dc = Gtk.Button.new_with_label("Ctrl")
-        box_6.append(button_dc)
-        
-        label_plus = Gtk.Label.new(str="+")
-        box_6.append(label_plus)
-        
-        button_d = Gtk.Button.new_with_label("D")
+        button_d = Gtk.Button.new_with_label("Insert")
         box_6.append(button_d)
         
         label_dark = Gtk.Label.new(str=jT["activate_dark_theme"])
@@ -161,16 +155,10 @@ class Dialog_keys(Gtk.Dialog):
         # Ctrl+L shortcut
         box_7 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         
-        button_lc = Gtk.Button.new_with_label("Ctrl")
+        button_lc = Gtk.Button.new_with_label("EsC")
         box_7.append(button_lc)
         
-        label_plus = Gtk.Label.new(str="+")
-        box_7.append(label_plus)
-        
-        button_l = Gtk.Button.new_with_label("L")
-        box_7.append(button_l)
-        
-        label_light = Gtk.Label.new(str=jT["activate_light_theme"])
+        label_light = Gtk.Label.new(str=jT["activate_system_theme"])
         box_7.append(label_light)
         
         content_area.append(box_1)
@@ -820,18 +808,18 @@ class TimerWindow(Gtk.ApplicationWindow):
             self.stop_timer()
         if keycode == ord('r'):
             self.reset_timer()
-        if keycode == ord('d'):
+        if keycode == 0xFF63:
             self.style_manager.set_color_scheme(
                     color_scheme=Adw.ColorScheme.PREFER_DARK
                 )
             with open(f'{CONFIG}/theme.json', 'w') as kT:
                 kT.write('{\n "theme": "dark"\n}')
-        if keycode == ord('l'):
+        if keycode == 0xFF1B:
             self.style_manager.set_color_scheme(
                     color_scheme=Adw.ColorScheme.FORCE_LIGHT
                 )
             with open(f'{CONFIG}/theme.json', 'w') as kT:
-                kT.write('{\n "theme": "light"\n}')
+                kT.write('{\n "theme": "system"\n}')
         
 # Adw Application class
 class MyApp(Adw.Application):
