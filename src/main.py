@@ -146,7 +146,7 @@ class Dialog_keys(Gtk.Dialog):
         # Ctrl+D shortcut
         box_6 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         
-        button_d = Gtk.Button.new_with_label("Insert")
+        button_d = Gtk.Button.new_with_label("F2")
         box_6.append(button_d)
         
         label_dark = Gtk.Label.new(str=jT["activate_dark_theme"])
@@ -155,7 +155,7 @@ class Dialog_keys(Gtk.Dialog):
         # Ctrl+L shortcut
         box_7 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         
-        button_lc = Gtk.Button.new_with_label("EsC")
+        button_lc = Gtk.Button.new_with_label("F3")
         box_7.append(button_lc)
         
         label_light = Gtk.Label.new(str=jT["activate_system_theme"])
@@ -567,10 +567,6 @@ class TimerWindow(Gtk.ApplicationWindow):
                 self.style_manager.set_color_scheme(
                     color_scheme=Adw.ColorScheme.PREFER_DARK
                 )
-            elif theme == "light":
-                self.style_manager.set_color_scheme(
-                    color_scheme=Adw.ColorScheme.FORCE_LIGHT
-                )
                 
     ## Set resizable of window configuration
     def set_resizable_w(self):
@@ -808,13 +804,13 @@ class TimerWindow(Gtk.ApplicationWindow):
             self.stop_timer()
         if keycode == ord('r'):
             self.reset_timer()
-        if keycode == 0xFF63:
+        if keycode == 0xFFBF:
             self.style_manager.set_color_scheme(
                     color_scheme=Adw.ColorScheme.PREFER_DARK
                 )
             with open(f'{CONFIG}/theme.json', 'w') as kT:
                 kT.write('{\n "theme": "dark"\n}')
-        if keycode == 0xFF1B:
+        if keycode == 0xFFC0:
             self.style_manager.set_color_scheme(
                     color_scheme=Adw.ColorScheme.FORCE_LIGHT
                 )
