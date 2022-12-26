@@ -143,7 +143,7 @@ class Dialog_keys(Gtk.Dialog):
         label_reset = Gtk.Label.new(str=jT["reset"])
         box_5.append(label_reset)
         
-        # Ctrl+D shortcut
+        # F2 shortcut
         box_6 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         
         button_d = Gtk.Button.new_with_label("F2")
@@ -152,7 +152,7 @@ class Dialog_keys(Gtk.Dialog):
         label_dark = Gtk.Label.new(str=jT["activate_dark_theme"])
         box_6.append(label_dark)
         
-        # Ctrl+L shortcut
+        # F3 shortcut
         box_7 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         
         button_lc = Gtk.Button.new_with_label("F3")
@@ -161,6 +161,15 @@ class Dialog_keys(Gtk.Dialog):
         label_light = Gtk.Label.new(str=jT["activate_system_theme"])
         box_7.append(label_light)
         
+        # F5 shortcut
+        box_8 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        
+        button_rTimer = Gtk.Button.new_with_label("F5")
+        box_8.append(button_rTimer)
+        
+        label_rTimer = Gtk.Label.new(str=jT["delete_timer_settings"])
+        box_8.append(label_rTimer)
+        
         content_area.append(box_1)
         content_area.append(box_2)
         content_area.append(box_3)
@@ -168,6 +177,7 @@ class Dialog_keys(Gtk.Dialog):
         content_area.append(box_5)
         content_area.append(box_6)
         content_area.append(box_7)
+        content_area.append(box_8)
         
         self.show()
     # Close button clicked action
@@ -816,6 +826,8 @@ class TimerWindow(Gtk.ApplicationWindow):
                 )
             with open(f'{CONFIG}/theme.json', 'w') as kT:
                 kT.write('{\n "theme": "system"\n}')
+        if keycode == 0xFFC2:
+            self.dialog_reset = Dialog_reset(self)
         
 # Adw Application class
 class MyApp(Adw.Application):
