@@ -201,8 +201,8 @@ class TimerWindow(Gtk.ApplicationWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.set_resizable_w()
-        self.set_default_size(400, 400)
-        self.set_size_request(400, 400)
+        self.set_default_size(425, 425)
+        self.set_size_request(425, 425)
         self.application = kwargs.get('application')
         self.style_manager = self.application.get_style_manager()
         self.set_theme()
@@ -219,8 +219,8 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.mainBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
         self.mainBox.set_halign(Gtk.Align.CENTER)
         self.mainBox.set_valign(Gtk.Align.CENTER)
-        self.mainBox.set_margin_start(44)
-        self.mainBox.set_margin_end(44)
+        self.mainBox.set_margin_start(47)
+        self.mainBox.set_margin_end(47)
         self.set_child(self.mainBox)
         
         # App menu
@@ -665,7 +665,7 @@ class TimerWindow(Gtk.ApplicationWindow):
             self.session()
             print(jT["timing_finished"])
             return False
-        self.label.set_markup("<big>{}</big>".format(
+        self.label.set_markup("<span size='16700'>{}</span>".format(
             strfdelta(self.counter, "<b>{hours}</b> %s <b>{minutes}</b> %s <b>{seconds}</b> %s" % (jT["hours"], jT["mins"], jT["secs"]))
         ))
         return True
@@ -681,7 +681,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.non_activated_session()
         self.counter = timedelta(hours = int(self.hour_entry.get_text()), minutes = int(self.minute_entry.get_text()), seconds = int(self.secs_entry.get_text()))
         #self.play_beep()
-        self.label.set_markup("<big>{}</big>".format(
+        self.label.set_markup("<span size='16700'>{}</span>".format(
             strfdelta(self.counter, "<b>{hours}</b> %s <b>{minutes}</b> %s <b>{seconds}</b> %s" % (jT["hours"], jT["mins"], jT["secs"]))
         ))
         self.spinner.start()
