@@ -6,6 +6,7 @@ import time
 from datetime import timedelta
 sys.path.append('/app')
 from timer import *
+from src.CHANGELOG import *
 import gi
 
 gi.require_version("Gtk", "4.0")
@@ -150,7 +151,7 @@ class Dialog_keys(Gtk.Dialog):
         button_aTimer = Gtk.Button.new_with_label("F1")
         box_about.append(button_aTimer)
         
-        label_aTimer = Gtk.Label.new(str=jT["about_app"])
+        label_aTimer = Gtk.Label.new(str=jT["show_about_dialog"])
         box_about.append(label_aTimer)
         
         # F2 shortcut
@@ -890,6 +891,7 @@ class MyApp(Adw.Application):
         self.dialog.set_copyright("© 2022 vikdevelop")
         self.dialog.set_developers(["vikdevelop https://github.com/vikdevelop"])
         self.dialog.set_application_icon("com.github.vikdevelop.timer")
+        self.dialog.set_release_notes(release_27)
         self.dialog.show()
         
     def create_action(self, name, callback, shortcuts=None):
