@@ -277,6 +277,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         ## Adw.ButtonContent()
         self.rButtonContent = Adw.ButtonContent.new()
         self.rButtonContent.set_icon_name(icon_name='view-refresh-symbolic')
+        self.rButtonContent.set_tooltip_text(jT["reset"])
         self.rButtonContent.set_use_underline(use_underline=True)
         self.buttonReset.set_child(self.rButtonContent)
         
