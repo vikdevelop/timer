@@ -70,115 +70,125 @@ class Dialog_keys(Gtk.Dialog):
         content_area.set_valign(Gtk.Align.CENTER)
         
         # Ctrl+S shortcut
-        box_1 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        box_sTimer = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         
         button_sc = Gtk.Button.new_with_label("Ctrl")
-        box_1.append(button_sc)
+        box_sTimer.append(button_sc)
         
         label_plus = Gtk.Label.new(str="+")
-        box_1.append(label_plus)
+        box_sTimer.append(label_plus)
         
         button_s = Gtk.Button.new_with_label("S")
-        box_1.append(button_s)
+        box_sTimer.append(button_s)
         
         label_start = Gtk.Label.new(str=jT["run_timer"])
-        box_1.append(label_start)
+        box_sTimer.append(label_start)
         
         # Ctrl+C shortcut
-        box_2 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        box_cTimer = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         
         button_tc = Gtk.Button.new_with_label("Ctrl")
-        box_2.append(button_tc)
+        box_cTimer.append(button_tc)
         
         label_plus = Gtk.Label.new(str="+")
-        box_2.append(label_plus)
+        box_cTimer.append(label_plus)
         
         button_t = Gtk.Button.new_with_label("C")
-        box_2.append(button_t)
+        box_cTimer.append(button_t)
         
         label_stop = Gtk.Label.new(str=jT["stop_timer"])
-        box_2.append(label_stop)
+        box_cTimer.append(label_stop)
         
         # Ctrl+Q shortcut
-        box_3 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        box_qTimer = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         
         button = Gtk.Button.new_with_label("Ctrl")
-        box_3.append(button)
+        box_qTimer.append(button)
         
         label_plus = Gtk.Label.new(str="+")
-        box_3.append(label_plus)
+        box_qTimer.append(label_plus)
         
         button_q = Gtk.Button.new_with_label("Q")
-        box_3.append(button_q)
+        box_qTimer.append(button_q)
         
         label_quit = Gtk.Label.new(str=jT["quit"])
-        box_3.append(label_quit)
+        box_qTimer.append(label_quit)
         
         # Ctrl+? shortcut
-        box_4 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        box_kTimer = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         
         button_hc = Gtk.Button.new_with_label("Ctrl")
-        box_4.append(button_hc)
+        box_kTimer.append(button_hc)
         
         label_plus = Gtk.Label.new(str="+")
-        box_4.append(label_plus)
+        box_kTimer.append(label_plus)
         
         button_h = Gtk.Button.new_with_label("?")
-        box_4.append(button_h)
+        box_kTimer.append(button_h)
         
         label_shortcuts = Gtk.Label.new(str=jT["show"])
-        box_4.append(label_shortcuts)
+        box_kTimer.append(label_shortcuts)
         
         # Ctrl+R shortcut
-        box_5 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        box_rTimer = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         
         button_rc = Gtk.Button.new_with_label("Ctrl")
-        box_5.append(button_rc)
+        box_rTimer.append(button_rc)
         
         label_plus = Gtk.Label.new(str="+")
-        box_5.append(label_plus)
+        box_rTimer.append(label_plus)
         
         button_r = Gtk.Button.new_with_label("R")
-        box_5.append(button_r)
+        box_rTimer.append(button_r)
         
         label_reset = Gtk.Label.new(str=jT["reset"])
-        box_5.append(label_reset)
+        box_rTimer.append(label_reset)
+        
+        # F1 shortcut
+        box_about = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        
+        button_aTimer = Gtk.Button.new_with_label("F1")
+        box_about.append(button_aTimer)
+        
+        label_aTimer = Gtk.Label.new(str=jT["about_app"])
+        box_about.append(label_aTimer)
         
         # F2 shortcut
-        box_6 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        box_dTimer = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         
         button_d = Gtk.Button.new_with_label("F2")
-        box_6.append(button_d)
+        box_dTimer.append(button_d)
         
         label_dark = Gtk.Label.new(str=jT["activate_dark_theme"])
-        box_6.append(label_dark)
+        box_dTimer.append(label_dark)
         
         # F3 shortcut
-        box_7 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        box_tTimer = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         
         button_lc = Gtk.Button.new_with_label("F3")
-        box_7.append(button_lc)
+        box_tTimer.append(button_lc)
         
         label_light = Gtk.Label.new(str=jT["activate_system_theme"])
-        box_7.append(label_light)
+        box_tTimer.append(label_light)
         
         # F5 shortcut
-        box_8 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        box_delSetttings = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         
         button_rTimer = Gtk.Button.new_with_label("F5")
-        box_8.append(button_rTimer)
+        box_delSetttings.append(button_rTimer)
         
         label_rTimer = Gtk.Label.new(str=jT["delete_timer_settings"])
-        box_8.append(label_rTimer)
+        box_delSetttings.append(label_rTimer)
         
-        content_area.append(box_1)
-        content_area.append(box_2)
-        content_area.append(box_3)
-        content_area.append(box_4)
-        content_area.append(box_5)
-        content_area.append(box_6)
-        content_area.append(box_7)
-        content_area.append(box_8)
+        content_area.append(box_sTimer)
+        content_area.append(box_cTimer)
+        content_area.append(box_qTimer)
+        content_area.append(box_kTimer)
+        content_area.append(box_rTimer)
+        content_area.append(box_about)
+        content_area.append(box_dTimer)
+        content_area.append(box_tTimer)
+        content_area.append(box_delSetttings)
         
         self.show()
     # Close button clicked action
@@ -830,6 +840,8 @@ class TimerWindow(Gtk.ApplicationWindow):
             self.stop_timer()
         if keycode == ord('r'):
             self.reset_timer()
+        if keycode == 0xFFBE:
+            app.about_app()
         if keycode == 0xFFBF:
             self.style_manager.set_color_scheme(
                     color_scheme=Adw.ColorScheme.PREFER_DARK
@@ -860,29 +872,25 @@ class MyApp(Adw.Application):
     
     # Run About dialog
     def on_about_action(self, action, param):
-        dialog = Adw.AboutWindow(transient_for=app.get_active_window())
-        dialog.set_application_name(jT["timer_title"])
-        dialog.set_version("2.6")
-        dialog.set_developer_name("vikdevelop")
-        dialog.set_license_type(Gtk.License(Gtk.License.GPL_3_0))
-        dialog.set_website("https://github.com/vikdevelop/timer")
-        dialog.set_issue_url("https://github.com/vikdevelop/timer/issues")
-        dialog.add_credit_section(jT["contributors"], ["Albano Battistella https://github.com/albanobattistella", "Allan Nordhøy https://hosted.weblate.org/user/kingu/", "haggen88 https://github.com/haggen88","J. Lavoie https://hosted.weblate.org/user/Edanas", "Kefir2105 https://github.com/Kefir2105", "KenyC https://github.com/KenyC", "linuxmasterclub https://hosted.weblate.org/user/linuxmasterclub/", "rene-coty https://github.com/rene-coty", "Vin https://hosted.weblate.org/user/VinLin", "ViktorOn https://github.com/ViktorOn"])
-        dialog.set_translator_credits(jT["translator_credits"])
-        dialog.set_copyright("© 2022 vikdevelop")
-        dialog.set_developers(["vikdevelop https://github.com/vikdevelop"])
-        dialog.set_application_icon("com.github.vikdevelop.timer")
-        self.set_translation_link(dialog)
-        dialog.show()
-    
-    def set_translation_link(self, dialog):
-        if lang == 'en.json':
-            dialog.add_link("Localize Timer to more languages", "https://hosted.weblate.org/engage/vikdevelop/")
-        else:
-            dialog.add_link("Contribute to translations", "https://hosted.weblate.org/engage/vikdevelop/")
-        
+        self.about_app()
+
     def on_reset_settings_action(self, action, param):
         self.dialog_reset = Dialog_reset(self)
+        
+    def about_app(self):
+        self.dialog = Adw.AboutWindow(transient_for=app.get_active_window())
+        self.dialog.set_application_name(jT["timer_title"])
+        self.dialog.set_version("2.7")
+        self.dialog.set_developer_name("vikdevelop")
+        self.dialog.set_license_type(Gtk.License(Gtk.License.GPL_3_0))
+        self.dialog.set_website("https://github.com/vikdevelop/timer")
+        self.dialog.set_issue_url("https://github.com/vikdevelop/timer/issues")
+        self.dialog.add_credit_section(jT["contributors"], ["Albano Battistella https://github.com/albanobattistella", "Allan Nordhøy https://hosted.weblate.org/user/kingu/", "haggen88 https://github.com/haggen88","J. Lavoie https://hosted.weblate.org/user/Edanas", "Kefir2105 https://github.com/Kefir2105", "KenyC https://github.com/KenyC", "linuxmasterclub https://hosted.weblate.org/user/linuxmasterclub/", "rene-coty https://github.com/rene-coty", "Vin https://hosted.weblate.org/user/VinLin", "ViktorOn https://github.com/ViktorOn"])
+        self.dialog.set_translator_credits(jT["translator_credits"])
+        self.dialog.set_copyright("© 2022 vikdevelop")
+        self.dialog.set_developers(["vikdevelop https://github.com/vikdevelop"])
+        self.dialog.set_application_icon("com.github.vikdevelop.timer")
+        self.dialog.show()
         
     def create_action(self, name, callback, shortcuts=None):
         action = Gio.SimpleAction.new(name, None)
