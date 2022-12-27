@@ -29,7 +29,8 @@ class Dialog_reset(Adw.MessageDialog):
     def __init__(self, parent, **kwargs):
         super().__init__(transient_for=app.get_active_window(), **kwargs)
 
-        self.set_heading(heading=jT["dialog_remove_warning"])
+        self.set_heading(heading=jT["delete_timer_settings"])
+        self.set_body(body=jT["dialog_remove_warning"])
         self.add_response('no', jT["cancel"])
         self.add_response('yes', jT["remove"])
         self.set_response_appearance(
@@ -214,7 +215,6 @@ class TimerWindow(Gtk.ApplicationWindow):
         
         # App menu
         self.menu_button_model = Gio.Menu()
-        self.menu_button_model.append(jT["delete_timer_settings"], 'app.reset_settings')
         self.menu_button_model.append(jT["keyboard_shortcuts"], 'app.shortcuts')
         self.menu_button_model.append(jT["about_app"], 'app.about')
         self.menu_button = Gtk.MenuButton.new()
@@ -255,17 +255,30 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.headerbar.pack_start(self.buttonStart)
         
         # Reset timer button
-        self.buttonReset = Gtk.Button.new()
-        self.reset_button_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
-        self.reset_button_box.set_halign(Gtk.Align.CENTER)
-        self.reset_button_box.append(Gtk.Image.new_from_icon_name( \
-            'view-refresh-symbolic'))
-        self.buttonReset.set_tooltip_text(jT["reset"])
-        self.buttonReset.set_child(self.reset_button_box)
-        self.buttonReset.add_css_class('flat')
-        self.buttonReset.set_can_focus(False)
+        ## Gio.Menu()
+        self.ResetMenu = Gio.Menu.new()
+        self.reset_item = Gio.MenuItem.new()
+        self.reset_item.set_label(label=jT["delete_timer_settings"])
+        self.reset_item.set_detailed_action(
+            detailed_action='app.reset_settings',
+        )
+        self.ResetMenu.append_item(self.reset_item)
+        
+        ## Gtk.Popover()
+        self.rPopover = Gtk.PopoverMenu.new_from_model(self.ResetMenu)
+        
+        ## Adw.SplitButton()
+        self.buttonReset = Adw.SplitButton.new()
+        self.buttonReset.set_popover(popover=self.rPopover)
+        self.buttonReset.set_halign(align=Gtk.Align.CENTER)
         self.buttonReset.connect('clicked', self.on_buttonReset_clicked)
-        self.headerbar.pack_end(self.buttonReset)
+        self.headerbar.pack_end(child=self.buttonReset)
+        
+        ## Adw.ButtonContent()
+        self.rButtonContent = Adw.ButtonContent.new()
+        self.rButtonContent.set_icon_name(icon_name='view-refresh-symbolic')
+        self.rButtonContent.set_use_underline(use_underline=True)
+        self.buttonReset.set_child(self.rButtonContent)
         
         # Stop timer button
         self.buttonStop = Gtk.Button.new()
@@ -619,7 +632,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         print(jT["timing_ended"])
     
     ## Reset button action
-    def on_buttonReset_clicked(self, widget, *args):
+    def on_buttonReset_clicked(self, buttonReset):
         self.reset_timer()
     
     def on_SpinnerWindow_destroy(self, widget, *args):
