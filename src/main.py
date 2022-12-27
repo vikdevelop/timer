@@ -773,6 +773,8 @@ class TimerWindow(Gtk.ApplicationWindow):
             os.popen('pkill -15 bash && pkill -15 ffplay')
         elif response == 'cancel':
             os.popen('pkill -15 bash && pkill -15 ffplay')
+        else:
+            os.popen('pkill -15 bash && pkill -15 ffplay')
     
     ## Send notification after finished timer (if this action is selected in actions.json config file)
     def notification(self):
