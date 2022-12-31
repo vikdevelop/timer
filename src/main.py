@@ -873,26 +873,22 @@ class MyApp(Adw.Application):
     
     # Run About dialog
     def on_about_action(self, action, param):
-        self.about_app()
+        dialog = Adw.AboutWindow(transient_for=app.get_active_window())
+        dialog.set_application_name(jT["timer_title"])
+        dialog.set_version("2.6")
+        dialog.set_developer_name("vikdevelop")
+        dialog.set_license_type(Gtk.License(Gtk.License.GPL_3_0))
+        dialog.set_website("https://github.com/vikdevelop/timer")
+        dialog.set_issue_url("https://github.com/vikdevelop/timer/issues")
+        dialog.add_credit_section(jT["contributors"], ["Albano Battistella https://github.com/albanobattistella", "Allan Nordhøy https://hosted.weblate.org/user/kingu/", "haggen88 https://github.com/haggen88","J. Lavoie https://hosted.weblate.org/user/Edanas", "Kefir2105 https://github.com/Kefir2105", "KenyC https://github.com/KenyC", "linuxmasterclub https://hosted.weblate.org/user/linuxmasterclub/", "rene-coty https://github.com/rene-coty", "Vin https://hosted.weblate.org/user/VinLin", "ViktorOn https://github.com/ViktorOn"])
+        dialog.set_translator_credits(jT["translator_credits"])
+        dialog.set_copyright("© 2022 vikdevelop")
+        dialog.set_developers(["vikdevelop https://github.com/vikdevelop"])
+        dialog.set_application_icon("com.github.vikdevelop.timer")
+        dialog.show()
 
     def on_reset_settings_action(self, action, param):
         self.dialog_reset = Dialog_reset(self)
-        
-    def about_app(self):
-        self.dialog = Adw.AboutWindow(transient_for=app.get_active_window())
-        self.dialog.set_application_name(jT["timer_title"])
-        self.dialog.set_version("2.7")
-        self.dialog.set_developer_name("vikdevelop")
-        self.dialog.set_license_type(Gtk.License(Gtk.License.GPL_3_0))
-        self.dialog.set_website("https://github.com/vikdevelop/timer")
-        self.dialog.set_issue_url("https://github.com/vikdevelop/timer/issues")
-        self.dialog.add_credit_section(jT["contributors"], ["Albano Battistella https://github.com/albanobattistella", "Allan Nordhøy https://hosted.weblate.org/user/kingu/", "haggen88 https://github.com/haggen88","J. Lavoie https://hosted.weblate.org/user/Edanas", "Kefir2105 https://github.com/Kefir2105", "KenyC https://github.com/KenyC", "linuxmasterclub https://hosted.weblate.org/user/linuxmasterclub/", "rene-coty https://github.com/rene-coty", "Vin https://hosted.weblate.org/user/VinLin", "ViktorOn https://github.com/ViktorOn"])
-        self.dialog.set_translator_credits(jT["translator_credits"])
-        self.dialog.set_copyright("© 2022 vikdevelop")
-        self.dialog.set_developers(["vikdevelop https://github.com/vikdevelop"])
-        self.dialog.set_application_icon("com.github.vikdevelop.timer")
-        self.dialog.set_release_notes(release_27)
-        self.dialog.show()
         
     def create_action(self, name, callback, shortcuts=None):
         action = Gio.SimpleAction.new(name, None)
