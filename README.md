@@ -11,16 +11,13 @@
 
 <h2>Screenshots</h2>
 <h3>Main window</h3>
-<img src=https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-6_1.png>
+<img src=https://raw.githubusercontent.com/vikdevelop/timer/main/img/Timer-gtk4_2-7_1.png>
 
 <h3>Preferences</h3>
-<img src=https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-6_2.png>
+<img src=https://raw.githubusercontent.com/vikdevelop/timer/main/img/Timer-gtk4_2-7_2.png>
 
 <h3>Timing</h3>
 <img src=https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-6_3.png>
 
-<h3>Timing has been stopped</h3>
-<img src=https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-6_4.png>
-
 <h3>Keyboard shortcuts window</h3>
-<img src=https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-6_5.png>
+<img src=https://raw.githubusercontent.com/vikdevelop/timer/main/img/Timer-gtk4_2-7_4.png>
