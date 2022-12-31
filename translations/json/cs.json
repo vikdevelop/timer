@@ -38,5 +38,15 @@
     "stop": "Zastavit",
     "quit": "Ukončit",
     "show": "Zobrazit klávesové zkratky",
-    "reset": "Resetovat"
+    "reset": "Resetovat",
+    "delete_timer_settings": "Resetovat nastavení na výchozí",
+    "play_alarm_clock": "Přehrát budík",
+    "cancel": "Zrušit",
+    "start_again": "Spustit znovu",
+    "reset_counter": "Resetovat hodnoty počítadla časovače",
+    "play_alarm_clock_desc": "Budík zazvoní za",
+    "dialog_remove_warning": "Opravdu chcete resetovat všechna nastavení časovače na výchozí hodnoty?",
+    "activate_dark_theme": "Aktivovat tmavý motiv",
+    "activate_system_theme": "Zpět na systémový motiv",
+    "show_about_dialog": "Zobrazit okno O aplikaci"
 }
