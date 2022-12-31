@@ -26,16 +26,16 @@
     
     <screenshots>
         <screenshot type="default">
-            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-6_1.png</image>
+            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/Timer-gtk4_2-7_1.png</image>
         </screenshot>
         <screenshot>
-            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-6_2.png</image>
+            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/Timer-gtk4_2-7_2.png</image>
         </screenshot>
         <screenshot>
             <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-6_3.png</image>
         </screenshot>
         <screenshot>
-            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-6_5.png</image>
+            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/Timer-gtk4_2-7_4.png</image>
         </screenshot>
     </screenshots>
     
@@ -46,6 +46,16 @@
     </categories>
     
     <releases>
+        <release version="2.7" date="2023-01-01">
+            <description>
+                <ul>
+                    <li>added option to action after finished timer "Play alarm clock". On timeout will be played sound until stopped and show message dialog</li>
+                    <li>added Spanish translations, thanks to @haggen88</li>
+                    <li>added option for remove all settings of Timer to headerbar next to Reset button</li>
+                    <li>aded new keyboard shortcuts: F1 for show about dialog, F2 for switch to dark theme, F3 for switch to system theme and F5 for remove all Timer settings</li>
+                </ul>
+            </description>
+        </release>
         <release version="2.6" date="2022-12-12">
             <description>
                 <ul>
