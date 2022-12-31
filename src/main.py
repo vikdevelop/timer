@@ -142,7 +142,7 @@ class Dialog_keys(Gtk.Dialog):
         button_r = Gtk.Button.new_with_label("R")
         box_rTimer.append(button_r)
         
-        label_reset = Gtk.Label.new(str=jT["reset"])
+        label_reset = Gtk.Label.new(str=jT["reset_counter"])
         box_rTimer.append(label_reset)
         
         # F1 shortcut
@@ -288,7 +288,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         ## Adw.ButtonContent()
         self.rButtonContent = Adw.ButtonContent.new()
         self.rButtonContent.set_icon_name(icon_name='view-refresh-symbolic')
-        self.rButtonContent.set_tooltip_text(jT["reset"])
+        self.rButtonContent.set_tooltip_text(jT["reset_counter"])
         self.rButtonContent.set_use_underline(use_underline=True)
         self.buttonReset.set_child(self.rButtonContent)
         
