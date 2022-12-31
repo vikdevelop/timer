@@ -143,6 +143,7 @@ class Dialog_keys(Gtk.Dialog):
         box_rTimer.append(button_r)
         
         label_reset = Gtk.Label.new(str=jT["reset_counter"])
+        label_reset.set_wrap(True)
         box_rTimer.append(label_reset)
         
         # F1 shortcut
@@ -152,6 +153,7 @@ class Dialog_keys(Gtk.Dialog):
         box_about.append(button_aTimer)
         
         label_aTimer = Gtk.Label.new(str=jT["show_about_dialog"])
+        label_aTimer.set_wrap(True)
         box_about.append(label_aTimer)
         
         # F2 shortcut
@@ -161,6 +163,7 @@ class Dialog_keys(Gtk.Dialog):
         box_dTimer.append(button_d)
         
         label_dark = Gtk.Label.new(str=jT["activate_dark_theme"])
+        label_dark.set_wrap(True)
         box_dTimer.append(label_dark)
         
         # F3 shortcut
@@ -170,6 +173,7 @@ class Dialog_keys(Gtk.Dialog):
         box_tTimer.append(button_lc)
         
         label_light = Gtk.Label.new(str=jT["activate_system_theme"])
+        label_light.set_wrap(True)
         box_tTimer.append(label_light)
         
         # F5 shortcut
@@ -179,6 +183,7 @@ class Dialog_keys(Gtk.Dialog):
         box_delSetttings.append(button_rTimer)
         
         label_rTimer = Gtk.Label.new(str=jT["delete_timer_settings"])
+        label_rTimer.set_wrap(True)
         box_delSetttings.append(label_rTimer)
         
         content_area.append(box_sTimer)
