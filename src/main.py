@@ -33,7 +33,7 @@ class Dialog_reset(Adw.MessageDialog):
         self.set_heading(heading=jT["delete_timer_settings"])
         self.set_body(body=jT["dialog_remove_warning"])
         self.add_response('no', jT["cancel"])
-        self.add_response('yes', jT["remove"])
+        self.add_response('yes', jT["reset"])
         self.set_response_appearance(
             response='yes',
             appearance=Adw.ResponseAppearance.DESTRUCTIVE
