@@ -38,5 +38,15 @@
     "stop": "Ferma",
     "quit": "Esci",
     "show": "Mostra scorciatoie da tastiera",
-    "reset": "Resettare"
+    "reset": "Resettare",
+    "delete_timer_settings": "Reset all settings to default",
+    "play_alarm_clock": "Play alarm clock",
+    "cancel": "Cancel",
+    "start_again": "Start again",
+    "reset_counter": "Reset timer counter values",
+    "play_alarm_clock_desc": "You will ring alarm clock in",
+    "dialog_remove_warning": "Do you really want to reset all Timer settings to default?",
+    "activate_dark_theme": "Activate dark theme",
+    "activate_system_theme": "Back to system theme",
+    "show_about_dialog": "Show About app window"
 }
