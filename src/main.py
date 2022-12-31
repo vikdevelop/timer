@@ -841,8 +841,6 @@ class TimerWindow(Gtk.ApplicationWindow):
             self.stop_timer()
         if keycode == ord('r'):
             self.reset_timer()
-        if keycode == 0xFFBE:
-            app.about_app()
         if keycode == 0xFFBF:
             self.style_manager.set_color_scheme(
                     color_scheme=Adw.ColorScheme.PREFER_DARK
@@ -864,7 +862,7 @@ class MyApp(Adw.Application):
         super().__init__(**kwargs, flags=Gio.ApplicationFlags.FLAGS_NONE)
         self.connect('activate', self.on_activate)
         self.create_action('shortcuts', self.on_shortcuts_action)
-        self.create_action('about', self.on_about_action)
+        self.create_action('about', self.on_about_action, ["F1"])
         self.create_action('reset_settings', self.on_reset_settings_action)
     
     # Run Keyboard shortcuts dialog
@@ -875,7 +873,7 @@ class MyApp(Adw.Application):
     def on_about_action(self, action, param):
         dialog = Adw.AboutWindow(transient_for=app.get_active_window())
         dialog.set_application_name(jT["timer_title"])
-        dialog.set_version("2.6")
+        dialog.set_version("2.7")
         dialog.set_developer_name("vikdevelop")
         dialog.set_license_type(Gtk.License(Gtk.License.GPL_3_0))
         dialog.set_website("https://github.com/vikdevelop/timer")
