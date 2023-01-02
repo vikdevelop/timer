@@ -257,6 +257,9 @@ class TimerWindow(Gtk.ApplicationWindow):
         # Properities
         self.properties()
         
+        # Load latest translations from GitHub
+        app.load_locales()
+        
         # Start timer button
         self.buttonStart = Gtk.Button.new()
         self.start_button_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
@@ -892,6 +895,9 @@ class MyApp(Adw.Application):
 
     def on_reset_settings_action(self, action, param):
         self.dialog_reset = Dialog_reset(self)
+        
+    def load_locales(self):
+        os.popen("cd ~/.var/app/com.github.vikdevelop.timer/cache && wget -c {}/{}".format(BASE_URL, lang))
         
     def create_action(self, name, callback, shortcuts=None):
         action = Gio.SimpleAction.new(name, None)
