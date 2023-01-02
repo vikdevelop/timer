@@ -897,7 +897,7 @@ class MyApp(Adw.Application):
         self.dialog_reset = Dialog_reset(self)
         
     def load_locales(self):
-        os.popen("cd ~/.var/app/com.github.vikdevelop.timer/cache && wget -c {}/{}".format(BASE_URL, lang))
+        os.popen("cd ~/.var/app/com.github.vikdevelop.timer/cache && wget -c {}/{} > /dev/null 2>&1 && pkill -15 wget && pkill -15 sh".format(BASE_URL, lang))
         
     def create_action(self, name, callback, shortcuts=None):
         action = Gio.SimpleAction.new(name, None)
