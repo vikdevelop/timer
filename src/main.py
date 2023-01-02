@@ -63,15 +63,20 @@ class Dialog_keys(Gtk.Dialog):
         content_area = self.get_content_area()
         content_area.set_orientation(orientation=Gtk.Orientation.VERTICAL)
         content_area.set_spacing(spacing=12)
-        content_area.set_margin_top(margin=25)
-        content_area.set_margin_end(margin=50)
-        content_area.set_margin_bottom(margin=25)
-        content_area.set_margin_start(margin=50)
-        content_area.set_halign(Gtk.Align.CENTER)
-        content_area.set_valign(Gtk.Align.CENTER)
+        content_area.set_margin_top(margin=12)
+        content_area.set_margin_end(margin=12)
+        content_area.set_margin_bottom(margin=12)
+        content_area.set_margin_start(margin=12)
+        
+        listbox = Gtk.ListBox.new()
+        listbox.set_selection_mode(mode=Gtk.SelectionMode.NONE)
+        listbox.get_style_context().add_class(class_name='boxed-list')
+        content_area.append(child=listbox)
         
         # Ctrl+S shortcut
         box_sTimer = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        box_sTimer.set_margin_top(10)
+        box_sTimer.set_margin_bottom(10)
         
         button_sc = Gtk.Button.new_with_label("Ctrl")
         box_sTimer.append(button_sc)
@@ -82,11 +87,16 @@ class Dialog_keys(Gtk.Dialog):
         button_s = Gtk.Button.new_with_label("S")
         box_sTimer.append(button_s)
         
-        label_start = Gtk.Label.new(str=jT["run_timer"])
-        box_sTimer.append(label_start)
+        adw_action_row_start = Adw.ActionRow()
+        adw_action_row_start.set_title(jT["run_timer"])
+        adw_action_row_start.set_title_lines(3)
+        adw_action_row_start.add_prefix(box_sTimer)
+        listbox.append(adw_action_row_start)
         
         # Ctrl+C shortcut
         box_cTimer = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        box_cTimer.set_margin_top(10)
+        box_cTimer.set_margin_bottom(10)
         
         button_tc = Gtk.Button.new_with_label("Ctrl")
         box_cTimer.append(button_tc)
@@ -97,11 +107,16 @@ class Dialog_keys(Gtk.Dialog):
         button_t = Gtk.Button.new_with_label("C")
         box_cTimer.append(button_t)
         
-        label_stop = Gtk.Label.new(str=jT["stop_timer"])
-        box_cTimer.append(label_stop)
+        adw_action_row_stop = Adw.ActionRow()
+        adw_action_row_stop.set_title(jT["stop_timer"])
+        adw_action_row_stop.set_title_lines(3)
+        adw_action_row_stop.add_prefix(box_cTimer)
+        listbox.append(adw_action_row_stop)
         
         # Ctrl+Q shortcut
         box_qTimer = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        box_qTimer.set_margin_top(10)
+        box_qTimer.set_margin_bottom(10)
         
         button = Gtk.Button.new_with_label("Ctrl")
         box_qTimer.append(button)
@@ -112,11 +127,16 @@ class Dialog_keys(Gtk.Dialog):
         button_q = Gtk.Button.new_with_label("Q")
         box_qTimer.append(button_q)
         
-        label_quit = Gtk.Label.new(str=jT["quit"])
-        box_qTimer.append(label_quit)
+        adw_action_row_quit = Adw.ActionRow()
+        adw_action_row_quit.set_title(jT["quit"])
+        adw_action_row_quit.set_title_lines(3)
+        adw_action_row_quit.add_prefix(box_qTimer)
+        listbox.append(adw_action_row_quit)
         
         # Ctrl+? shortcut
         box_kTimer = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        box_kTimer.set_margin_top(10)
+        box_kTimer.set_margin_bottom(10)
         
         button_hc = Gtk.Button.new_with_label("Ctrl")
         box_kTimer.append(button_hc)
@@ -127,11 +147,16 @@ class Dialog_keys(Gtk.Dialog):
         button_h = Gtk.Button.new_with_label("?")
         box_kTimer.append(button_h)
         
-        label_shortcuts = Gtk.Label.new(str=jT["show"])
-        box_kTimer.append(label_shortcuts)
+        adw_action_row_key = Adw.ActionRow()
+        adw_action_row_key.set_title(jT["show"])
+        adw_action_row_key.set_title_lines(3)
+        adw_action_row_key.add_prefix(box_kTimer)
+        listbox.append(adw_action_row_key)
         
         # Ctrl+R shortcut
         box_rTimer = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        box_rTimer.set_margin_top(10)
+        box_rTimer.set_margin_bottom(10)
         
         button_rc = Gtk.Button.new_with_label("Ctrl")
         box_rTimer.append(button_rc)
@@ -142,59 +167,67 @@ class Dialog_keys(Gtk.Dialog):
         button_r = Gtk.Button.new_with_label("R")
         box_rTimer.append(button_r)
         
-        label_reset = Gtk.Label.new(str=jT["reset_counter"])
-        label_reset.set_wrap(True)
-        box_rTimer.append(label_reset)
+        adw_action_row_reset = Adw.ActionRow()
+        adw_action_row_reset.set_title(jT["reset_counter"])
+        adw_action_row_reset.set_title_lines(3)
+        adw_action_row_reset.add_prefix(box_rTimer)
+        listbox.append(adw_action_row_reset)
         
         # F1 shortcut
         box_about = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        box_about.set_margin_top(10)
+        box_about.set_margin_bottom(10)
         
         button_aTimer = Gtk.Button.new_with_label("F1")
         box_about.append(button_aTimer)
         
-        label_aTimer = Gtk.Label.new(str=jT["show_about_dialog"])
-        label_aTimer.set_wrap(True)
-        box_about.append(label_aTimer)
+        adw_action_row_about = Adw.ActionRow()
+        adw_action_row_about.set_title(jT["show_about_dialog"])
+        adw_action_row_about.set_title_lines(3)
+        adw_action_row_about.add_prefix(box_about)
+        listbox.append(adw_action_row_about)
         
         # F2 shortcut
         box_dTimer = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        box_dTimer.set_margin_top(10)
+        box_dTimer.set_margin_bottom(10)
         
         button_d = Gtk.Button.new_with_label("F2")
         box_dTimer.append(button_d)
         
-        label_dark = Gtk.Label.new(str=jT["activate_dark_theme"])
-        label_dark.set_wrap(True)
-        box_dTimer.append(label_dark)
+        adw_action_row_dark = Adw.ActionRow()
+        adw_action_row_dark.set_title(jT["activate_dark_theme"])
+        adw_action_row_dark.set_title_lines(3)
+        adw_action_row_dark.add_prefix(box_dTimer)
+        listbox.append(adw_action_row_dark)
         
         # F3 shortcut
         box_tTimer = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        box_tTimer.set_margin_top(10)
+        box_tTimer.set_margin_bottom(10)
         
         button_lc = Gtk.Button.new_with_label("F3")
         box_tTimer.append(button_lc)
         
-        label_light = Gtk.Label.new(str=jT["activate_system_theme"])
-        label_light.set_wrap(True)
-        box_tTimer.append(label_light)
+        adw_action_row_system = Adw.ActionRow()
+        adw_action_row_system.set_title(jT["activate_system_theme"])
+        adw_action_row_system.set_title_lines(3)
+        adw_action_row_system.add_prefix(box_tTimer)
+        listbox.append(adw_action_row_system)
         
         # F5 shortcut
         box_delSetttings = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        box_delSetttings.set_margin_top(10)
+        box_delSetttings.set_margin_bottom(10)
         
         button_rTimer = Gtk.Button.new_with_label("F5")
         box_delSetttings.append(button_rTimer)
         
-        label_rTimer = Gtk.Label.new(str=jT["delete_timer_settings"])
-        label_rTimer.set_wrap(True)
-        box_delSetttings.append(label_rTimer)
-        
-        content_area.append(box_sTimer)
-        content_area.append(box_cTimer)
-        content_area.append(box_qTimer)
-        content_area.append(box_kTimer)
-        content_area.append(box_rTimer)
-        content_area.append(box_about)
-        content_area.append(box_dTimer)
-        content_area.append(box_tTimer)
-        content_area.append(box_delSetttings)
+        adw_action_row_remove = Adw.ActionRow()
+        adw_action_row_remove.set_title(jT["delete_timer_settings"])
+        adw_action_row_remove.set_title_lines(3)
+        adw_action_row_remove.add_prefix(box_delSetttings)
+        listbox.append(adw_action_row_remove)
         
         self.show()
     # Close button clicked action
@@ -855,12 +888,14 @@ class TimerWindow(Gtk.ApplicationWindow):
                 )
             with open(f'{CONFIG}/theme.json', 'w') as kT:
                 kT.write('{\n "theme": "dark"\n}')
+            self.switch_01.set_active(True)
         if keycode == 0xFFC0:
             self.style_manager.set_color_scheme(
                     color_scheme=Adw.ColorScheme.FORCE_LIGHT
                 )
             with open(f'{CONFIG}/theme.json', 'w') as kT:
                 kT.write('{\n "theme": "system"\n}')
+            self.switch_01.set_active(False)
         if keycode == 0xFFC2:
             self.dialog_reset = Dialog_reset(self)
         
