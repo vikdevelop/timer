@@ -1,5 +1,10 @@
 # CHANGELOG.py
-release_27 = '\
+release_27I = "<p>2.7I</p>\
+<ul>\
+<li>Improved Keyboard shortcuts window and function of keyboard shortcut that activates system and dark theme</li>\
+</ul>"
+
+release_27 = '<p>2.7</p>\
 <ul>\
 <li>added option to action after finished timer "Play alarm clock". On timeout will be played sound until stopped and show message dialog</li>\
 <li>added Spanish translations, thanks to @haggen88</li>\
