@@ -8,16 +8,16 @@ assignees: ''
 ---
 
 ## About system
-Linux distribution: 
-Desktop environment:
-Timer version (current latest version is **2.7*): 
+Linux distribution:  
+Desktop environment:  
+Timer version (current latest version is *2.7*):   
 Application environment:
 - [ ] native
 - [x] Flatpak
 ## Describe the issue
-### Steps to reproduce:
+#### Steps to reproduce:
 1.
 2.
 3.
 4.
-### Detailed description
+#### Detailed description
