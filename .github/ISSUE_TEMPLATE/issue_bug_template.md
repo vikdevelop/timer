@@ -12,8 +12,8 @@ Linux distribution:
 Desktop environment:
 Timer version (current latest version is **2.7*): 
 Application environment:
-[ ] native
-[ ] Flatpak
+- [ ] native
+- [x] Flatpak
 ### Describe the issue
 #### Steps to reproduce:
 1.
