@@ -1,7 +1,7 @@
 ---
-name: ISSUE_BUG_TEMPLATE
+name: Bug report
 about: Create a report to help us improve
-title: "[BUG]"
+title: ''
 labels: ''
 assignees: ''
 
@@ -21,6 +21,3 @@ Application environment:
 3.
 4.
 ### Detailed description
-**Desired behavior:**
-
-**Actual behavior:**
