@@ -758,6 +758,13 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.headerbar.pack_end(self.buttonReset)
         self.mainBox.append(self.lbox)
         self.mainBox.remove(self.timingBox)
+        self.headerbar.remove(self.buttonPause)
+        self.headerbar.remove(self.buttonCont)
+        try:
+            self.timingBox.remove(self.label_pause)
+            self.timingBox.remove(self.label_paused_status)
+        except AttributeError:
+            print("")
         #self.label.set_label(alabeltext)
         #self.play_beep()
     
@@ -786,6 +793,8 @@ class TimerWindow(Gtk.ApplicationWindow):
     ## Continue timer
     def continue_timer(self):
         self.spinner.start()
+        get_label_time = self.label.get_text()
+        self.hour_entry.set_text(get_label_time[:2])
         self.timingBox.remove(self.label_pause)
         self.timingBox.remove(self.label_paused_status)
         self.headerbar.pack_start(self.buttonPause)
