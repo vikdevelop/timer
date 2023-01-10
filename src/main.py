@@ -344,6 +344,14 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.buttonStop.add_css_class('destructive-action')
         self.buttonStop.connect("clicked", self.on_buttonStop_clicked)
         
+        # Pause timer button
+        self.buttonPause = Gtk.Button.new_from_icon_name("media-playback-pause-symbolic")
+        self.buttonPause.connect("clicked", self.on_buttonPause_clicked)
+        
+        # Continue timer button
+        self.buttonCont = Gtk.Button.new_from_icon_name("media-playback-start-symbolic")
+        self.buttonCont.connect("clicked", self.on_buttonCont_clicked)
+        
         self.timeout_id = None
         self.connect("destroy", self.on_SpinnerWindow_destroy)
     
@@ -677,7 +685,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         return True
     
     ## Stop button action
-    def on_buttonStop_clicked(self, widget, *args):
+    def on_buttonStop_clicked(self, buttonStop):
         """ button "clicked" in event buttonStop. """
         self.menu_button.set_can_focus(True)
         self.menu_button.do_focus(self.menu_button, True)
@@ -687,6 +695,14 @@ class TimerWindow(Gtk.ApplicationWindow):
     ## Reset button action
     def on_buttonReset_clicked(self, buttonReset):
         self.reset_timer()
+        
+    ## Pause button action
+    def on_buttonPause_clicked(self, buttonPause):
+        self.pause_timer()
+        
+    ## Continue button action
+    def on_buttonCont_clicked(self, buttonPause):
+        self.continue_timer()
     
     def on_SpinnerWindow_destroy(self, widget, *args):
         """ procesing closing window """
@@ -717,6 +733,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         """ Run Timer. """
         self.check_and_save()
         self.headerbar.pack_start(self.buttonStop)
+        self.headerbar.pack_start(self.buttonPause)
         self.headerbar.remove(self.buttonStart)
         self.headerbar.remove(self.buttonReset)
         self.mainBox.remove(self.lbox)
@@ -749,6 +766,31 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.hour_entry.set_text('0')
         self.minute_entry.set_text('0')
         self.secs_entry.set_text('0')
+        
+    ## Pause timer
+    def pause_timer(self):
+        if self.timeout_id:
+            GLib.source_remove(self.timeout_id)
+            self.timeout_id = None
+        self.spinner.stop()
+        self.label_pause = Gtk.Label.new()
+        self.label_paused_status = Gtk.Label.new(str="Paused.")
+        self.timingBox.remove(self.label_action)
+        self.timingBox.append(self.label_paused_status)
+        self.label_pause.set_markup("<b><span size='16700'>{}</span></b>".format(self.label.get_text()))
+        self.timingBox.append(self.label_pause)
+        self.timingBox.remove(self.label)
+        self.headerbar.remove(self.buttonPause)
+        self.headerbar.pack_start(self.buttonCont)
+        
+    ## Continue timer
+    def continue_timer(self):
+        self.spinner.start()
+        self.timingBox.remove(self.label_pause)
+        self.timingBox.remove(self.label_paused_status)
+        self.headerbar.pack_start(self.buttonPause)
+        self.headerbar.remove(self.buttonCont)
+        self.start_timer()
     
     # Function, that allocates labels in the current timing
     def non_activated_session(self):
