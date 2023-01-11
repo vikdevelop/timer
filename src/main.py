@@ -986,7 +986,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         if keycode == 0xFFC4:
             try:
                 self.timingBox.remove(label_pause)
-            except AttributeError:
+            except:
                 print("")
             self.continue_timer()
         
