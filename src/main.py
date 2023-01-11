@@ -229,6 +229,34 @@ class Dialog_keys(Gtk.Dialog):
         adw_action_row_remove.add_prefix(box_delSetttings)
         listbox.append(adw_action_row_remove)
         
+        # F6 shortcut
+        box_pSetttings = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        box_pSetttings.set_margin_top(10)
+        box_pSetttings.set_margin_bottom(10)
+        
+        button_pTimer = Gtk.Button.new_with_label("F6")
+        box_pSetttings.append(button_pTimer)
+        
+        adw_action_row_pause = Adw.ActionRow()
+        adw_action_row_pause.set_title(jT["pause_timer"])
+        adw_action_row_pause.set_title_lines(3)
+        adw_action_row_pause.add_prefix(box_pSetttings)
+        listbox.append(adw_action_row_pause)
+        
+        # F7 shortcut
+        box_coSetttings = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        box_coSetttings.set_margin_top(10)
+        box_coSetttings.set_margin_bottom(10)
+        
+        button_coTimer = Gtk.Button.new_with_label("F7")
+        box_coSetttings.append(button_coTimer)
+        
+        adw_action_row_cont = Adw.ActionRow()
+        adw_action_row_cont.set_title(jT["continue_timer"])
+        adw_action_row_cont.set_title_lines(3)
+        adw_action_row_cont.add_prefix(box_coSetttings)
+        listbox.append(adw_action_row_cont)
+        
         self.show()
     # Close button clicked action
     def dialog_response(self, dialog, response):
@@ -781,7 +809,7 @@ class TimerWindow(Gtk.ApplicationWindow):
             self.timeout_id = None
         self.spinner.stop()
         self.label_pause = Gtk.Label.new()
-        self.label_paused_status = Gtk.Label.new(str="Paused.")
+        self.label_paused_status = Gtk.Label.new(str=jT["paused"])
         self.timingBox.remove(self.label_action)
         self.timingBox.append(self.label_paused_status)
         self.label_pause.set_markup("<b><span size='16700'>{}</span></b>".format(self.label.get_text()))
@@ -953,6 +981,10 @@ class TimerWindow(Gtk.ApplicationWindow):
             self.switch_01.set_active(False)
         if keycode == 0xFFC2:
             self.dialog_reset = Dialog_reset(self)
+        if keycode == 0xFFC3:
+            self.pause_timer()
+        if keycode == 0xFFC4:
+            self.continue_timer()
         
 # Adw Application class
 class MyApp(Adw.Application):
