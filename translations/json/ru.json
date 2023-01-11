@@ -49,5 +49,5 @@
     "activate_dark_theme": "Активировать темную тему",
     "activate_system_theme": "Вернуться к системной теме",
     "show_about_dialog": "Показать окно «О приложении»",
-    "pause_timer": "Pause in timing"
+    "paused": "Paused."
 }
