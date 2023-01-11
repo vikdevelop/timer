@@ -50,5 +50,6 @@
     "activate_system_theme": "Back to system theme",
     "show_about_dialog": "Show About app window",
     "paused": "Paused.",
-    "pause_timer": "Pause timer"
+    "pause_timer": "Pause timer",
+    "continue_timer": "Continue in timing"
 }
