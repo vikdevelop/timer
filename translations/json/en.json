@@ -48,5 +48,8 @@
     "activate_dark_theme": "Activate dark theme",
     "activate_system_theme": "Back to system theme",
     "show_about_dialog": "Show About app window",
+    "paused": "Paused",
+    "pause_timer": "Pause in timing",
+    "continue_timer": "Continue in timing",
     "translator_credits": "vikdevelop https://github.com/vikdevelop"
 }
