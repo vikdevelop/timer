@@ -17,7 +17,7 @@
 <img src=https://raw.githubusercontent.com/vikdevelop/timer/main/img/Timer-gtk4_2-7_2.png>
 
 <h3>Timing</h3>
-<img src=https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-6_3.png>
+<img src=https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-7_timing.png>
 
 <h3>Keyboard shortcuts window</h3>
-<img src=https://raw.githubusercontent.com/vikdevelop/timer/main/img/Timer-gtk4_2-7_4.png>
+<img src=https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-7_keys.png>
