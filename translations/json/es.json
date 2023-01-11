@@ -49,5 +49,6 @@
     "activate_dark_theme": "Activar el tema oscuro",
     "activate_system_theme": "Volver al tema del sistema",
     "show_about_dialog": "Mostrar la ventana Acerca de la aplicación",
-    "paused": "Paused."
+    "paused": "Paused.",
+    "pause_timer": "Pause timer"
 }
