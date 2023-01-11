@@ -50,5 +50,6 @@
     "activate_system_theme": "Zpět na systémový motiv",
     "show_about_dialog": "Zobrazit okno O aplikaci",
     "paused": "Paused.",
-    "pause_timer": "Pause timer"
+    "pause_timer": "Pause timer",
+    "continue_timer": "Continue in timing"
 }
