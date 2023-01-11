@@ -48,5 +48,8 @@
     "dialog_remove_warning": "Do you really want to reset all Timer settings to default?",
     "activate_dark_theme": "Activate dark theme",
     "activate_system_theme": "Back to system theme",
-    "show_about_dialog": "Show About app window"
+    "show_about_dialog": "Show About app window",
+    "paused": "Paused",
+    "pause_timer": "Pause in timing",
+    "continue_timer": "Continue in timing"
 }
