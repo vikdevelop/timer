@@ -49,5 +49,6 @@
     "activate_dark_theme": "Aktivovat tmavý motiv",
     "activate_system_theme": "Zpět na systémový motiv",
     "show_about_dialog": "Zobrazit okno O aplikaci",
-    "paused": "Paused."
+    "paused": "Paused.",
+    "pause_timer": "Pause timer"
 }
