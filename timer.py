@@ -36,7 +36,10 @@ else:
     lang = 'en.json'
 
 if os.path.exists("{}/.var/app/com.github.vikdevelop.timer/cache/{}".format(Path.home(), lang)):
-    locale = open("{}/.var/app/com.github.vikdevelop.timer/cache/{}".format(Path.home(), lang))
+    try:
+        locale = open("{}/.var/app/com.github.vikdevelop.timer/cache/{}".format(Path.home(), lang))
+    except KeyError:
+        locale = open(f"/app/translations/{lang}")
 else:
     locale = open(f"/app/translations/{lang}")
 
