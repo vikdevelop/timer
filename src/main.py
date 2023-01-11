@@ -794,7 +794,11 @@ class TimerWindow(Gtk.ApplicationWindow):
     def continue_timer(self):
         self.spinner.start()
         get_label_time = self.label.get_text()
-        self.hour_entry.set_text(get_label_time[:2])
+        res = [int(i) for i in get_label_time.split() if i.isdigit()]
+        print(str(res))
+        self.hour_entry.set_text(str(res[0]))
+        self.minute_entry.set_text(str(res[1]))
+        self.secs_entry.set_text(str(res[2]))
         self.timingBox.remove(self.label_pause)
         self.timingBox.remove(self.label_paused_status)
         self.headerbar.pack_start(self.buttonPause)
