@@ -1,7 +1,9 @@
 # CHANGELOG.py
-release_27_11 = "<p>2.7_0111\
+release_27_11 = "<p>2.7_0111</p>\
 <ul>\
-<li>Added option for pause timer (it is possible use button on headerbar next to Stop button or use Keyboard shortcuts F6 for pause, or F7 for continue)"
+<li>Added option for pause timer (it is possible use button on headerbar next to Stop button or use Keyboard shortcuts F6 for pause, or F7 for continue)</li>\
+</ul>"
+
 release_27I = "<p>2.7I</p>\
 <ul>\
 <li>Improved Keyboard shortcuts window and function of keyboard shortcut that activates system and dark theme</li>\
