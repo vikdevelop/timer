@@ -378,6 +378,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         
         # Continue timer button
         self.buttonCont = Gtk.Button.new_from_icon_name("media-playback-start-symbolic")
+        self.buttonCont.add_css_class("suggested-action")
         self.buttonCont.connect("clicked", self.on_buttonCont_clicked)
         
         self.timeout_id = None
@@ -389,13 +390,13 @@ class TimerWindow(Gtk.ApplicationWindow):
         if os.path.exists(f'{CONFIG}/counter.json'):
             with open(f'{CONFIG}/counter.json') as jc:
                 jC = json.load(jc)
-            hour_e = jC["hour"]
-            min_e = jC["minutes"]
-            sec_e = jC["seconds"]
+            self.hour_e = jC["hour"]
+            self.min_e = jC["minutes"]
+            self.sec_e = jC["seconds"]
         else:
-            hour_e = "0"
-            min_e = "1"
-            sec_e = "0"
+            self.hour_e = "0"
+            self.min_e = "1"
+            self.sec_e = "0"
         # Layout
         self.timerBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=1)
         self.timerBox.set_margin_start(0)
@@ -407,21 +408,21 @@ class TimerWindow(Gtk.ApplicationWindow):
         
         # Hour entry and label
         self.hour_entry = Adw.EntryRow()
-        self.hour_entry.set_text(hour_e)
+        self.hour_entry.set_text(self.hour_e)
         self.hour_entry.set_title(jT["hours"])
         self.hour_entry.set_alignment(xalign=1)
         self.timerBox.append(self.hour_entry)
         
         # Minute entry and label
         self.minute_entry = Adw.EntryRow()
-        self.minute_entry.set_text(min_e)
+        self.minute_entry.set_text(self.min_e)
         self.minute_entry.set_title(jT["mins"])
         self.minute_entry.set_alignment(xalign=1)
         self.timerBox.append(self.minute_entry)
         
         # Second entry and label
         self.secs_entry = Adw.EntryRow()
-        self.secs_entry.set_text(sec_e)
+        self.secs_entry.set_text(self.sec_e)
         self.secs_entry.set_title(jT["secs"])
         self.secs_entry.set_alignment(xalign=1)
         self.timerBox.append(self.secs_entry)
@@ -709,6 +710,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         """ button "clicked" in event buttonStart. """
         self.menu_button.set_can_focus(True)
         self.menu_button.do_focus(self.menu_button, True)
+        self.check_and_save()
         self.start_timer()
         return True
     
@@ -759,7 +761,6 @@ class TimerWindow(Gtk.ApplicationWindow):
     ## Start timer function
     def start_timer(self):
         """ Run Timer. """
-        self.check_and_save()
         self.headerbar.pack_start(self.buttonStop)
         self.headerbar.pack_start(self.buttonPause)
         self.headerbar.remove(self.buttonStart)
@@ -788,6 +789,9 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.mainBox.remove(self.timingBox)
         self.headerbar.remove(self.buttonPause)
         self.headerbar.remove(self.buttonCont)
+        self.hour_entry.set_text(self.hour_e)
+        self.minute_entry.set_text(self.min_e)
+        self.secs_entry.set_text(self.sec_e)
         try:
             self.timingBox.remove(self.label_pause)
             self.timingBox.remove(self.label_paused_status)
