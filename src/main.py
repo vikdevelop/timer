@@ -374,10 +374,13 @@ class TimerWindow(Gtk.ApplicationWindow):
         
         # Pause timer button
         self.buttonPause = Gtk.Button.new_from_icon_name("media-playback-pause-symbolic")
+        self.buttonPause.add_css_class("circular")
+        self.buttonPause.remove_css_class("flat")
         self.buttonPause.connect("clicked", self.on_buttonPause_clicked)
         
         # Continue timer button
         self.buttonCont = Gtk.Button.new_from_icon_name("media-playback-start-symbolic")
+        self.buttonCont.add_css_class("circular")
         self.buttonCont.add_css_class("suggested-action")
         self.buttonCont.connect("clicked", self.on_buttonCont_clicked)
         
