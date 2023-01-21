@@ -1,4 +1,4 @@
-<h1>Timer</h1>
+<h1><img src="https://raw.githubusercontent.com/vikdevelop/timer/main/flatpak/appicon/com.github.vikdevelop.timer.png" width="32" height="32">Timer</h1>
 
 *Simple countdown timer* that allows:
 
