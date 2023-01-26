@@ -393,13 +393,13 @@ class TimerWindow(Gtk.ApplicationWindow):
         if os.path.exists(f'{CONFIG}/counter.json'):
             with open(f'{CONFIG}/counter.json') as jc:
                 jC = json.load(jc)
-            hour_e = jC["hour"]
-            min_e = jC["minutes"]
-            sec_e = jC["seconds"]
+            self.hour_e = jC["hour"]
+            self.min_e = jC["minutes"]
+            self.sec_e = jC["seconds"]
         else:
-            hour_e = "0"
-            min_e = "1"
-            sec_e = "0"
+            self.hour_e = "0"
+            self.min_e = "1"
+            self.sec_e = "0"
         # Layout
         self.timerBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=1)
         self.timerBox.set_margin_start(0)
@@ -411,21 +411,21 @@ class TimerWindow(Gtk.ApplicationWindow):
         
         # Hour entry and label
         self.hour_entry = Adw.EntryRow()
-        self.hour_entry.set_text(hour_e)
+        self.hour_entry.set_text(self.hour_e)
         self.hour_entry.set_title(jT["hours"])
         self.hour_entry.set_alignment(xalign=1)
         self.timerBox.append(self.hour_entry)
         
         # Minute entry and label
         self.minute_entry = Adw.EntryRow()
-        self.minute_entry.set_text(min_e)
+        self.minute_entry.set_text(self.min_e)
         self.minute_entry.set_title(jT["mins"])
         self.minute_entry.set_alignment(xalign=1)
         self.timerBox.append(self.minute_entry)
         
         # Second entry and label
         self.secs_entry = Adw.EntryRow()
-        self.secs_entry.set_text(sec_e)
+        self.secs_entry.set_text(self.sec_e)
         self.secs_entry.set_title(jT["secs"])
         self.secs_entry.set_alignment(xalign=1)
         self.timerBox.append(self.secs_entry)
@@ -604,73 +604,8 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.adw_action_row_05 = Adw.ActionRow.new()
         self.adw_action_row_05.set_icon_name(icon_name='folder-music-symbolic')
         self.adw_action_row_05.set_title(title=jT["play_beep"])
-        #self.adw_action_row_05.set_subtitle(subtitle=)
         self.adw_action_row_05.add_suffix(widget=self.switch_03)
         self.adw_expander_row.add_row(child=self.adw_action_row_05)
-    
-    # Save app theme configuration
-    def on_switch_01_toggled(self, switch01, GParamBoolean):
-        if switch01.get_active():
-            with open(f'{CONFIG}/theme.json', 'w') as t:
-                t.write('{\n "theme": "dark"\n}')
-            self.style_manager.set_color_scheme(
-                    color_scheme=Adw.ColorScheme.PREFER_DARK
-                )
-        else:
-            with open(f'{CONFIG}/theme.json', 'w') as t:
-                t.write('{\n "theme": "system"\n}')
-            self.style_manager.set_color_scheme(
-                    color_scheme=Adw.ColorScheme.FORCE_LIGHT
-                )
-
-    # Save entry text (custom notification text)
-    def on_entry_text_changed(self, entry):
-        entry = self.entry.get_text()
-        with open(f'{CONFIG}/notification.json', 'w') as n:
-            n.write('{\n "custom-notification": "true",\n "text": "%s"\n}' % entry)
-    
-    # Apply entry text from file (custom notification text)
-    def apply_entry_text(self):
-        if os.path.exists(f'{CONFIG}/notification.json'):
-            with open(f'{CONFIG}/notification.json') as n:
-                jN = json.load(n)
-            text = jN["text"]
-            self.entry.set_text(text)
-    
-    # Save resizable window configuration
-    def on_switch_02_toggled(self, switch02, GParamBoolean):
-        if switch02.get_active():
-            with open(f'{CONFIG}/window.json', 'w') as w:
-                w.write('{\n "resizable": "true"\n}')
-                self.set_resizable(True)
-        else:
-            os.remove(f'{CONFIG}/window.json')
-            self.set_resizable(False)
-    
-    # Save playing beep configuration
-    def on_switch_03_toggled(self, switch03, GParamBoolean):
-        if switch03.get_active():
-            with open(f'{CONFIG}/beep.json', 'w') as t:
-                t.write('{\n "play-beep": "true"\n}')
-        else:
-            with open(f'{CONFIG}/beep.json', 'w') as t:
-                t.write('{\n "play-beep": "false"\n}')
-    
-    # Save Combobox (actions) configuration
-    def on_combo_box_text_s_changed(self, comborow, GParamObject):
-        selected_item_02 = comborow.get_selected_item()
-        with open(f'{CONFIG}/actions.json', 'w') as a:
-            a.write('{\n "action": "%s"\n}' % selected_item_02.get_string())
-    
-    # Save Combobox (spinner size) configuration
-    def on_combo_box_text_changed(self, comborow, GParamObject):
-        selected_item = comborow.get_selected_item()
-        with open(f'{CONFIG}/spinner.json', 'w') as s:
-            s.write('{\n "spinner-size": "%s"\n}' % selected_item.get_string())
-        try:
-            self.spinner.set_size_request(int(selected_item.get_string()), int(selected_item.get_string()))
-        except ValueError:
-            self.spinner.set_size_request(60,60)
             
     # After launching
     ## Set selected theme
@@ -707,42 +642,6 @@ class TimerWindow(Gtk.ApplicationWindow):
         else:
             self.spinner.set_size_request(60,60)
     
-    # Button actions
-    ## Start button action
-    def on_buttonStart_clicked(self, widget, *args):
-        """ button "clicked" in event buttonStart. """
-        self.menu_button.set_can_focus(True)
-        self.menu_button.do_focus(self.menu_button, True)
-        self.start_timer()
-        return True
-    
-    ## Stop button action
-    def on_buttonStop_clicked(self, buttonStop):
-        """ button "clicked" in event buttonStop. """
-        self.menu_button.set_can_focus(True)
-        self.menu_button.do_focus(self.menu_button, True)
-        self.stop_timer()
-        print(jT["timing_ended"])
-    
-    ## Reset button action
-    def on_buttonReset_clicked(self, buttonReset):
-        self.reset_timer()
-        
-    ## Pause button action
-    def on_buttonPause_clicked(self, buttonPause):
-        self.pause_timer()
-        
-    ## Continue button action
-    def on_buttonCont_clicked(self, buttonPause):
-        self.continue_timer()
-    
-    def on_SpinnerWindow_destroy(self, widget, *args):
-        """ procesing closing window """
-        if self.timeout_id:
-            GLib.source_remove(self.timeout_id)
-            self.timeout_id = None
-        Gtk.main_quit()
-    
     # Timer actions
     ## On timeout function
     tick_counter = timedelta(milliseconds = 250) # static object so we don't recreate the object every time
@@ -763,7 +662,6 @@ class TimerWindow(Gtk.ApplicationWindow):
     ## Start timer function
     def start_timer(self):
         """ Run Timer. """
-        self.check_and_save()
         self.headerbar.pack_start(self.buttonStop)
         self.headerbar.pack_start(self.buttonPause)
         self.headerbar.remove(self.buttonStart)
@@ -792,6 +690,9 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.mainBox.remove(self.timingBox)
         self.headerbar.remove(self.buttonPause)
         self.headerbar.remove(self.buttonCont)
+        self.hour_entry.set_text(self.hour_entry.get_text())
+        self.minute_entry.set_text(self.minute_entry.get_text())
+        self.secs_entry.set_text(self.secs_entry.get_text())
         try:
             self.timingBox.remove(self.label_pause)
             self.timingBox.remove(self.label_paused_status)
@@ -836,6 +737,9 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.headerbar.pack_start(self.buttonPause)
         self.headerbar.remove(self.buttonCont)
         self.start_timer()
+        self.hour_entry.set_text(self.hour_e)
+        self.minute_entry.set_text(self.min_e)
+        self.secs_entry.set_text(self.sec_e)
     
     # Function, that allocates labels in the current timing
     def non_activated_session(self):
@@ -962,6 +866,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         if keycode == ord('s'):
             self.menu_button.set_can_focus(True)
             self.menu_button.do_focus(self.menu_button, True)
+            self.check_and_save()
             self.start_timer()
             return True
         if keycode == ord('c'):
@@ -993,6 +898,108 @@ class TimerWindow(Gtk.ApplicationWindow):
             except:
                 print("")
             self.continue_timer()
+            
+    # Adw.ActionRow functions for activate tasks
+    ## Save app theme configuration
+    def on_switch_01_toggled(self, switch01, GParamBoolean):
+        if switch01.get_active():
+            with open(f'{CONFIG}/theme.json', 'w') as t:
+                t.write('{\n "theme": "dark"\n}')
+            self.style_manager.set_color_scheme(
+                    color_scheme=Adw.ColorScheme.PREFER_DARK
+                )
+        else:
+            with open(f'{CONFIG}/theme.json', 'w') as t:
+                t.write('{\n "theme": "system"\n}')
+            self.style_manager.set_color_scheme(
+                    color_scheme=Adw.ColorScheme.FORCE_LIGHT
+                )
+
+    ## Save entry text (custom notification text)
+    def on_entry_text_changed(self, entry):
+        entry = self.entry.get_text()
+        with open(f'{CONFIG}/notification.json', 'w') as n:
+            n.write('{\n "custom-notification": "true",\n "text": "%s"\n}' % entry)
+    
+    ### Apply entry text from file (custom notification text)
+    def apply_entry_text(self):
+        if os.path.exists(f'{CONFIG}/notification.json'):
+            with open(f'{CONFIG}/notification.json') as n:
+                jN = json.load(n)
+            text = jN["text"]
+            self.entry.set_text(text)
+    
+    ## Save resizable window configuration
+    def on_switch_02_toggled(self, switch02, GParamBoolean):
+        if switch02.get_active():
+            with open(f'{CONFIG}/window.json', 'w') as w:
+                w.write('{\n "resizable": "true"\n}')
+                self.set_resizable(True)
+        else:
+            os.remove(f'{CONFIG}/window.json')
+            self.set_resizable(False)
+    
+    ## Save playing beep configuration
+    def on_switch_03_toggled(self, switch03, GParamBoolean):
+        if switch03.get_active():
+            with open(f'{CONFIG}/beep.json', 'w') as t:
+                t.write('{\n "play-beep": "true"\n}')
+        else:
+            with open(f'{CONFIG}/beep.json', 'w') as t:
+                t.write('{\n "play-beep": "false"\n}')
+    
+    ## Save Combobox (actions) configuration
+    def on_combo_box_text_s_changed(self, comborow, GParamObject):
+        selected_item_02 = comborow.get_selected_item()
+        with open(f'{CONFIG}/actions.json', 'w') as a:
+            a.write('{\n "action": "%s"\n}' % selected_item_02.get_string())
+    
+    ## Save Combobox (spinner size) configuration
+    def on_combo_box_text_changed(self, comborow, GParamObject):
+        selected_item = comborow.get_selected_item()
+        with open(f'{CONFIG}/spinner.json', 'w') as s:
+            s.write('{\n "spinner-size": "%s"\n}' % selected_item.get_string())
+        try:
+            self.spinner.set_size_request(int(selected_item.get_string()), int(selected_item.get_string()))
+        except ValueError:
+            self.spinner.set_size_request(60,60)
+            
+    # Button actions
+    ## Start button action
+    def on_buttonStart_clicked(self, widget, *args):
+        """ button "clicked" in event buttonStart. """
+        self.menu_button.set_can_focus(True)
+        self.menu_button.do_focus(self.menu_button, True)
+        self.start_timer()
+        return True
+        self.check_and_save()
+    
+    ## Stop button action
+    def on_buttonStop_clicked(self, buttonStop):
+        """ button "clicked" in event buttonStop. """
+        self.menu_button.set_can_focus(True)
+        self.menu_button.do_focus(self.menu_button, True)
+        self.stop_timer()
+        print(jT["timing_ended"])
+    
+    ## Reset button action
+    def on_buttonReset_clicked(self, buttonReset):
+        self.reset_timer()
+        
+    ## Pause button action
+    def on_buttonPause_clicked(self, buttonPause):
+        self.pause_timer()
+        
+    ## Continue button action
+    def on_buttonCont_clicked(self, buttonPause):
+        self.continue_timer()
+    
+    def on_SpinnerWindow_destroy(self, widget, *args):
+        """ procesing closing window """
+        if self.timeout_id:
+            GLib.source_remove(self.timeout_id)
+            self.timeout_id = None
+        Gtk.main_quit()
         
 # Adw Application class
 class MyApp(Adw.Application):
@@ -1043,3 +1050,4 @@ class MyApp(Adw.Application):
 app = MyApp(application_id="com.github.vikdevelop.timer")
 app.run(sys.argv)
 print(jT["timer_quit"])
+self.check_and_save()
