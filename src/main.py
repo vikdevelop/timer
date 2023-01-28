@@ -647,8 +647,8 @@ class TimerWindow(Gtk.ApplicationWindow):
         # Adw.ActionRow - use in notification
         ## Gtk.Switch
         self.switch_04 = Gtk.Switch.new()
-        if os.path.exists(f'{CONFIG}/use_notification.json'):
-            with open(f'{CONFIG}/use_notification.json') as n:
+        if os.path.exists(f'{CONFIG}/use_in_notification.json'):
+            with open(f'{CONFIG}/use_in_notification.json') as n:
                 jN = json.load(n)
             use_notification = jN["use_in_notification"]
             if use_notification == "false":
@@ -910,6 +910,8 @@ class TimerWindow(Gtk.ApplicationWindow):
             with open(f'{CONFIG}/notification.json') as n:
                 jN = json.load(n)
             text = jN["text"]
+            if text == "":
+                text = f'{jT["timing_finished"]}'
         if os.path.exists(f'{CONFIG}/use_text_alarm.json'):
            with open(f'{CONFIG}/use_text_alarm.json') as a:
                 jA = json.load(a)
@@ -935,7 +937,7 @@ class TimerWindow(Gtk.ApplicationWindow):
                     else:
                         subprocess.call(['notify-send',jT["timer_title"],jT["timing_finished"],'-i','com.github.vikdevelop.timer'])
         else:
-            subprocess.call(['notify-send',jT["timer_title"],jT["timing_finished"],'-i','com.github.vikdevelop.timer'])
+            subprocess.call(['notify-send',jT["timer_title"],notification,'-i','com.github.vikdevelop.timer'])
     
     ## Play beep after finished timer
     def play_beep(self):
@@ -1096,7 +1098,7 @@ class TimerWindow(Gtk.ApplicationWindow):
                 t.write('{\n "use_in_notification": "true"\n}')
         else:
             with open(f'{CONFIG}/use_in_notification.json', 'w') as t:
-                t.write('{\n "play-beep": "false"\n}')
+                t.write('{\n "use_in_notification": "false"\n}')
                 
     ## Save alarm clock text switch config
     def on_switch_05_toggled(self, switch05, GParamBoolean):
