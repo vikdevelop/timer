@@ -51,5 +51,7 @@
     "show_about_dialog": "Показати вікно \"Про застосунок\"",
     "paused": "Пауза.",
     "pause_timer": "Призупинити таймер",
-    "continue_timer": "Продовжити відлік часу"
+    "continue_timer": "Продовжити відлік часу",
+    "use_in_notification": "Use in notification",
+    "use_in_alarm_clock": "Use in alarm clock dialog"
 }
