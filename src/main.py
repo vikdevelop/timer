@@ -880,6 +880,7 @@ class TimerWindow(Gtk.ApplicationWindow):
             
     ## Play alarm clock
     def alarm_clock(self):
+        self.dialogRingstone = Adw.MessageDialog.new(self)
         self.use_custom_text()
         rBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=3)
         rImage = Gtk.Image.new_from_icon_name("history")
@@ -911,14 +912,18 @@ class TimerWindow(Gtk.ApplicationWindow):
                 jN = json.load(n)
             text = jN["text"]
             if text == "":
-                dtext = f'{jT["timing_finished"]}'
+                text = f'{jT["timing_finished"]}'
+        else:
+            text = f'{jT["timing_finished"]}'
         if os.path.exists(f'{CONFIG}/use_text_alarm.json'):
            with open(f'{CONFIG}/use_text_alarm.json') as a:
                 jA = json.load(a)
                 if jA["use_in_alarm_clock_dialog"] == "true":
-                    self.dialogRingstone = Adw.MessageDialog.new(self, text or dtext, None)
+                    self.dialogRingstone.set_heading(text)
                 else:
-                    self.dialogRingstone = Adw.MessageDialog.new(self, jT["timing_finished"], None)
+                    self.dialogRingstone.set_heading(jT["timing_finished"])
+        else:
+            self.dialogRingstone.set_heading(text)
     
     ## Send notification after finished timer (if this action is selected in actions.json config file)
     def notification(self):
@@ -937,7 +942,10 @@ class TimerWindow(Gtk.ApplicationWindow):
                 else:
                     subprocess.call(['notify-send',jT["timer_title"],jT["timing_finished"],'-i','com.github.vikdevelop.timer'])
         else:
-            subprocess.call(['notify-send',jT["timer_title"],notification,'-i','com.github.vikdevelop.timer'])
+            try:
+                subprocess.call(['notify-send',jT["timer_title"],notification,'-i','com.github.vikdevelop.timer'])
+            except:
+                subprocess.call(['notify-send',jT["timer_title"],jT["timing_finished"],'-i','com.github.vikdevelop.timer'])
     
     ## Play beep after finished timer
     def play_beep(self):
