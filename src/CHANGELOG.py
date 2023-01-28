@@ -1,4 +1,11 @@
 # CHANGELOG.py
+release_28 = "<p>2.8</p>\
+<ul>\
+    <li>The keyboard shortcuts Ctrl+P to pause the timer and Ctrl+T to continue in timing are now used instead of the original F6 and F7</li>\
+    <li>Custom text for notification is now possible also use for alarm clock dialog</li>\
+    <li>Minor UI changes</li>\
+</ul>"
+        
 release_27_11 = "<p>2.7_0111</p>\
 <ul>\
 <li>Added option for pause timer (it is possible use button on headerbar next to Stop button or use Keyboard shortcuts F6 for pause, or F7 for continue)</li>\
