@@ -662,7 +662,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         
         ## Adw.ActionRow
         self.adw_action_row_06 = Adw.ActionRow.new()
-        self.adw_action_row_06.set_title(title="Use in notification")
+        self.adw_action_row_06.set_title(title=jT["use_in_notification"])
         self.adw_action_row_06.add_suffix(widget=self.switch_04)
         self.adw_action_row_06.set_activatable_widget(widget=self.switch_04)
         self.cbox.append(self.adw_action_row_06)
@@ -685,7 +685,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         
         ## Adw.ActionRow
         self.adw_action_row_07 = Adw.ActionRow.new()
-        self.adw_action_row_07.set_title(title="Use in alarm clock dialog")
+        self.adw_action_row_07.set_title(title=jT["use_in_alarm_clock"])
         self.adw_action_row_07.add_suffix(widget=self.switch_05)
         self.adw_action_row_07.set_activatable_widget(widget=self.switch_05)
         self.cbox.append(self.adw_action_row_07)
