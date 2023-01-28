@@ -173,6 +173,46 @@ class Dialog_keys(Gtk.Dialog):
         adw_action_row_reset.add_prefix(box_rTimer)
         listbox.append(adw_action_row_reset)
         
+        # Ctrl+P shortcut
+        box_pTimer = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        box_pTimer.set_margin_top(10)
+        box_pTimer.set_margin_bottom(10)
+        
+        button_pc = Gtk.Button.new_with_label("Ctrl")
+        box_pTimer.append(button_pc)
+        
+        label_plus = Gtk.Label.new(str="+")
+        box_pTimer.append(label_plus)
+        
+        button_p = Gtk.Button.new_with_label("P")
+        box_pTimer.append(button_p)
+        
+        adw_action_row_pause = Adw.ActionRow()
+        adw_action_row_pause.set_title(jT["pause_timer"])
+        adw_action_row_pause.set_title_lines(3)
+        adw_action_row_pause.add_prefix(box_pTimer)
+        listbox.append(adw_action_row_pause)
+        
+        # Ctrl+T shortcut
+        box_coTimer = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        box_coTimer.set_margin_top(10)
+        box_coTimer.set_margin_bottom(10)
+        
+        button_tc = Gtk.Button.new_with_label("Ctrl")
+        box_coTimer.append(button_tc)
+        
+        label_plus = Gtk.Label.new(str="+")
+        box_coTimer.append(label_plus)
+        
+        button_t = Gtk.Button.new_with_label("T")
+        box_coTimer.append(button_t)
+        
+        adw_action_row_cont = Adw.ActionRow()
+        adw_action_row_cont.set_title(jT["continue_timer"])
+        adw_action_row_cont.set_title_lines(3)
+        adw_action_row_cont.add_prefix(box_coTimer)
+        listbox.append(adw_action_row_cont)
+        
         # F1 shortcut
         box_about = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         box_about.set_margin_top(10)
@@ -228,34 +268,6 @@ class Dialog_keys(Gtk.Dialog):
         adw_action_row_remove.set_title_lines(3)
         adw_action_row_remove.add_prefix(box_delSetttings)
         listbox.append(adw_action_row_remove)
-        
-        # F6 shortcut
-        box_pSetttings = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
-        box_pSetttings.set_margin_top(10)
-        box_pSetttings.set_margin_bottom(10)
-        
-        button_pTimer = Gtk.Button.new_with_label("F6")
-        box_pSetttings.append(button_pTimer)
-        
-        adw_action_row_pause = Adw.ActionRow()
-        adw_action_row_pause.set_title(jT["pause_timer"])
-        adw_action_row_pause.set_title_lines(3)
-        adw_action_row_pause.add_prefix(box_pSetttings)
-        listbox.append(adw_action_row_pause)
-        
-        # F7 shortcut
-        box_coSetttings = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
-        box_coSetttings.set_margin_top(10)
-        box_coSetttings.set_margin_bottom(10)
-        
-        button_coTimer = Gtk.Button.new_with_label("F7")
-        box_coSetttings.append(button_coTimer)
-        
-        adw_action_row_cont = Adw.ActionRow()
-        adw_action_row_cont.set_title(jT["continue_timer"])
-        adw_action_row_cont.set_title_lines(3)
-        adw_action_row_cont.add_prefix(box_coSetttings)
-        listbox.append(adw_action_row_cont)
         
         self.show()
     # Close button clicked action
@@ -568,20 +580,19 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.adw_expander_row.add_row(child=self.adw_action_row_03)
         
         # Adw ActionRow - custom notification
-        ## Adw.EntryRow
-        self.entry = Adw.EntryRow()
-        self.apply_entry_text()
-        self.entry.set_show_apply_button(True)
-        self.entry.set_enable_emoji_completion(True)
-        self.entry.connect('changed', self.on_entry_text_changed)
+        ## Gtk.Button
+        self.setButton = Gtk.Button.new_from_icon_name('settings-symbolic')
+        self.setButton.add_css_class('circular')
+        self.setButton.add_css_class('flat')
+        self.setButton.connect('clicked', self.custom_notification)
         
         ## Adw.ActionRow
         self.adw_action_row_04 = Adw.ActionRow.new()
         self.adw_action_row_04.set_icon_name(icon_name='notification-symbolic')
         self.adw_action_row_04.set_title(title=jT["custom_notification"])
         self.adw_action_row_04.set_title_lines(2)
-        self.adw_action_row_04.add_suffix(widget=self.entry)
-        self.adw_action_row_04.set_activatable_widget(widget=self.entry)
+        self.adw_action_row_04.add_suffix(widget=self.setButton)
+        self.adw_action_row_04.set_activatable_widget(widget=self.setButton)
         self.adw_expander_row.add_row(child=self.adw_action_row_04)
         
         # Adw ActionRow - play beep
@@ -606,7 +617,87 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.adw_action_row_05.set_title(title=jT["play_beep"])
         self.adw_action_row_05.add_suffix(widget=self.switch_03)
         self.adw_expander_row.add_row(child=self.adw_action_row_05)
-            
+        
+    ## Set custom notification text
+    def custom_notification(self, widget, *args):
+        self.mainBox.remove(self.lbox)
+        self.mainBox.set_valign(Gtk.Align.START)
+        self.mainBox.set_margin_top(15)
+        self.headerbar.remove(self.buttonStart)
+        
+        # Back button
+        self.backButton = Gtk.Button.new_from_icon_name('go-next-symbolic-rtl')
+        self.backButton.connect('clicked', self.cancel_custom_notification)
+        self.headerbar.pack_start(self.backButton)
+        
+        self.cbox = Gtk.ListBox.new()
+        self.cbox.set_selection_mode(mode=Gtk.SelectionMode.NONE)
+        self.cbox.get_style_context().add_class(class_name='boxed-list')
+        self.mainBox.append(self.cbox)
+        
+        # Adw.EntryRow
+        self.entry = Adw.EntryRow()
+        self.apply_entry_text()
+        self.entry.set_title(jT["custom_notification"])
+        self.entry.set_show_apply_button(True)
+        self.entry.set_enable_emoji_completion(True)
+        self.entry.connect('changed', self.on_entry_text_changed)
+        self.cbox.append(self.entry)
+        
+        # Adw.ActionRow - use in notification
+        ## Gtk.Switch
+        self.switch_04 = Gtk.Switch.new()
+        if os.path.exists(f'{CONFIG}/use_notification.json'):
+            with open(f'{CONFIG}/use_notification.json') as n:
+                jN = json.load(n)
+            use_notification = jN["use_in_notification"]
+            if use_notification == "false":
+                self.switch_04.set_active(False)
+            else:
+                self.switch_04.set_active(True)
+        else:
+            self.switch_04.set_active(True)
+        self.switch_04.set_valign(align=Gtk.Align.CENTER)
+        self.switch_04.connect('notify::active', self.on_switch_04_toggled)
+        
+        ## Adw.ActionRow
+        self.adw_action_row_06 = Adw.ActionRow.new()
+        self.adw_action_row_06.set_title(title="Use in notification")
+        self.adw_action_row_06.add_suffix(widget=self.switch_04)
+        self.adw_action_row_06.set_activatable_widget(widget=self.switch_04)
+        self.cbox.append(self.adw_action_row_06)
+        
+        # Adw.ActionRow - use in alarm clock dialog
+        ## Gtk.Switch
+        self.switch_05 = Gtk.Switch.new()
+        if os.path.exists(f'{CONFIG}/use_text_alarm.json'):
+            with open(f'{CONFIG}/use_text_alarm.json') as a:
+                jA = json.load(a)
+            use_dialog = jA["use_in_alarm_clock_dialog"]
+            if use_dialog == "true":
+                self.switch_05.set_active(True)
+            else:
+                self.switch_05.set_active(False)
+        else:
+            self.switch_05.set_active(False)
+        self.switch_05.set_valign(align=Gtk.Align.CENTER)
+        self.switch_05.connect('notify::active', self.on_switch_05_toggled)
+        
+        ## Adw.ActionRow
+        self.adw_action_row_07 = Adw.ActionRow.new()
+        self.adw_action_row_07.set_title(title="Use in alarm clock dialog")
+        self.adw_action_row_07.add_suffix(widget=self.switch_05)
+        self.adw_action_row_07.set_activatable_widget(widget=self.switch_05)
+        self.cbox.append(self.adw_action_row_07)
+        
+    def cancel_custom_notification(self, widget, *args):
+        self.mainBox.append(self.lbox)
+        self.mainBox.remove(self.cbox)
+        self.mainBox.set_valign(Gtk.Align.CENTER)
+        self.mainBox.set_margin_top(0)
+        self.headerbar.pack_start(self.buttonStart)
+        self.headerbar.remove(self.backButton)
+    
     # After launching
     ## Set selected theme
     def set_theme(self):
@@ -662,6 +753,7 @@ class TimerWindow(Gtk.ApplicationWindow):
     ## Start timer function
     def start_timer(self):
         """ Run Timer. """
+        self.check_and_save()
         self.headerbar.pack_start(self.buttonStop)
         self.headerbar.pack_start(self.buttonPause)
         self.headerbar.remove(self.buttonStart)
@@ -690,9 +782,6 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.mainBox.remove(self.timingBox)
         self.headerbar.remove(self.buttonPause)
         self.headerbar.remove(self.buttonCont)
-        self.hour_entry.set_text(self.hour_entry.get_text())
-        self.minute_entry.set_text(self.minute_entry.get_text())
-        self.secs_entry.set_text(self.secs_entry.get_text())
         try:
             self.timingBox.remove(self.label_pause)
             self.timingBox.remove(self.label_paused_status)
@@ -737,9 +826,6 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.headerbar.pack_start(self.buttonPause)
         self.headerbar.remove(self.buttonCont)
         self.start_timer()
-        self.hour_entry.set_text(self.hour_e)
-        self.minute_entry.set_text(self.min_e)
-        self.secs_entry.set_text(self.sec_e)
     
     # Function, that allocates labels in the current timing
     def non_activated_session(self):
@@ -794,7 +880,7 @@ class TimerWindow(Gtk.ApplicationWindow):
             
     ## Play alarm clock
     def alarm_clock(self):
-        dialogRingstone = Adw.MessageDialog.new(self, jT["timing_finished"], None)
+        self.use_custom_text()
         rBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=3)
         rImage = Gtk.Image.new_from_icon_name("history")
         rImage.set_pixel_size(40)
@@ -802,12 +888,12 @@ class TimerWindow(Gtk.ApplicationWindow):
         rLabel = Gtk.Label.new()
         rLabel.set_markup("{} {} {} {} {} {}".format(self.hour_entry.get_text(), jT["hours"], self.minute_entry.get_text(), jT["mins"], self.secs_entry.get_text(), jT["secs"]))
         rBox.append(rLabel)
-        dialogRingstone.set_extra_child(rBox)
-        dialogRingstone.add_response('cancel', jT["cancel"])
-        dialogRingstone.add_response('start', jT["start_again"])
-        dialogRingstone.set_response_appearance('start', Adw.ResponseAppearance.SUGGESTED)
-        dialogRingstone.connect('response', self.start_again)
-        dialogRingstone.show()
+        self.dialogRingstone.set_extra_child(rBox)
+        self.dialogRingstone.add_response('cancel', jT["cancel"])
+        self.dialogRingstone.add_response('start', jT["start_again"])
+        self.dialogRingstone.set_response_appearance('start', Adw.ResponseAppearance.SUGGESTED)
+        self.dialogRingstone.connect('response', self.start_again)
+        self.dialogRingstone.show()
         os.popen("bash /app/src/alarm.sh")
         
     def start_again(self, w, response):
@@ -818,17 +904,36 @@ class TimerWindow(Gtk.ApplicationWindow):
             os.popen('pkill -15 bash && pkill -15 ffplay')
         else:
             os.popen('pkill -15 bash && pkill -15 ffplay')
+            
+    def use_custom_text(self):
+        if os.path.exists(f'{CONFIG}/notification.json'):
+            with open(f'{CONFIG}/notification.json') as n:
+                jN = json.load(n)
+            text = jN["text"]
+        if os.path.exists(f'{CONFIG}/use_text_alarm.json'):
+           with open(f'{CONFIG}/use_text_alarm.json') as a:
+                jA = json.load(a)
+                if jA["use_in_alarm_clock_dialog"] == "true":
+                    self.dialogRingstone = Adw.MessageDialog.new(self, text, None)
+                else:
+                    self.dialogRingstone = Adw.MessageDialog.new(self, jT["timing_finished"], None)
     
     ## Send notification after finished timer (if this action is selected in actions.json config file)
     def notification(self):
-        if os.path.exists(f'{CONFIG}/notification.json'):
-            with open(f'{CONFIG}/notification.json') as r:
-                jR = json.load(r)
-            notification = jR["text"]
-            if notification == "":
-                subprocess.call(['notify-send',jT["timer_title"],jT["timing_finished"],'-i','com.github.vikdevelop.timer'])
-            else:
-                subprocess.call(['notify-send',jT["timer_title"],notification,'-i','com.github.vikdevelop.timer'])
+        if os.path.exists(f'{CONFIG}/use_in_notification.json'):
+            with open(f'{CONFIG}/use_in_notification.json') as n:
+                jN = json.load(n)
+                if jN["use_in_notification"] == "true":
+                    if os.path.exists(f'{CONFIG}/notification.json'):
+                        with open(f'{CONFIG}/notification.json') as r:
+                            jR = json.load(r)
+                        notification = jR["text"]
+                        if notification == "":
+                            subprocess.call(['notify-send',jT["timer_title"],jT["timing_finished"],'-i','com.github.vikdevelop.timer'])
+                        else:
+                            subprocess.call(['notify-send',jT["timer_title"],notification,'-i','com.github.vikdevelop.timer'])
+                    else:
+                        subprocess.call(['notify-send',jT["timer_title"],jT["timing_finished"],'-i','com.github.vikdevelop.timer'])
         else:
             subprocess.call(['notify-send',jT["timer_title"],jT["timing_finished"],'-i','com.github.vikdevelop.timer'])
     
@@ -874,6 +979,14 @@ class TimerWindow(Gtk.ApplicationWindow):
             self.stop_timer()
         if keycode == ord('r'):
             self.reset_timer()
+        if keycode == ord('p'):
+            self.pause_timer()
+        if keycode == ord('t'):
+            try:
+                self.timingBox.remove(label_pause)
+            except:
+                print("")
+            self.continue_timer()
         if keycode == 0xFFBF:
             self.style_manager.set_color_scheme(
                     color_scheme=Adw.ColorScheme.PREFER_DARK
@@ -890,15 +1003,43 @@ class TimerWindow(Gtk.ApplicationWindow):
             self.switch_01.set_active(False)
         if keycode == 0xFFC2:
             self.dialog_reset = Dialog_reset(self)
-        if keycode == 0xFFC3:
-            self.pause_timer()
-        if keycode == 0xFFC4:
-            try:
-                self.timingBox.remove(label_pause)
-            except:
-                print("")
-            self.continue_timer()
             
+    # Button actions
+    ## Start button action
+    def on_buttonStart_clicked(self, widget, *args):
+        """ button "clicked" in event buttonStart. """
+        self.menu_button.set_can_focus(True)
+        self.menu_button.do_focus(self.menu_button, True)
+        self.start_timer()
+        return True
+    
+    ## Stop button action
+    def on_buttonStop_clicked(self, buttonStop):
+        """ button "clicked" in event buttonStop. """
+        self.menu_button.set_can_focus(True)
+        self.menu_button.do_focus(self.menu_button, True)
+        self.stop_timer()
+        print(jT["timing_ended"])
+    
+    ## Reset button action
+    def on_buttonReset_clicked(self, buttonReset):
+        self.reset_timer()
+        
+    ## Pause button action
+    def on_buttonPause_clicked(self, buttonPause):
+        self.pause_timer()
+        
+    ## Continue button action
+    def on_buttonCont_clicked(self, buttonPause):
+        self.continue_timer()
+    
+    def on_SpinnerWindow_destroy(self, widget, *args):
+        """ procesing closing window """
+        if self.timeout_id:
+            GLib.source_remove(self.timeout_id)
+            self.timeout_id = None
+        Gtk.main_quit()
+        
     # Adw.ActionRow functions for activate tasks
     ## Save app theme configuration
     def on_switch_01_toggled(self, switch01, GParamBoolean):
@@ -947,6 +1088,24 @@ class TimerWindow(Gtk.ApplicationWindow):
         else:
             with open(f'{CONFIG}/beep.json', 'w') as t:
                 t.write('{\n "play-beep": "false"\n}')
+                
+    ## Save notification text switch config
+    def on_switch_04_toggled(self, switch04, GParamBoolean):
+        if switch04.get_active():
+            with open(f'{CONFIG}/use_in_notification.json', 'w') as t:
+                t.write('{\n "use_in_notification": "true"\n}')
+        else:
+            with open(f'{CONFIG}/use_in_notification.json', 'w') as t:
+                t.write('{\n "play-beep": "false"\n}')
+                
+    ## Save alarm clock text switch config
+    def on_switch_05_toggled(self, switch05, GParamBoolean):
+        if switch05.get_active():
+            with open(f'{CONFIG}/use_text_alarm.json', 'w') as t:
+                t.write('{\n "use_in_alarm_clock_dialog": "true"\n}')
+        else:
+            with open(f'{CONFIG}/use_text_alarm.json', 'w') as t:
+                t.write('{\n "use_in_alarm_clock_dialog": "false"\n}')
     
     ## Save Combobox (actions) configuration
     def on_combo_box_text_s_changed(self, comborow, GParamObject):
@@ -963,43 +1122,6 @@ class TimerWindow(Gtk.ApplicationWindow):
             self.spinner.set_size_request(int(selected_item.get_string()), int(selected_item.get_string()))
         except ValueError:
             self.spinner.set_size_request(60,60)
-            
-    # Button actions
-    ## Start button action
-    def on_buttonStart_clicked(self, widget, *args):
-        """ button "clicked" in event buttonStart. """
-        self.menu_button.set_can_focus(True)
-        self.menu_button.do_focus(self.menu_button, True)
-        self.start_timer()
-        return True
-        self.check_and_save()
-    
-    ## Stop button action
-    def on_buttonStop_clicked(self, buttonStop):
-        """ button "clicked" in event buttonStop. """
-        self.menu_button.set_can_focus(True)
-        self.menu_button.do_focus(self.menu_button, True)
-        self.stop_timer()
-        print(jT["timing_ended"])
-    
-    ## Reset button action
-    def on_buttonReset_clicked(self, buttonReset):
-        self.reset_timer()
-        
-    ## Pause button action
-    def on_buttonPause_clicked(self, buttonPause):
-        self.pause_timer()
-        
-    ## Continue button action
-    def on_buttonCont_clicked(self, buttonPause):
-        self.continue_timer()
-    
-    def on_SpinnerWindow_destroy(self, widget, *args):
-        """ procesing closing window """
-        if self.timeout_id:
-            GLib.source_remove(self.timeout_id)
-            self.timeout_id = None
-        Gtk.main_quit()
         
 # Adw Application class
 class MyApp(Adw.Application):
@@ -1018,7 +1140,7 @@ class MyApp(Adw.Application):
     def on_about_action(self, action, param):
         dialog = Adw.AboutWindow(transient_for=app.get_active_window())
         dialog.set_application_name(jT["timer_title"])
-        dialog.set_version("2.7")
+        dialog.set_version("2.8")
         dialog.set_release_notes(release_27_11 + release_27I + release_27)
         dialog.set_developer_name("vikdevelop")
         dialog.set_license_type(Gtk.License(Gtk.License.GPL_3_0))
@@ -1050,4 +1172,3 @@ class MyApp(Adw.Application):
 app = MyApp(application_id="com.github.vikdevelop.timer")
 app.run(sys.argv)
 print(jT["timer_quit"])
-self.check_and_save()
