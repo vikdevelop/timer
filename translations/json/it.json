@@ -51,5 +51,7 @@
     "show_about_dialog": "Mostra la finestra Info sull'app",
     "paused": "In pausa.",
     "pause_timer": "Timer di pausa",
-    "continue_timer": "Continua a conteggiare"
+    "continue_timer": "Continua a conteggiare",
+    "use_in_notification": "Use in notification",
+    "use_in_alarm_clock": "Use in alarm clock dialog"
 }
