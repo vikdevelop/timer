@@ -48,8 +48,10 @@
     "activate_dark_theme": "Activate dark theme",
     "activate_system_theme": "Back to system theme",
     "show_about_dialog": "Show About app window",
-    "translator_credits": "vikdevelop https://github.com/vikdevelop",
     "paused": "Paused.",
     "pause_timer": "Pause timer",
-    "continue_timer": "Continue in timing"
+    "continue_timer": "Continue in timing",
+    "use_in_notification": "Use in notification",
+    "use_in_alarm_clock": "Use in alarm clock dialog",
+    "translator_credits": "vikdevelop https://github.com/vikdevelop"
 }
