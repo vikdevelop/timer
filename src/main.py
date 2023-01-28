@@ -911,12 +911,12 @@ class TimerWindow(Gtk.ApplicationWindow):
                 jN = json.load(n)
             text = jN["text"]
             if text == "":
-                text = f'{jT["timing_finished"]}'
+                dtext = f'{jT["timing_finished"]}'
         if os.path.exists(f'{CONFIG}/use_text_alarm.json'):
            with open(f'{CONFIG}/use_text_alarm.json') as a:
                 jA = json.load(a)
                 if jA["use_in_alarm_clock_dialog"] == "true":
-                    self.dialogRingstone = Adw.MessageDialog.new(self, text, None)
+                    self.dialogRingstone = Adw.MessageDialog.new(self, text or dtext, None)
                 else:
                     self.dialogRingstone = Adw.MessageDialog.new(self, jT["timing_finished"], None)
     
