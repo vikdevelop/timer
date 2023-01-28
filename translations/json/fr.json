@@ -51,5 +51,7 @@
     "show_about_dialog": "Show About app window",
     "paused": "Paused.",
     "pause_timer": "Pause timer",
-    "continue_timer": "Continue in timing"
+    "continue_timer": "Continue in timing",
+    "use_in_alarm_clock": "Use in alarm clock dialog",
+    "use_in_notification": "Use in notification"
 }
