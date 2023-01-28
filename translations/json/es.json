@@ -51,5 +51,7 @@
     "show_about_dialog": "Mostrar la ventana Acerca de la aplicación",
     "paused": "En pausa.",
     "pause_timer": "Pausar el Temporizador",
-    "continue_timer": "Continuar el tiempo"
+    "continue_timer": "Continuar el tiempo",
+    "use_in_notification": "Use in notification",
+    "use_in_alarm_clock": "Use in alarm clock dialog"
 }
