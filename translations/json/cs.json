@@ -52,6 +52,6 @@
     "paused": "Pozastaveno.",
     "pause_timer": "Pozastavit časovač",
     "continue_timer": "Pokračovat v časování",
-    "use_in_notification": "Use in notification",
-    "use_in_alarm_clock": "Use in alarm clock dialog"
+    "use_in_notification": "Použít v oznámení",
+    "use_in_alarm_clock": "Použít v dialogovém okně budíku"
 }
