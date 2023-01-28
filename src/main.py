@@ -581,7 +581,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         
         # Adw ActionRow - custom notification
         ## Gtk.Button
-        self.setButton = Gtk.Button.new_from_icon_name('settings-symbolic')
+        self.setButton = Gtk.Button.new_from_icon_name('settings-app-symbolic')
         self.setButton.add_css_class('circular')
         self.setButton.add_css_class('flat')
         self.setButton.connect('clicked', self.custom_notification)
@@ -656,7 +656,7 @@ class TimerWindow(Gtk.ApplicationWindow):
             else:
                 self.switch_04.set_active(True)
         else:
-            self.switch_04.set_active(True)
+            self.switch_04.set_active(False)
         self.switch_04.set_valign(align=Gtk.Align.CENTER)
         self.switch_04.connect('notify::active', self.on_switch_04_toggled)
         
