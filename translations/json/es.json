@@ -52,6 +52,6 @@
     "paused": "En pausa.",
     "pause_timer": "Pausar el Temporizador",
     "continue_timer": "Continuar el tiempo",
-    "use_in_notification": "Use in notification",
-    "use_in_alarm_clock": "Use in alarm clock dialog"
+    "use_in_notification": "Uso en la notificación",
+    "use_in_alarm_clock": "Usar en el cuadro de diálogo del reloj de alarma"
 }
