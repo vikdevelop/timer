@@ -44,4 +44,4 @@ body:
     id: output
     attributes:
       label: Output in terminal
-      description: If is it possible, attach output of command from terminal that is: ```flatpak run com.github.vikdevelop.timer```
+      description: "If is it possible, attach output of command from terminal that is: ```flatpak run com.github.vikdevelop.timer```"
