@@ -13,11 +13,9 @@ body:
     id: soulution1
     attributes:
       label: Describe the solution you would like
-      description: ""
     validations:
       required: true
   - type: textarea
     id: AnotherSolution
     attributes:
       label: Do you have another solution?
-      description: ""
