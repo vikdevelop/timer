@@ -1,5 +1,8 @@
-name: Bug
-description: Bug report
+
+name: Bug report
+description: Report bug.
+title: "[Bug]: "
+labels: [bug]
 body:
   - type: input
     id: distro
