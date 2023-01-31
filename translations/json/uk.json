@@ -52,6 +52,6 @@
     "paused": "Пауза.",
     "pause_timer": "Призупинити таймер",
     "continue_timer": "Продовжити відлік часу",
-    "use_in_notification": "Use in notification",
-    "use_in_alarm_clock": "Use in alarm clock dialog"
+    "use_in_notification": "Використовувати в сповіщеннях",
+    "use_in_alarm_clock": "Використання в діалоговому вікні будильника"
 }
