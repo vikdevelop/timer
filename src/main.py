@@ -456,145 +456,36 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.adw_expander_row.set_subtitle(subtitle=jT["preferences_desc"])
         self.lbox.append(child=self.adw_expander_row)
         
-        # Adw.ComboRow - spinner size
-        sizes = Gtk.StringList.new(strings=[
-            '5', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55', '60 (%s)' % jT["default"], '65', '70', '75', '80'
-        ])
-        
-        self.adw_action_row_00 = Adw.ComboRow.new()
-        self.adw_action_row_00.set_icon_name(icon_name='content-loading-symbolic')
-        self.adw_action_row_00.set_title(title=jT["spinner"])
-        self.adw_action_row_00.set_model(model=sizes)
-        self.adw_action_row_00.set_subtitle(subtitle=jT["spinner_size_desc"])
-        self.adw_action_row_00.set_subtitle_lines(2)
-        self.adw_action_row_00.connect('notify::selected-item', self.on_combo_box_text_changed)
-        self.adw_expander_row.add_row(child=self.adw_action_row_00)
-        
-        if os.path.exists(f'{CONFIG}/spinner.json'):
-            with open(f'{CONFIG}/spinner.json') as p:
-                jsonSpinner = json.load(p)
-            combobox_s = jsonSpinner["spinner-size"]
-            if combobox_s == "5":
-                self.adw_action_row_00.set_selected(0)
-            elif combobox_s == "10":
-                self.adw_action_row_00.set_selected(1)
-            elif combobox_s == "15":
-                self.adw_action_row_00.set_selected(2)
-            elif combobox_s == "20":
-                self.adw_action_row_00.set_selected(3)
-            elif combobox_s == "25":
-                self.adw_action_row_00.set_selected(4)
-            elif combobox_s == "30":
-                self.adw_action_row_00.set_selected(5)
-            elif combobox_s == "35":
-                self.adw_action_row_00.set_selected(6)
-            elif combobox_s == "40":
-                self.adw_action_row_00.set_selected(7)
-            elif combobox_s == "45":
-                self.adw_action_row_00.set_selected(8)
-            elif combobox_s == "50":
-                self.adw_action_row_00.set_selected(9)
-            elif combobox_s == "55":
-                self.adw_action_row_00.set_selected(10)
-            elif combobox_s == '60 (%s)' % jT["default"]:
-                self.adw_action_row_00.set_selected(11)
-            elif combobox_s == "65":
-                self.adw_action_row_00.set_selected(12)
-            elif combobox_s == "70":
-                self.adw_action_row_00.set_selected(13)
-            elif combobox_s == "75":
-                self.adw_action_row_00.set_selected(14)
-            elif combobox_s == "80":
-                self.adw_action_row_00.set_selected(15)
-        else:
-            self.adw_action_row_00.set_selected(11)
-        
         # Adw.ComboRow - Actions
         actions = Gtk.StringList.new(strings=[
             jT["default"], jT["shut_down"], jT["reboot"], jT["suspend"], jT["play_alarm_clock"]
         ])
         
-        self.adw_action_row_01 = Adw.ComboRow.new()
-        self.adw_action_row_01.set_icon_name(icon_name='timer-symbolic')
-        self.adw_action_row_01.set_title(title=jT["action_after_timing"])
-        self.adw_action_row_01.set_title_lines(2)
-        self.adw_action_row_01.set_model(model=actions)
-        self.adw_action_row_01.connect('notify::selected-item', self.on_combo_box_text_s_changed)
-        self.adw_expander_row.add_row(child=self.adw_action_row_01)
+        self.adw_action_row_timer = Adw.ComboRow.new()
+        self.adw_action_row_timer.set_icon_name(icon_name='timer-symbolic')
+        self.adw_action_row_timer.set_title(title=jT["action_after_timing"])
+        self.adw_action_row_timer.set_title_lines(2)
+        self.adw_action_row_timer.set_model(model=actions)
+        self.adw_action_row_timer.connect('notify::selected-item', self.on_combo_box_text_s_changed)
+        self.adw_expander_row.add_row(child=self.adw_action_row_timer)
         
         if os.path.exists(f'{CONFIG}/actions.json'):
             with open(f'{CONFIG}/actions.json') as p:
                 jsonSpinner = json.load(p)
             combobox_s = jsonSpinner["action"]
             if combobox_s == jT["default"]:
-                self.adw_action_row_01.set_selected(0)
+                self.adw_action_row_timer.set_selected(0)
             elif combobox_s == jT["shut_down"]:
-                self.adw_action_row_01.set_selected(1)
+                self.adw_action_row_timer.set_selected(1)
             elif combobox_s == jT["reboot"]:
-                self.adw_action_row_01.set_selected(2)
+                self.adw_action_row_timer.set_selected(2)
             elif combobox_s == jT["suspend"]:
-                self.adw_action_row_01.set_selected(3)
+                self.adw_action_row_timer.set_selected(3)
             elif combobox_s == jT["play_alarm_clock"]:
-                self.adw_action_row_01.set_selected(4)
+                self.adw_action_row_timer.set_selected(4)
         else:
-            self.adw_action_row_01.set_selected(0)
-        
-        # Adw ActionRow - Theme configuration
-        ## Gtk.Switch
-        self.switch_01 = Gtk.Switch.new()
-        if os.path.exists(f'{CONFIG}/theme.json'):
-            with open(f'{CONFIG}/theme.json') as r:
-                jR = json.load(r)
-            dark = jR["theme"]
-            if dark == "dark":
-                self.switch_01.set_active(True)
-        self.switch_01.set_valign(align=Gtk.Align.CENTER)
-        self.switch_01.connect('notify::active', self.on_switch_01_toggled)
-        
-        ## Adw.ActionRow
-        self.adw_action_row_02 = Adw.ActionRow.new()
-        self.adw_action_row_02.set_icon_name(icon_name='weather-clear-night-symbolic')
-        self.adw_action_row_02.set_title(title=jT["dark_theme"])
-        self.adw_action_row_02.set_subtitle(subtitle=jT["theme_desc"])
-        self.adw_action_row_02.add_suffix(widget=self.switch_01)
-        self.adw_expander_row.add_row(child=self.adw_action_row_02)
-        
-        # Adw ActionRow - Resizable of Window configuration
-        ## Gtk.Switch
-        self.switch_02 = Gtk.Switch.new()
-        if os.path.exists(f'{CONFIG}/window.json'):
-            with open(f'{CONFIG}/window.json') as r:
-                jR = json.load(r)
-            resizable = jR["resizable"]
-            if resizable == "true":
-                self.switch_02.set_active(True)
-        self.switch_02.set_valign(align=Gtk.Align.CENTER)
-        self.switch_02.connect('notify::active', self.on_switch_02_toggled)
-        
-        ## Adw.ActionRow
-        self.adw_action_row_03 = Adw.ActionRow.new()
-        self.adw_action_row_03.set_icon_name(icon_name='window-maximize-symbolic')
-        self.adw_action_row_03.set_title(title=jT["resizable_of_window"])
-        self.adw_action_row_03.add_suffix(widget=self.switch_02)
-        self.adw_action_row_03.set_activatable_widget(widget=self.switch_02)
-        self.adw_expander_row.add_row(child=self.adw_action_row_03)
-        
-        # Adw ActionRow - custom notification
-        ## Gtk.Button
-        self.setButton = Gtk.Button.new_from_icon_name('settings-app-symbolic')
-        self.setButton.add_css_class('circular')
-        self.setButton.add_css_class('flat')
-        self.setButton.connect('clicked', self.custom_notification)
-        
-        ## Adw.ActionRow
-        self.adw_action_row_04 = Adw.ActionRow.new()
-        self.adw_action_row_04.set_icon_name(icon_name='notification-symbolic')
-        self.adw_action_row_04.set_title(title=jT["custom_notification"])
-        self.adw_action_row_04.set_title_lines(2)
-        self.adw_action_row_04.add_suffix(widget=self.setButton)
-        self.adw_action_row_04.set_activatable_widget(widget=self.setButton)
-        self.adw_expander_row.add_row(child=self.adw_action_row_04)
-        
+            self.adw_action_row_timer.set_selected(0)
+            
         # Adw ActionRow - play beep
         ## Gtk.Switch
         self.switch_03 = Gtk.Switch.new()
@@ -612,11 +503,44 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.switch_03.connect('notify::active', self.on_switch_03_toggled)
         
         ## Adw.ActionRow
-        self.adw_action_row_05 = Adw.ActionRow.new()
-        self.adw_action_row_05.set_icon_name(icon_name='folder-music-symbolic')
-        self.adw_action_row_05.set_title(title=jT["play_beep"])
-        self.adw_action_row_05.add_suffix(widget=self.switch_03)
-        self.adw_expander_row.add_row(child=self.adw_action_row_05)
+        self.adw_action_row_beep = Adw.ActionRow.new()
+        self.adw_action_row_beep.set_icon_name(icon_name='folder-music-symbolic')
+        self.adw_action_row_beep.set_title(title=jT["play_beep"])
+        self.adw_action_row_beep.add_suffix(widget=self.switch_03)     
+        self.adw_action_row_beep.set_activatable_widget(widget=self.switch_03)
+        self.adw_expander_row.add_row(child=self.adw_action_row_beep)
+        
+        # Adw ActionRow - custom notification
+        ## Gtk.Button
+        self.setButton = Gtk.Button.new_from_icon_name('go-next-symbolic')
+        self.setButton.add_css_class('circular')
+        self.setButton.add_css_class('flat')
+        self.setButton.connect('clicked', self.custom_notification)
+        
+        ## Adw.ActionRow
+        self.adw_action_row_notification = Adw.ActionRow.new()
+        self.adw_action_row_notification.set_icon_name(icon_name='notification-symbolic')
+        self.adw_action_row_notification.set_title(title=jT["custom_notification"])
+        self.adw_action_row_notification.set_title_lines(2)
+        self.adw_action_row_notification.add_suffix(widget=self.setButton)
+        self.adw_action_row_notification.set_activatable_widget(widget=self.setButton)
+        self.adw_expander_row.add_row(child=self.adw_action_row_notification)
+        
+        # Adw.ActionRow - advanced settings
+        ## Gtk.Button
+        self.advButton = Gtk.Button.new_from_icon_name('go-next-symbolic')
+        self.advButton.add_css_class('circular')
+        self.advButton.add_css_class('flat')
+        self.advButton.connect('clicked', self.advanced)
+        
+        ## Adw.ActionRow
+        self.adw_action_row_adv = Adw.ActionRow.new()
+        self.adw_action_row_adv.set_icon_name(icon_name='preferences-other-symbolic')
+        self.adw_action_row_adv.set_title(title="Advanced")
+        self.adw_action_row_adv.set_title_lines(2)
+        self.adw_action_row_adv.add_suffix(widget=self.advButton)
+        self.adw_action_row_adv.set_activatable_widget(widget=self.advButton)
+        self.adw_expander_row.add_row(child=self.adw_action_row_adv)
         
     ## Set custom notification text
     def custom_notification(self, widget, *args):
@@ -697,6 +621,144 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.mainBox.set_margin_top(0)
         self.headerbar.pack_start(self.buttonStart)
         self.headerbar.remove(self.backButton)
+        
+    ## Advanced settings section
+    def advanced(self, widget, *args):
+        self.mainBox.remove(self.lbox)
+        self.mainBox.set_valign(Gtk.Align.START)
+        self.mainBox.set_margin_top(15)
+        self.headerbar.remove(self.buttonStart)
+        
+        # Back button
+        self.backButton_A = Gtk.Button.new_from_icon_name('go-next-symbolic-rtl')
+        self.backButton_A.connect('clicked', self.cancel_advanced)
+        self.headerbar.pack_start(self.backButton_A)
+        
+        self.abox = Gtk.ListBox.new()
+        self.abox.set_selection_mode(mode=Gtk.SelectionMode.NONE)
+        self.abox.get_style_context().add_class(class_name='boxed-list')
+        self.mainBox.append(self.abox)
+        
+        # Adw.ComboRow - spinner size
+        sizes = Gtk.StringList.new(strings=[
+            '5', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55', '60 (%s)' % jT["default"], '65', '70', '75', '80'
+        ])
+        
+        self.adw_action_row_spinner = Adw.ComboRow.new()
+        self.adw_action_row_spinner.set_icon_name(icon_name='content-loading-symbolic')
+        self.adw_action_row_spinner.set_title(title=jT["spinner"])
+        self.adw_action_row_spinner.set_model(model=sizes)
+        self.adw_action_row_spinner.set_subtitle(subtitle=jT["spinner_size_desc"])
+        self.adw_action_row_spinner.set_subtitle_lines(2)
+        self.adw_action_row_spinner.connect('notify::selected-item', self.on_combo_box_text_changed)
+        self.abox.append(self.adw_action_row_spinner)
+        
+        if os.path.exists(f'{CONFIG}/spinner.json'):
+            with open(f'{CONFIG}/spinner.json') as p:
+                jsonSpinner = json.load(p)
+            combobox_s = jsonSpinner["spinner-size"]
+            if combobox_s == "5":
+                self.adw_action_row_spinner.set_selected(0)
+            elif combobox_s == "10":
+                self.adw_action_row_spinner.set_selected(1)
+            elif combobox_s == "15":
+                self.adw_action_row_spinner.set_selected(2)
+            elif combobox_s == "20":
+                self.adw_action_row_spinner.set_selected(3)
+            elif combobox_s == "25":
+                self.adw_action_row_spinner.set_selected(4)
+            elif combobox_s == "30":
+                self.adw_action_row_spinner.set_selected(5)
+            elif combobox_s == "35":
+                self.adw_action_row_spinner.set_selected(6)
+            elif combobox_s == "40":
+                self.adw_action_row_spinner.set_selected(7)
+            elif combobox_s == "45":
+                self.adw_action_row_spinner.set_selected(8)
+            elif combobox_s == "50":
+                self.adw_action_row_spinner.set_selected(9)
+            elif combobox_s == "55":
+                self.adw_action_row_spinner.set_selected(10)
+            elif combobox_s == '60 (%s)' % jT["default"]:
+                self.adw_action_row_spinner.set_selected(11)
+            elif combobox_s == "65":
+                self.adw_action_row_spinner.set_selected(12)
+            elif combobox_s == "70":
+                self.adw_action_row_spinner.set_selected(13)
+            elif combobox_s == "75":
+                self.adw_action_row_spinner.set_selected(14)
+            elif combobox_s == "80":
+                self.adw_action_row_spinner.set_selected(15)
+        else:
+            self.adw_action_row_spinner.set_selected(11)
+            
+        # Adw ActionRow - Theme configuration
+        ## Gtk.Switch
+        self.switch_01 = Gtk.Switch.new()
+        if os.path.exists(f'{CONFIG}/theme.json'):
+            with open(f'{CONFIG}/theme.json') as r:
+                jR = json.load(r)
+            dark = jR["theme"]
+            if dark == "dark":
+                self.switch_01.set_active(True)
+        self.switch_01.set_valign(align=Gtk.Align.CENTER)
+        self.switch_01.connect('notify::active', self.on_switch_01_toggled)
+        
+        ## Adw.ActionRow
+        self.adw_action_row_theme = Adw.ActionRow.new()
+        self.adw_action_row_theme.set_icon_name(icon_name='weather-clear-night-symbolic')
+        self.adw_action_row_theme.set_title(title=jT["dark_theme"])
+        self.adw_action_row_theme.set_subtitle(subtitle=jT["theme_desc"])
+        self.adw_action_row_theme.add_suffix(widget=self.switch_01)
+        self.abox.append(self.adw_action_row_theme)
+        
+        # Adw ActionRow - Resizable of Window configuration
+        ## Gtk.Switch
+        self.switch_02 = Gtk.Switch.new()
+        if os.path.exists(f'{CONFIG}/window.json'):
+            with open(f'{CONFIG}/window.json') as r:
+                jR = json.load(r)
+            resizable = jR["resizable"]
+            if resizable == "true":
+                self.switch_02.set_active(True)
+        self.switch_02.set_valign(align=Gtk.Align.CENTER)
+        self.switch_02.connect('notify::active', self.on_switch_02_toggled)
+        
+        ## Adw.ActionRow
+        self.adw_action_row_window = Adw.ActionRow.new()
+        self.adw_action_row_window.set_icon_name(icon_name='window-maximize-symbolic')
+        self.adw_action_row_window.set_title(title=jT["resizable_of_window"])
+        self.adw_action_row_window.add_suffix(widget=self.switch_02)
+        self.adw_action_row_window.set_activatable_widget(widget=self.switch_02)
+        self.abox.append(self.adw_action_row_window)
+        
+        ## Gtk.Switch
+        self.switch_06 = Gtk.Switch.new()
+        if os.path.exists(f'{CONFIG}/countdown.json'):
+            with open(f'{CONFIG}/countdown.json') as r:
+                jR = json.load(r)
+            vertical = jR["vertical_time_text"]
+            if vertical == "true":
+                self.switch_06.set_active(True)
+        self.switch_06.set_valign(align=Gtk.Align.CENTER)
+        self.switch_06.connect('notify::active', self.on_switch_06_toggled)
+        
+        # Adw.ActionRow - show vertical countdown timer text
+        ## Adw.ActionRow
+        self.adw_action_row_verText = Adw.ActionRow.new()
+        self.adw_action_row_verText.set_icon_name(icon_name='history-symbolic')
+        self.adw_action_row_verText.set_title(title="Show vertical time text in countdown page")
+        self.adw_action_row_verText.add_suffix(widget=self.switch_06)
+        self.adw_action_row_verText.set_activatable_widget(widget=self.switch_06)
+        self.abox.append(self.adw_action_row_verText)
+        
+    def cancel_advanced(self, widget, *args):
+        self.mainBox.append(self.lbox)
+        self.mainBox.remove(self.abox)
+        self.mainBox.set_valign(Gtk.Align.CENTER)
+        self.mainBox.set_margin_top(0)
+        self.headerbar.pack_start(self.buttonStart)
+        self.headerbar.remove(self.backButton_A)
     
     # After launching
     ## Set selected theme
@@ -745,9 +807,7 @@ class TimerWindow(Gtk.ApplicationWindow):
             self.session()
             print(jT["timing_finished"])
             return False
-        self.label.set_markup("<span size='16700'>{}</span>".format(
-            strfdelta(self.counter, "<b>{hours}</b> %s <b>{minutes}</b> %s <b>{seconds}</b> %s" % (jT["hours"], jT["mins"], jT["secs"]))
-        ))
+        self.set_time_text()
         return True
     
     ## Start timer function
@@ -762,11 +822,29 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.non_activated_session()
         self.counter = timedelta(hours = int(self.hour_entry.get_text()), minutes = int(self.minute_entry.get_text()), seconds = int(self.secs_entry.get_text()))
         #self.play_beep()
-        self.label.set_markup("<span size='16700'>{}</span>".format(
-            strfdelta(self.counter, "<b>{hours}</b> %s <b>{minutes}</b> %s <b>{seconds}</b> %s" % (jT["hours"], jT["mins"], jT["secs"]))
-        ))
-        self.spinner.start()
+        self.set_time_text()
         self.timeout_id = GLib.timeout_add(250, self.on_timeout, None)
+        
+    ### Set time text function
+    def set_time_text(self):
+        if os.path.exists(f'{CONFIG}/countdown.json'):
+            with open(f'{CONFIG}/countdown.json') as c:
+                jC = json.load(c)
+            self.vertical_text = jC["vertical_time_text"]
+            if self.vertical_text == "true":
+                self.label.set_markup("<span size='31200'>{}</span>".format(
+                    strfdelta(self.counter, "<b>{hours}</b> %s \n<b>{minutes}</b> %s \n<b>{seconds}</b> %s" % (jT["hours"], jT["mins"], jT["secs"]))
+                ))
+            else:
+                self.label.set_markup("<span size='20100'>{}</span>".format(
+                    strfdelta(self.counter, "<b>{hours}</b> %s <b>{minutes}</b> %s <b>{seconds}</b> %s" % (jT["hours"], jT["mins"], jT["secs"]))
+                ))
+                self.spinner.start()
+        else:
+            self.label.set_markup("<span size='20100'>{}</span>".format(
+                    strfdelta(self.counter, "<b>{hours}</b> %s <b>{minutes}</b> %s <b>{seconds}</b> %s" % (jT["hours"], jT["mins"], jT["secs"]))
+                ))
+            self.spinner.start()
         
     ## Stop timer function
     def stop_timer(self):
@@ -806,7 +884,10 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.label_paused_status = Gtk.Label.new(str=jT["paused"])
         self.timingBox.remove(self.label_action)
         self.timingBox.append(self.label_paused_status)
-        self.label_pause.set_markup("<b><span size='16700'>{}</span></b>".format(self.label.get_text()))
+        if self.vertical_text == "true":
+            self.label_pause.set_markup("<b><span size='31200'>{}</span></b>".format(self.label.get_text()))
+        else:
+            self.label_pause.set_markup("<b><span size='20100'>{}</span></b>".format(self.label.get_text()))
         self.timingBox.append(self.label_pause)
         self.timingBox.remove(self.label)
         self.headerbar.remove(self.buttonPause)
@@ -814,7 +895,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         
     ## Continue timer
     def continue_timer(self):
-        self.spinner.start()
+        #self.spinner.start()
         get_label_time = self.label.get_text()
         res = [int(i) for i in get_label_time.split() if i.isdigit()]
         print(str(res))
@@ -883,6 +964,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.dialogRingstone = Adw.MessageDialog.new(self)
         self.use_custom_text()
         rBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=3)
+        self.adw_action_row_beep.add_suffix(widget=self.switch_03)      
         rImage = Gtk.Image.new_from_icon_name("history")
         rImage.set_pixel_size(40)
         rBox.append(rImage)
@@ -1051,6 +1133,20 @@ class TimerWindow(Gtk.ApplicationWindow):
         Gtk.main_quit()
         
     # Adw.ActionRow functions for activate tasks
+    ## Save entry text (custom notification text)
+    def on_entry_text_changed(self, entry):
+        entry = self.entry.get_text()
+        with open(f'{CONFIG}/notification.json', 'w') as n:
+            n.write('{\n "custom-notification": "true",\n "text": "%s"\n}' % entry)
+    
+    ### Apply entry text from file (custom notification text)
+    def apply_entry_text(self):
+        if os.path.exists(f'{CONFIG}/notification.json'):
+            with open(f'{CONFIG}/notification.json') as n:
+                jN = json.load(n)
+            text = jN["text"]
+            self.entry.set_text(text)
+    
     ## Save app theme configuration
     def on_switch_01_toggled(self, switch01, GParamBoolean):
         if switch01.get_active():
@@ -1065,20 +1161,6 @@ class TimerWindow(Gtk.ApplicationWindow):
             self.style_manager.set_color_scheme(
                     color_scheme=Adw.ColorScheme.FORCE_LIGHT
                 )
-
-    ## Save entry text (custom notification text)
-    def on_entry_text_changed(self, entry):
-        entry = self.entry.get_text()
-        with open(f'{CONFIG}/notification.json', 'w') as n:
-            n.write('{\n "custom-notification": "true",\n "text": "%s"\n}' % entry)
-    
-    ### Apply entry text from file (custom notification text)
-    def apply_entry_text(self):
-        if os.path.exists(f'{CONFIG}/notification.json'):
-            with open(f'{CONFIG}/notification.json') as n:
-                jN = json.load(n)
-            text = jN["text"]
-            self.entry.set_text(text)
     
     ## Save resizable window configuration
     def on_switch_02_toggled(self, switch02, GParamBoolean):
@@ -1116,6 +1198,15 @@ class TimerWindow(Gtk.ApplicationWindow):
         else:
             with open(f'{CONFIG}/use_text_alarm.json', 'w') as t:
                 t.write('{\n "use_in_alarm_clock_dialog": "false"\n}')
+                
+    ## Save configuration of vertical text in countdown page
+    def on_switch_06_toggled(self, switch06, GParamBoolean):
+        if switch06.get_active():
+            with open(f'{CONFIG}/countdown.json', 'w') as t:
+                t.write('{\n "vertical_time_text": "true"\n}')
+        else:
+            with open(f'{CONFIG}/countdown.json', 'w') as t:
+                t.write('{\n "vertical_time_text": "false"\n}')
     
     ## Save Combobox (actions) configuration
     def on_combo_box_text_s_changed(self, comborow, GParamObject):
@@ -1150,7 +1241,7 @@ class MyApp(Adw.Application):
     def on_about_action(self, action, param):
         dialog = Adw.AboutWindow(transient_for=app.get_active_window())
         dialog.set_application_name(jT["timer_title"])
-        dialog.set_version("2.8")
+        dialog.set_version("2.9")
         dialog.set_release_notes(release_28 + release_27_11 + release_27I + release_27)
         dialog.set_developer_name("vikdevelop")
         dialog.set_license_type(Gtk.License(Gtk.License.GPL_3_0))
