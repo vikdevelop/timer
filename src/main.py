@@ -536,7 +536,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         ## Adw.ActionRow
         self.adw_action_row_adv = Adw.ActionRow.new()
         self.adw_action_row_adv.set_icon_name(icon_name='preferences-other-symbolic')
-        self.adw_action_row_adv.set_title(title="Advanced")
+        self.adw_action_row_adv.set_title(title=jT["advanced"])
         self.adw_action_row_adv.set_title_lines(2)
         self.adw_action_row_adv.add_suffix(widget=self.advButton)
         self.adw_action_row_adv.set_activatable_widget(widget=self.advButton)
@@ -628,6 +628,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.mainBox.set_valign(Gtk.Align.START)
         self.mainBox.set_margin_top(15)
         self.headerbar.remove(self.buttonStart)
+        self.set_title(jT["advanced"])
         
         # Back button
         self.backButton_A = Gtk.Button.new_from_icon_name('go-next-symbolic-rtl')
@@ -747,7 +748,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         ## Adw.ActionRow
         self.adw_action_row_verText = Adw.ActionRow.new()
         self.adw_action_row_verText.set_icon_name(icon_name='history-symbolic')
-        self.adw_action_row_verText.set_title(title="Show vertical time text in countdown page")
+        self.adw_action_row_verText.set_title(title=jT["vertical_text"])
         self.adw_action_row_verText.add_suffix(widget=self.switch_06)
         self.adw_action_row_verText.set_activatable_widget(widget=self.switch_06)
         self.abox.append(self.adw_action_row_verText)
@@ -759,6 +760,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.mainBox.set_margin_top(0)
         self.headerbar.pack_start(self.buttonStart)
         self.headerbar.remove(self.backButton_A)
+        self.set_title(jT["timer_title"])
     
     # After launching
     ## Set selected theme
@@ -808,8 +810,6 @@ class TimerWindow(Gtk.ApplicationWindow):
             print(jT["timing_finished"])
             return False
         self.set_time_text()
-        if self.vertical_text == "true":
-            self.timingBox.remove(self.spinner)
         return True
     
     ## Start timer function
@@ -837,6 +837,7 @@ class TimerWindow(Gtk.ApplicationWindow):
                 self.label.set_markup("<span size='31200'>{}</span>".format(
                     strfdelta(self.counter, "<b>{hours}</b> %s \n<b>{minutes}</b> %s \n<b>{seconds}</b> %s" % (jT["hours"], jT["mins"], jT["secs"]))
                 ))
+                self.timingBox.remove(self.spinner)
             else:
                 self.label.set_markup("<span size='20100'>{}</span>".format(
                     strfdelta(self.counter, "<b>{hours}</b> %s <b>{minutes}</b> %s <b>{seconds}</b> %s" % (jT["hours"], jT["mins"], jT["secs"]))
