@@ -808,6 +808,8 @@ class TimerWindow(Gtk.ApplicationWindow):
             print(jT["timing_finished"])
             return False
         self.set_time_text()
+        if self.vertical_text == "true":
+            self.timingBox.remove(self.spinner)
         return True
     
     ## Start timer function
