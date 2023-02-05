@@ -816,12 +816,12 @@ class TimerWindow(Gtk.ApplicationWindow):
     def start_timer(self):
         """ Run Timer. """
         self.check_and_save()
+        self.non_activated_session()
         self.headerbar.pack_start(self.buttonStop)
         self.headerbar.pack_start(self.buttonPause)
         self.headerbar.remove(self.buttonStart)
         self.headerbar.remove(self.buttonReset)
         self.mainBox.remove(self.lbox)
-        self.non_activated_session()
         self.counter = timedelta(hours = int(self.hour_entry.get_text()), minutes = int(self.minute_entry.get_text()), seconds = int(self.secs_entry.get_text()))
         #self.play_beep()
         self.set_time_text()
@@ -839,10 +839,10 @@ class TimerWindow(Gtk.ApplicationWindow):
                 ))
                 self.timingBox.remove(self.spinner)
             else:
+                self.spinner.start()
                 self.label.set_markup("<span size='20100'>{}</span>".format(
                     strfdelta(self.counter, "<b>{hours}</b> %s <b>{minutes}</b> %s <b>{seconds}</b> %s" % (jT["hours"], jT["mins"], jT["secs"]))
                 ))
-                self.spinner.start()
         else:
             self.label.set_markup("<span size='20100'>{}</span>".format(
                     strfdelta(self.counter, "<b>{hours}</b> %s <b>{minutes}</b> %s <b>{seconds}</b> %s" % (jT["hours"], jT["mins"], jT["secs"]))
@@ -1247,6 +1247,7 @@ class MyApp(Adw.Application):
         dialog.set_version("2.9")
         dialog.set_release_notes(release_28 + release_27_11 + release_27I + release_27)
         dialog.set_developer_name("vikdevelop")
+        self.add_translations_link(dialog)
         dialog.set_license_type(Gtk.License(Gtk.License.GPL_3_0))
         dialog.set_website("https://github.com/vikdevelop/timer")
         dialog.set_issue_url("https://github.com/vikdevelop/timer/issues")
@@ -1256,6 +1257,12 @@ class MyApp(Adw.Application):
         dialog.set_developers(["vikdevelop https://github.com/vikdevelop"])
         dialog.set_application_icon("com.github.vikdevelop.timer")
         dialog.show()
+    
+    def add_translations_link(self, dialog):
+        if lang == "en.json":
+            dialog.add_link("Translate Timer to your language", "https://hosted.weblate.org/projects/vikdevelop/timer/")
+        else:
+            dialog.add_link("Contribute to translations", "https://hosted.weblate.org/projects/vikdevelop/timer/")
 
     def on_reset_settings_action(self, action, param):
         self.dialog_reset = Dialog_reset(self)
