@@ -1069,12 +1069,13 @@ class TimerWindow(Gtk.ApplicationWindow):
         with open(f'{CONFIG}/counter.json', 'w') as c:
             c.write('{\n' + f' "hour": "{self.hour_entry.get_text()}",\n'+ f' "minutes": "{self.minute_entry.get_text()}",\n' + f' "seconds": "{self.secs_entry.get_text()}"' + '\n}')
         # Save current window size
-        if self.get_allocation().width > 425:
-            print("")
-        if self.get_allocation().height > 425:
-            print("")
-        with open(f'{CONFIG}/window_size.json', 'w') as s:
-            s.write('{\n "width": "%s",\n "height": "%s"\n}' % (self.get_allocation().width, self.get_allocation().height))
+        if os.path.exists(f'{CONFIG}/window.json'):
+            if self.get_allocation().width > 425:
+                print("")
+            if self.get_allocation().height > 425:
+                print("")
+            with open(f'{CONFIG}/window_size.json', 'w') as s:
+                s.write('{\n "width": "%s",\n "height": "%s"\n}' % (self.get_allocation().width, self.get_allocation().height))
     
     # Keyboard shortcuts action
     def keys(self, keyval, keycode, state, user_data, win):
@@ -1193,6 +1194,9 @@ class TimerWindow(Gtk.ApplicationWindow):
         else:
             os.remove(f'{CONFIG}/window.json')
             self.set_resizable(False)
+            self.set_default_size(425, 425)
+            self.set_size_request(425, 425)
+            os.remove(f'{CONFIG}/window_size.json')
     
     ## Save playing beep configuration
     def on_switch_03_toggled(self, switch03, GParamBoolean):
