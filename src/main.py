@@ -280,8 +280,7 @@ class TimerWindow(Gtk.ApplicationWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.set_resizable_w()
-        self.set_default_size(425, 425)
-        self.set_size_request(425, 425)
+        self.set_w_size()
         self.application = kwargs.get('application')
         self.style_manager = self.application.get_style_manager()
         self.set_theme()
@@ -773,7 +772,20 @@ class TimerWindow(Gtk.ApplicationWindow):
                 self.style_manager.set_color_scheme(
                     color_scheme=Adw.ColorScheme.PREFER_DARK
                 )
-                
+    
+    ## Set window size
+    def set_w_size(self):
+        if os.path.exists(f'{CONFIG}/window_size.json'):
+            with open(f'{CONFIG}/window_size.json') as s:
+                jS = json.load(s)
+            width = jS["width"]
+            height = jS["height"]
+            self.set_default_size(int(width), int(height))
+            self.set_size_request(425, 425)
+        else:
+            self.set_default_size(425, 425)
+            self.set_size_request(425, 425)
+    
     ## Set resizable of window configuration
     def set_resizable_w(self):
         if os.path.exists(f'{CONFIG}/window.json'):
@@ -1056,6 +1068,13 @@ class TimerWindow(Gtk.ApplicationWindow):
         # Save time counter values
         with open(f'{CONFIG}/counter.json', 'w') as c:
             c.write('{\n' + f' "hour": "{self.hour_entry.get_text()}",\n'+ f' "minutes": "{self.minute_entry.get_text()}",\n' + f' "seconds": "{self.secs_entry.get_text()}"' + '\n}')
+        # Save current window size
+        if self.get_allocation().width > 425:
+            print("")
+        if self.get_allocation().height > 425:
+            print("")
+        with open(f'{CONFIG}/window_size.json', 'w') as s:
+            s.write('{\n "width": "%s",\n "height": "%s"\n}' % (self.get_allocation().width, self.get_allocation().height))
     
     # Keyboard shortcuts action
     def keys(self, keyval, keycode, state, user_data, win):
