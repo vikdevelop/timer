@@ -281,6 +281,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         super().__init__(*args, **kwargs)
         self.set_resizable_w()
         self.set_w_size()
+        self.connect('close-request', self.close_action, self)
         self.application = kwargs.get('application')
         self.style_manager = self.application.get_style_manager()
         self.set_theme()
@@ -1068,14 +1069,6 @@ class TimerWindow(Gtk.ApplicationWindow):
         # Save time counter values
         with open(f'{CONFIG}/counter.json', 'w') as c:
             c.write('{\n' + f' "hour": "{self.hour_entry.get_text()}",\n'+ f' "minutes": "{self.minute_entry.get_text()}",\n' + f' "seconds": "{self.secs_entry.get_text()}"' + '\n}')
-        # Save current window size
-        if os.path.exists(f'{CONFIG}/window.json'):
-            if self.get_allocation().width > 425:
-                print("")
-            if self.get_allocation().height > 425:
-                print("")
-            with open(f'{CONFIG}/window_size.json', 'w') as s:
-                s.write('{\n "width": "%s",\n "height": "%s"\n}' % (self.get_allocation().width, self.get_allocation().height))
     
     # Keyboard shortcuts action
     def keys(self, keyval, keycode, state, user_data, win):
@@ -1118,6 +1111,17 @@ class TimerWindow(Gtk.ApplicationWindow):
             self.switch_01.set_active(False)
         if keycode == 0xFFC2:
             self.dialog_reset = Dialog_reset(self)
+    
+    # Action after closing Timer window
+    def close_action(self, widget, *args):
+        # Save current window size
+        if os.path.exists(f'{CONFIG}/window.json'):
+            if self.get_allocation().width > 425:
+                print("")
+            if self.get_allocation().height > 425:
+                print("")
+            with open(f'{CONFIG}/window_size.json', 'w') as s:
+                s.write('{\n "width": "%s",\n "height": "%s"\n}' % (self.get_allocation().width, self.get_allocation().height))
             
     # Button actions
     ## Start button action
