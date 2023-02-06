@@ -90,6 +90,7 @@ class Dialog_keys(Gtk.Dialog):
         adw_action_row_start = Adw.ActionRow()
         adw_action_row_start.set_title(jT["run_timer"])
         adw_action_row_start.set_title_lines(3)
+        adw_action_row_start.set_tooltip_text(jT["alternative_key"].format("Enter"))
         adw_action_row_start.add_prefix(box_sTimer)
         listbox.append(adw_action_row_start)
         
@@ -110,6 +111,7 @@ class Dialog_keys(Gtk.Dialog):
         adw_action_row_stop = Adw.ActionRow()
         adw_action_row_stop.set_title(jT["stop_timer"])
         adw_action_row_stop.set_title_lines(3)
+        adw_action_row_stop.set_tooltip_text(jT["alternative_key"].format("EsC"))
         adw_action_row_stop.add_prefix(box_cTimer)
         listbox.append(adw_action_row_stop)
         
@@ -130,6 +132,7 @@ class Dialog_keys(Gtk.Dialog):
         adw_action_row_quit = Adw.ActionRow()
         adw_action_row_quit.set_title(jT["quit"])
         adw_action_row_quit.set_title_lines(3)
+        adw_action_row_quit.set_tooltip_text(jT["alternative_key"].format("Alt+F4"))
         adw_action_row_quit.add_prefix(box_qTimer)
         listbox.append(adw_action_row_quit)
         
@@ -1079,10 +1082,17 @@ class TimerWindow(Gtk.ApplicationWindow):
         if keycode == ord('s'):
             self.menu_button.set_can_focus(True)
             self.menu_button.do_focus(self.menu_button, True)
-            self.check_and_save()
+            self.start_timer()
+            return True
+        if keycode == 0xFF0D:
+            #self.menu_button.set_can_focus(True)
+            #self.menu_button.do_focus(self.menu_button, True)
             self.start_timer()
             return True
         if keycode == ord('c'):
+            print(jT["timing_ended"])
+            self.stop_timer()
+        if keycode == 0xFF1B: # Alternative key for stop timer (EsC)
             print(jT["timing_ended"])
             self.stop_timer()
         if keycode == ord('r'):
