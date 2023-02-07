@@ -90,7 +90,6 @@ class Dialog_keys(Gtk.Dialog):
         adw_action_row_start = Adw.ActionRow()
         adw_action_row_start.set_title(jT["run_timer"])
         adw_action_row_start.set_title_lines(3)
-        adw_action_row_start.set_tooltip_text(jT["alternative_key"].format("Enter"))
         adw_action_row_start.add_prefix(box_sTimer)
         listbox.append(adw_action_row_start)
         
@@ -193,6 +192,7 @@ class Dialog_keys(Gtk.Dialog):
         adw_action_row_pause = Adw.ActionRow()
         adw_action_row_pause.set_title(jT["pause_timer"])
         adw_action_row_pause.set_title_lines(3)
+        adw_action_row_pause.set_tooltip_text(jT["alternative_key"].format("(Left) Shift"))
         adw_action_row_pause.add_prefix(box_pTimer)
         listbox.append(adw_action_row_pause)
         
@@ -213,6 +213,7 @@ class Dialog_keys(Gtk.Dialog):
         adw_action_row_cont = Adw.ActionRow()
         adw_action_row_cont.set_title(jT["continue_timer"])
         adw_action_row_cont.set_title_lines(3)
+        adw_action_row_quit.set_tooltip_text(jT["alternative_key"].format("(Right) Shift"))
         adw_action_row_cont.add_prefix(box_coTimer)
         listbox.append(adw_action_row_cont)
         
@@ -832,7 +833,6 @@ class TimerWindow(Gtk.ApplicationWindow):
     def start_timer(self):
         """ Run Timer. """
         self.check_and_save()
-        self.non_activated_session()
         self.headerbar.pack_start(self.buttonStop)
         self.headerbar.pack_start(self.buttonPause)
         self.headerbar.remove(self.buttonStart)
@@ -841,6 +841,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.counter = timedelta(hours = int(self.hour_entry.get_text()), minutes = int(self.minute_entry.get_text()), seconds = int(self.secs_entry.get_text()))
         #self.play_beep()
         self.set_time_text()
+        self.non_activated_session()
         self.timeout_id = GLib.timeout_add(250, self.on_timeout, None)
         
     ### Set time text function
@@ -853,17 +854,16 @@ class TimerWindow(Gtk.ApplicationWindow):
                 self.label.set_markup("<span size='31200'>{}</span>".format(
                     strfdelta(self.counter, "<b>{hours}</b> %s \n<b>{minutes}</b> %s \n<b>{seconds}</b> %s" % (jT["hours"], jT["mins"], jT["secs"]))
                 ))
-                self.timingBox.remove(self.spinner)
             else:
                 self.spinner.start()
                 self.label.set_markup("<span size='20100'>{}</span>".format(
                     strfdelta(self.counter, "<b>{hours}</b> %s <b>{minutes}</b> %s <b>{seconds}</b> %s" % (jT["hours"], jT["mins"], jT["secs"]))
                 ))
         else:
+            self.spinner.start()
             self.label.set_markup("<span size='20100'>{}</span>".format(
                     strfdelta(self.counter, "<b>{hours}</b> %s <b>{minutes}</b> %s <b>{seconds}</b> %s" % (jT["hours"], jT["mins"], jT["secs"]))
                 ))
-            self.spinner.start()
         
     ## Stop timer function
     def stop_timer(self):
@@ -929,7 +929,10 @@ class TimerWindow(Gtk.ApplicationWindow):
     
     # Function, that allocates labels in the current timing
     def non_activated_session(self):
-        self.timingBox.append(self.spinner)
+        if self.vertical_text == "true":
+            print("")
+        else:
+            self.timingBox.append(self.spinner)
         self.timingBox.append(self.label_action)
         self.timingBox.append(self.label)
         self.mainBox.append(self.timingBox)
@@ -1084,11 +1087,6 @@ class TimerWindow(Gtk.ApplicationWindow):
             self.menu_button.do_focus(self.menu_button, True)
             self.start_timer()
             return True
-        if keycode == 0xFF0D:
-            #self.menu_button.set_can_focus(True)
-            #self.menu_button.do_focus(self.menu_button, True)
-            self.start_timer()
-            return True
         if keycode == ord('c'):
             print(jT["timing_ended"])
             self.stop_timer()
@@ -1099,6 +1097,10 @@ class TimerWindow(Gtk.ApplicationWindow):
             self.reset_timer()
         if keycode == ord('p'):
             self.pause_timer()
+        if keycode == 0xFFE1: # Left shift
+            self.pause_timer()
+        if keycode == 0xFFE2: # Right shift
+            self.continue_timer()
         if keycode == ord('t'):
             try:
                 self.timingBox.remove(label_pause)
