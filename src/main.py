@@ -213,7 +213,7 @@ class Dialog_keys(Gtk.Dialog):
         adw_action_row_cont = Adw.ActionRow()
         adw_action_row_cont.set_title(jT["continue_timer"])
         adw_action_row_cont.set_title_lines(3)
-        adw_action_row_quit.set_tooltip_text(jT["alternative_key"].format("(Right) Shift"))
+        adw_action_row_cont.set_tooltip_text(jT["alternative_key"].format("(Right) Shift"))
         adw_action_row_cont.add_prefix(box_coTimer)
         listbox.append(adw_action_row_cont)
         
