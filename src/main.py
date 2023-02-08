@@ -192,7 +192,7 @@ class Dialog_keys(Gtk.Dialog):
         adw_action_row_pause = Adw.ActionRow()
         adw_action_row_pause.set_title(jT["pause_timer"])
         adw_action_row_pause.set_title_lines(3)
-        adw_action_row_pause.set_tooltip_text(jT["alternative_key"].format("(Left) Shift"))
+        adw_action_row_pause.set_tooltip_text(jT["alternative_key"].format(f'({jT["left"]}) Shift'))
         adw_action_row_pause.add_prefix(box_pTimer)
         listbox.append(adw_action_row_pause)
         
@@ -213,7 +213,7 @@ class Dialog_keys(Gtk.Dialog):
         adw_action_row_cont = Adw.ActionRow()
         adw_action_row_cont.set_title(jT["continue_timer"])
         adw_action_row_cont.set_title_lines(3)
-        adw_action_row_cont.set_tooltip_text(jT["alternative_key"].format("(Right) Shift"))
+        adw_action_row_cont.set_tooltip_text(jT["alternative_key"].format(f'({jT["right"]}) Shift'))
         adw_action_row_cont.add_prefix(box_coTimer)
         listbox.append(adw_action_row_cont)
         
@@ -521,11 +521,18 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.setButton.add_css_class('flat')
         self.setButton.connect('clicked', self.custom_notification)
         
+        ## Adw.EntryRow
+        self.entry = Adw.EntryRow()
+        self.apply_entry_text()
+        self.entry.set_title(jT["custom_notification"])
+        self.entry.set_show_apply_button(True)
+        self.entry.set_enable_emoji_completion(True)
+        self.entry.connect('changed', self.on_entry_text_changed)
+        
         ## Adw.ActionRow
         self.adw_action_row_notification = Adw.ActionRow.new()
         self.adw_action_row_notification.set_icon_name(icon_name='notification-symbolic')
-        self.adw_action_row_notification.set_title(title=jT["custom_notification"])
-        self.adw_action_row_notification.set_title_lines(2)
+        self.adw_action_row_notification.add_suffix(widget=self.entry)
         self.adw_action_row_notification.add_suffix(widget=self.setButton)
         self.adw_action_row_notification.set_activatable_widget(widget=self.setButton)
         self.adw_expander_row.add_row(child=self.adw_action_row_notification)
@@ -552,6 +559,8 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.mainBox.set_valign(Gtk.Align.START)
         self.mainBox.set_margin_top(15)
         self.headerbar.remove(self.buttonStart)
+        self.headerbar.remove(self.buttonReset)
+        self.set_title(jT["custom_notification"])
         
         # Back button
         self.backButton = Gtk.Button.new_from_icon_name('go-next-symbolic-rtl')
@@ -562,38 +571,6 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.cbox.set_selection_mode(mode=Gtk.SelectionMode.NONE)
         self.cbox.get_style_context().add_class(class_name='boxed-list')
         self.mainBox.append(self.cbox)
-        
-        # Adw.EntryRow
-        self.entry = Adw.EntryRow()
-        self.apply_entry_text()
-        self.entry.set_title(jT["custom_notification"])
-        self.entry.set_show_apply_button(True)
-        self.entry.set_enable_emoji_completion(True)
-        self.entry.connect('changed', self.on_entry_text_changed)
-        self.cbox.append(self.entry)
-        
-        # Adw.ActionRow - use in notification
-        ## Gtk.Switch
-        self.switch_04 = Gtk.Switch.new()
-        if os.path.exists(f'{CONFIG}/use_in_notification.json'):
-            with open(f'{CONFIG}/use_in_notification.json') as n:
-                jN = json.load(n)
-            use_notification = jN["use_in_notification"]
-            if use_notification == "false":
-                self.switch_04.set_active(False)
-            else:
-                self.switch_04.set_active(True)
-        else:
-            self.switch_04.set_active(False)
-        self.switch_04.set_valign(align=Gtk.Align.CENTER)
-        self.switch_04.connect('notify::active', self.on_switch_04_toggled)
-        
-        ## Adw.ActionRow
-        self.adw_action_row_06 = Adw.ActionRow.new()
-        self.adw_action_row_06.set_title(title=jT["use_in_notification"])
-        self.adw_action_row_06.add_suffix(widget=self.switch_04)
-        self.adw_action_row_06.set_activatable_widget(widget=self.switch_04)
-        self.cbox.append(self.adw_action_row_06)
         
         # Adw.ActionRow - use in alarm clock dialog
         ## Gtk.Switch
@@ -624,7 +601,9 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.mainBox.set_valign(Gtk.Align.CENTER)
         self.mainBox.set_margin_top(0)
         self.headerbar.pack_start(self.buttonStart)
+        self.headerbar.pack_end(self.buttonReset)
         self.headerbar.remove(self.backButton)
+        self.set_title(jT["timer_title"])
         
     ## Advanced settings section
     def advanced(self, widget, *args):
@@ -632,6 +611,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.mainBox.set_valign(Gtk.Align.START)
         self.mainBox.set_margin_top(15)
         self.headerbar.remove(self.buttonStart)
+        self.headerbar.remove(self.buttonReset)
         self.set_title(jT["advanced"])
         
         # Back button
@@ -763,6 +743,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.mainBox.set_valign(Gtk.Align.CENTER)
         self.mainBox.set_margin_top(0)
         self.headerbar.pack_start(self.buttonStart)
+        self.headerbar.pack_end(self.buttonReset)
         self.headerbar.remove(self.backButton_A)
         self.set_title(jT["timer_title"])
     
@@ -1222,15 +1203,6 @@ class TimerWindow(Gtk.ApplicationWindow):
         else:
             with open(f'{CONFIG}/beep.json', 'w') as t:
                 t.write('{\n "play-beep": "false"\n}')
-                
-    ## Save notification text switch config
-    def on_switch_04_toggled(self, switch04, GParamBoolean):
-        if switch04.get_active():
-            with open(f'{CONFIG}/use_in_notification.json', 'w') as t:
-                t.write('{\n "use_in_notification": "true"\n}')
-        else:
-            with open(f'{CONFIG}/use_in_notification.json', 'w') as t:
-                t.write('{\n "use_in_notification": "false"\n}')
                 
     ## Save alarm clock text switch config
     def on_switch_05_toggled(self, switch05, GParamBoolean):
