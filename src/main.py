@@ -1,4 +1,3 @@
-import subprocess
 import sys
 import json
 import os
@@ -318,10 +317,6 @@ class TimerWindow(Gtk.ApplicationWindow):
         # Gtk Box layout for timing page
         self.timingBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
         
-        # Spinner
-        self.spinner = Gtk.Spinner()
-        self.set_spinner_size()
-        
         # Label for countdown timing and Label for describing the action in progress
         self.label = Gtk.Label()
         self.label_action = Gtk.Label()
@@ -574,6 +569,30 @@ class TimerWindow(Gtk.ApplicationWindow):
         
         # Adw.ActionRow - use in alarm clock dialog
         ## Gtk.Switch
+        self.switch_04 = Gtk.Switch.new()
+        if os.path.exists(f'{CONFIG}/notification_icon.json'):
+            with open(f'{CONFIG}/notification_icon.json') as i:
+                jI = json.load(i)
+            t_icon = jI["notification_icon"]
+            if t_icon == "true":
+                self.switch_04.set_active(True)
+            else:
+                self.switch_04.set_active(False)
+        else:
+            self.switch_04.set_active(False)
+        self.switch_04.set_valign(align=Gtk.Align.CENTER)
+        self.switch_04.connect('notify::active', self.on_switch_04_toggled)
+        
+        ## Adw.ActionRow
+        self.adw_action_row_06 = Adw.ActionRow.new()
+        self.adw_action_row_06.set_title(title="Show Timer icon in notification")
+        self.adw_action_row_06.set_title_lines(6)
+        self.adw_action_row_06.add_suffix(widget=self.switch_04)
+        self.adw_action_row_06.set_activatable_widget(widget=self.switch_04)
+        self.cbox.append(self.adw_action_row_06)
+        
+        # Adw.ActionRow - use in alarm clock dialog
+        ## Gtk.Switch
         self.switch_05 = Gtk.Switch.new()
         if os.path.exists(f'{CONFIG}/use_text_alarm.json'):
             with open(f'{CONFIG}/use_text_alarm.json') as a:
@@ -623,59 +642,6 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.abox.set_selection_mode(mode=Gtk.SelectionMode.NONE)
         self.abox.get_style_context().add_class(class_name='boxed-list')
         self.mainBox.append(self.abox)
-        
-        # Adw.ComboRow - spinner size
-        sizes = Gtk.StringList.new(strings=[
-            '5', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55', '60 (%s)' % jT["default"], '65', '70', '75', '80'
-        ])
-        
-        self.adw_action_row_spinner = Adw.ComboRow.new()
-        self.adw_action_row_spinner.set_icon_name(icon_name='content-loading-symbolic')
-        self.adw_action_row_spinner.set_title(title=jT["spinner"])
-        self.adw_action_row_spinner.set_model(model=sizes)
-        self.adw_action_row_spinner.set_subtitle(subtitle=jT["spinner_size_desc"])
-        self.adw_action_row_spinner.set_subtitle_lines(2)
-        self.adw_action_row_spinner.connect('notify::selected-item', self.on_combo_box_text_changed)
-        self.abox.append(self.adw_action_row_spinner)
-        
-        if os.path.exists(f'{CONFIG}/spinner.json'):
-            with open(f'{CONFIG}/spinner.json') as p:
-                jsonSpinner = json.load(p)
-            combobox_s = jsonSpinner["spinner-size"]
-            if combobox_s == "5":
-                self.adw_action_row_spinner.set_selected(0)
-            elif combobox_s == "10":
-                self.adw_action_row_spinner.set_selected(1)
-            elif combobox_s == "15":
-                self.adw_action_row_spinner.set_selected(2)
-            elif combobox_s == "20":
-                self.adw_action_row_spinner.set_selected(3)
-            elif combobox_s == "25":
-                self.adw_action_row_spinner.set_selected(4)
-            elif combobox_s == "30":
-                self.adw_action_row_spinner.set_selected(5)
-            elif combobox_s == "35":
-                self.adw_action_row_spinner.set_selected(6)
-            elif combobox_s == "40":
-                self.adw_action_row_spinner.set_selected(7)
-            elif combobox_s == "45":
-                self.adw_action_row_spinner.set_selected(8)
-            elif combobox_s == "50":
-                self.adw_action_row_spinner.set_selected(9)
-            elif combobox_s == "55":
-                self.adw_action_row_spinner.set_selected(10)
-            elif combobox_s == '60 (%s)' % jT["default"]:
-                self.adw_action_row_spinner.set_selected(11)
-            elif combobox_s == "65":
-                self.adw_action_row_spinner.set_selected(12)
-            elif combobox_s == "70":
-                self.adw_action_row_spinner.set_selected(13)
-            elif combobox_s == "75":
-                self.adw_action_row_spinner.set_selected(14)
-            elif combobox_s == "80":
-                self.adw_action_row_spinner.set_selected(15)
-        else:
-            self.adw_action_row_spinner.set_selected(11)
             
         # Adw ActionRow - Theme configuration
         ## Gtk.Switch
@@ -782,19 +748,6 @@ class TimerWindow(Gtk.ApplicationWindow):
         else:
             self.set_resizable(False)
     
-    ## Set selected spinner size
-    def set_spinner_size(self):
-        if os.path.exists(f'{CONFIG}/spinner.json'):
-            with open(f'{CONFIG}/spinner.json') as j:
-                jsonObject = json.load(j)
-            spinner = jsonObject["spinner-size"]
-            try:
-                self.spinner.set_size_request(int(spinner), int(spinner))
-            except ValueError:
-                self.spinner.set_size_request(60,60)
-        else:
-            self.spinner.set_size_request(60,60)
-    
     # Timer actions
     ## On timeout function
     tick_counter = timedelta(milliseconds = 250) # static object so we don't recreate the object every time
@@ -836,15 +789,14 @@ class TimerWindow(Gtk.ApplicationWindow):
                     strfdelta(self.counter, "<b>{hours}</b> %s \n<b>{minutes}</b> %s \n<b>{seconds}</b> %s" % (jT["hours"], jT["mins"], jT["secs"]))
                 ))
             else:
-                self.spinner.start()
-                self.label.set_markup("<span size='20100'>{}</span>".format(
+                self.label.set_markup("<span size='25600'>{}</span>".format(
                     strfdelta(self.counter, "<b>{hours}</b> %s <b>{minutes}</b> %s <b>{seconds}</b> %s" % (jT["hours"], jT["mins"], jT["secs"]))
                 ))
         else:
-            self.spinner.start()
-            self.label.set_markup("<span size='20100'>{}</span>".format(
+            self.label.set_markup("<span size='25600'>{}</span>".format(
                     strfdelta(self.counter, "<b>{hours}</b> %s <b>{minutes}</b> %s <b>{seconds}</b> %s" % (jT["hours"], jT["mins"], jT["secs"]))
                 ))
+            self.vertical_text = "false"
         
     ## Stop timer function
     def stop_timer(self):
@@ -852,7 +804,6 @@ class TimerWindow(Gtk.ApplicationWindow):
         if self.timeout_id:
             GLib.source_remove(self.timeout_id)
             self.timeout_id = None
-        self.spinner.stop()
         self.headerbar.remove(self.buttonStop)
         self.headerbar.pack_start(self.buttonStart)
         self.headerbar.pack_end(self.buttonReset)
@@ -879,7 +830,6 @@ class TimerWindow(Gtk.ApplicationWindow):
         if self.timeout_id:
             GLib.source_remove(self.timeout_id)
             self.timeout_id = None
-        self.spinner.stop()
         self.label_pause = Gtk.Label.new()
         self.label_paused_status = Gtk.Label.new(str=jT["paused"])
         self.timingBox.remove(self.label_action)
@@ -887,7 +837,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         if self.vertical_text == "true":
             self.label_pause.set_markup("<b><span size='31200'>{}</span></b>".format(self.label.get_text()))
         else:
-            self.label_pause.set_markup("<b><span size='20100'>{}</span></b>".format(self.label.get_text()))
+            self.label_pause.set_markup("<b><span size='25600'>{}</span></b>".format(self.label.get_text()))
         self.timingBox.append(self.label_pause)
         self.timingBox.remove(self.label)
         self.headerbar.remove(self.buttonPause)
@@ -910,10 +860,6 @@ class TimerWindow(Gtk.ApplicationWindow):
     
     # Function, that allocates labels in the current timing
     def non_activated_session(self):
-        if self.vertical_text == "true":
-            print("")
-        else:
-            self.timingBox.append(self.spinner)
         self.timingBox.append(self.label_action)
         self.timingBox.append(self.label)
         self.mainBox.append(self.timingBox)
@@ -1012,25 +958,24 @@ class TimerWindow(Gtk.ApplicationWindow):
     
     ## Send notification after finished timer (if this action is selected in actions.json config file)
     def notification(self):
-        if os.path.exists(f'{CONFIG}/use_in_notification.json'):
-            with open(f'{CONFIG}/use_in_notification.json') as n:
-                jN = json.load(n)
-                if jN["use_in_notification"] == "true":
-                    if os.path.exists(f'{CONFIG}/notification.json'):
-                        with open(f'{CONFIG}/notification.json') as r:
-                            jR = json.load(r)
-                        notification = jR["text"]
-                        if notification == "":
-                            subprocess.call(['notify-send',jT["timer_title"],jT["timing_finished"],'-i','com.github.vikdevelop.timer'])
-                        else:
-                            subprocess.call(['notify-send',jT["timer_title"],notification,'-i','com.github.vikdevelop.timer'])
-                else:
-                    subprocess.call(['notify-send',jT["timer_title"],jT["timing_finished"],'-i','com.github.vikdevelop.timer'])
+        if os.path.exists(f'{CONFIG}/notification_icon.json'):
+            with open(f'{CONFIG}/notification_icon.json') as i:
+                jI = json.load(i)
+            t_icon = jI["notification_icon"]
+            if t_icon == "true":
+                timer_icon = '-i com.github.vikdevelop.timer'
+            else:
+                timer_icon = '-i d'
+        if os.path.exists(f'{CONFIG}/notification.json'):
+            with open(f'{CONFIG}/notification.json') as r:
+                jR = json.load(r)
+            notification = jR["text"]
+            if notification == "":
+                os.system('notify-send "{}" "{}" {}'.format(jT["timer_title"], jT["timing_finished"], timer_icon))
+            else:
+                os.system('notify-send "{}" "{}" {}'.format(jT["timer_title"], notification, timer_icon))
         else:
-            try:
-                subprocess.call(['notify-send',jT["timer_title"],notification,'-i','com.github.vikdevelop.timer'])
-            except:
-                subprocess.call(['notify-send',jT["timer_title"],jT["timing_finished"],'-i','com.github.vikdevelop.timer'])
+            os.system('notify-send "{}" "{}" {}'.format(jT["timer_title"], jT["timing_finished"], timer_icon))
     
     ## Play beep after finished timer
     def play_beep(self):
@@ -1203,7 +1148,16 @@ class TimerWindow(Gtk.ApplicationWindow):
         else:
             with open(f'{CONFIG}/beep.json', 'w') as t:
                 t.write('{\n "play-beep": "false"\n}')
-                
+      
+    ## Save show timer icon switch configuration
+    def on_switch_04_toggled(self, switch04, GParamBoolean):
+        if switch04.get_active():
+            with open(f'{CONFIG}/notification_icon.json', 'w') as t:
+                t.write('{\n "notification_icon": "true"\n}')
+        else:
+            with open(f'{CONFIG}/notification_icon.json', 'w') as t:
+                t.write('{\n "notification_icon": "false"\n}')
+      
     ## Save alarm clock text switch config
     def on_switch_05_toggled(self, switch05, GParamBoolean):
         if switch05.get_active():
