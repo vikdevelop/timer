@@ -1012,7 +1012,6 @@ class TimerWindow(Gtk.ApplicationWindow):
             self.menu_button.set_can_focus(True)
             self.menu_button.do_focus(self.menu_button, True)
             self.start_timer()
-            return True
         if keycode == ord('c'):
             print(jT["timing_ended"])
             self.stop_timer()
