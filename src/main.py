@@ -191,7 +191,6 @@ class Dialog_keys(Gtk.Dialog):
         adw_action_row_pause = Adw.ActionRow()
         adw_action_row_pause.set_title(jT["pause_timer"])
         adw_action_row_pause.set_title_lines(3)
-        adw_action_row_pause.set_tooltip_text(jT["alternative_key"].format(f'({jT["left"]}) Shift'))
         adw_action_row_pause.add_prefix(box_pTimer)
         listbox.append(adw_action_row_pause)
         
@@ -212,7 +211,6 @@ class Dialog_keys(Gtk.Dialog):
         adw_action_row_cont = Adw.ActionRow()
         adw_action_row_cont.set_title(jT["continue_timer"])
         adw_action_row_cont.set_title_lines(3)
-        adw_action_row_cont.set_tooltip_text(jT["alternative_key"].format(f'({jT["right"]}) Shift'))
         adw_action_row_cont.add_prefix(box_coTimer)
         listbox.append(adw_action_row_cont)
         
@@ -579,13 +577,13 @@ class TimerWindow(Gtk.ApplicationWindow):
             else:
                 self.switch_04.set_active(False)
         else:
-            self.switch_04.set_active(False)
+            self.switch_04.set_active(True)
         self.switch_04.set_valign(align=Gtk.Align.CENTER)
         self.switch_04.connect('notify::active', self.on_switch_04_toggled)
         
         ## Adw.ActionRow
         self.adw_action_row_06 = Adw.ActionRow.new()
-        self.adw_action_row_06.set_title(title="Show Timer icon in notification")
+        self.adw_action_row_06.set_title(title=jT["show_appicon"])
         self.adw_action_row_06.set_title_lines(6)
         self.adw_action_row_06.add_suffix(widget=self.switch_04)
         self.adw_action_row_06.set_activatable_widget(widget=self.switch_04)
@@ -613,6 +611,29 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.adw_action_row_07.add_suffix(widget=self.switch_05)
         self.adw_action_row_07.set_activatable_widget(widget=self.switch_05)
         self.cbox.append(self.adw_action_row_07)
+        
+        # Adw.ActionRow - use in alarm clock dialog
+        ## Gtk.Switch
+        self.switch_07 = Gtk.Switch.new()
+        if os.path.exists(f'{CONFIG}/notification_name.json'):
+            with open(f'{CONFIG}/notification_name.json') as c:
+                jC = json.load(c)
+            show_appname = jC["show_appname_in_notification"]
+            if show_appname == "true":
+                self.switch_07.set_active(True)
+            else:
+                self.switch_07.set_active(False)
+        else:
+            self.switch_07.set_active(True)
+        self.switch_07.set_valign(align=Gtk.Align.CENTER)
+        self.switch_07.connect('notify::active', self.on_switch_07_toggled)
+        
+        ## Adw.ActionRow
+        self.adw_action_row_08 = Adw.ActionRow.new()
+        self.adw_action_row_08.set_title(title=jT["show_appname"])
+        self.adw_action_row_08.add_suffix(widget=self.switch_07)
+        self.adw_action_row_08.set_activatable_widget(widget=self.switch_07)
+        self.cbox.append(self.adw_action_row_08)
         
     def cancel_custom_notification(self, widget, *args):
         self.mainBox.append(self.lbox)
@@ -958,6 +979,16 @@ class TimerWindow(Gtk.ApplicationWindow):
     
     ## Send notification after finished timer (if this action is selected in actions.json config file)
     def notification(self):
+        if os.path.exists(f'{CONFIG}/notification_name.json'):
+            with open(f'{CONFIG}/notification_name.json') as p:
+                jP = json.load(p)
+            t_name = jP["show_appname_in_notification"]
+            if t_name == "true":
+                timer_name = f'{jT["timer_title"]}'
+            else:
+                timer_name = ''
+        else:
+            timer_name = f'{jT["timer_title"]}'
         if os.path.exists(f'{CONFIG}/notification_icon.json'):
             with open(f'{CONFIG}/notification_icon.json') as i:
                 jI = json.load(i)
@@ -966,16 +997,27 @@ class TimerWindow(Gtk.ApplicationWindow):
                 timer_icon = '-i com.github.vikdevelop.timer'
             else:
                 timer_icon = '-i d'
+        else:
+            timer_icon = '-i com.github.vikdevelop.timer'
         if os.path.exists(f'{CONFIG}/notification.json'):
             with open(f'{CONFIG}/notification.json') as r:
                 jR = json.load(r)
             notification = jR["text"]
             if notification == "":
-                os.system('notify-send "{}" "{}" {}'.format(jT["timer_title"], jT["timing_finished"], timer_icon))
+                if timer_name == "":
+                    os.system('notify-send "{}" {}'.format(jT["timing_finished"],timer_icon))
+                else:
+                    os.system('notify-send {} "{}" {}'.format(timer_name, jT["timing_finished"],timer_icon))
             else:
-                os.system('notify-send "{}" "{}" {}'.format(jT["timer_title"], notification, timer_icon))
+                if timer_name == "":
+                    os.system('notify-send "{}" {}'.format(notification, timer_icon))
+                else:
+                    os.system('notify-send {} "{}" {}'.format(timer_name, notification,timer_icon))
         else:
-            os.system('notify-send "{}" "{}" {}'.format(jT["timer_title"], jT["timing_finished"], timer_icon))
+            if timer_name == "":
+                    os.system('notify-send "{}" {}'.format(jT["timing_finished"],timer_icon))
+            else:
+                os.system('notify-send {} "{}" {}'.format(timer_name, jT["timing_finished"],timer_icon))
     
     ## Play beep after finished timer
     def play_beep(self):
@@ -1022,10 +1064,6 @@ class TimerWindow(Gtk.ApplicationWindow):
             self.reset_timer()
         if keycode == ord('p'):
             self.pause_timer()
-        if keycode == 0xFFE1: # Left shift
-            self.pause_timer()
-        if keycode == 0xFFE2: # Right shift
-            self.continue_timer()
         if keycode == ord('t'):
             try:
                 self.timingBox.remove(label_pause)
@@ -1175,21 +1213,20 @@ class TimerWindow(Gtk.ApplicationWindow):
             with open(f'{CONFIG}/countdown.json', 'w') as t:
                 t.write('{\n "vertical_time_text": "false"\n}')
     
+    ## Save show application in notification configuration
+    def on_switch_07_toggled(self, switch07, GParamBoolean):
+        if switch07.get_active():
+            with open(f'{CONFIG}/notification_name.json', 'w') as t:
+                t.write('{\n "show_appname_in_notification": "true"\n}')
+        else:
+            with open(f'{CONFIG}/notification_name.json', 'w') as t:
+                t.write('{\n "show_appname_in_notification": "false"\n}')
+    
     ## Save Combobox (actions) configuration
     def on_combo_box_text_s_changed(self, comborow, GParamObject):
-        selected_item_02 = comborow.get_selected_item()
-        with open(f'{CONFIG}/actions.json', 'w') as a:
-            a.write('{\n "action": "%s"\n}' % selected_item_02.get_string())
-    
-    ## Save Combobox (spinner size) configuration
-    def on_combo_box_text_changed(self, comborow, GParamObject):
         selected_item = comborow.get_selected_item()
-        with open(f'{CONFIG}/spinner.json', 'w') as s:
-            s.write('{\n "spinner-size": "%s"\n}' % selected_item.get_string())
-        try:
-            self.spinner.set_size_request(int(selected_item.get_string()), int(selected_item.get_string()))
-        except ValueError:
-            self.spinner.set_size_request(60,60)
+        with open(f'{CONFIG}/actions.json', 'w') as a:
+            a.write('{\n "action": "%s"\n}' % selected_item.get_string())
         
 # Adw Application class
 class MyApp(Adw.Application):
