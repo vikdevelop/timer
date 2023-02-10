@@ -491,7 +491,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.adw_expander_row = Adw.ExpanderRow.new()
         self.adw_expander_row.set_title(title=jT["preferences"])
         self.adw_expander_row.set_subtitle(subtitle=jT["preferences_desc"])
-        self.adw_expander_row.set_expanded(True)
+        self.load_expander_row_state()
         self.lbox.append(child=self.adw_expander_row)
         
         # Adw.ComboRow - Actions
@@ -586,6 +586,19 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.adw_action_row_adv.add_suffix(widget=self.advButton)
         self.adw_action_row_adv.set_activatable_widget(widget=self.advButton)
         self.adw_expander_row.add_row(child=self.adw_action_row_adv)
+        
+    ### Load Adw.ExpanderRow state
+    def load_expander_row_state(self):
+        if os.path.exists(f'{CONFIG}/expander_row.json'):
+            with open(f'{CONFIG}/expander_row.json') as e:
+                jE = json.load(e)
+            e_row = jE["save_expander_row_position"]
+            if e_row == "true":
+                self.adw_expander_row.set_expanded(True)
+            else:
+                self.adw_expander_row.set_expanded(False)
+        else:
+            self.adw_expander_row.set_expanded(False)
         
     ## Set custom notification text
     def custom_notification(self):
@@ -745,6 +758,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.adw_action_row_window.set_activatable_widget(widget=self.switch_02)
         self.abox.append(self.adw_action_row_window)
         
+        # Adw.ActionRow - show vertical countdown timer text
         ## Gtk.Switch
         self.switch_06 = Gtk.Switch.new()
         if os.path.exists(f'{CONFIG}/countdown.json'):
@@ -756,7 +770,6 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.switch_06.set_valign(align=Gtk.Align.CENTER)
         self.switch_06.connect('notify::active', self.on_switch_06_toggled)
         
-        # Adw.ActionRow - show vertical countdown timer text
         ## Adw.ActionRow
         self.adw_action_row_verText = Adw.ActionRow.new()
         self.adw_action_row_verText.set_icon_name(icon_name='history-symbolic')
@@ -764,6 +777,27 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.adw_action_row_verText.add_suffix(widget=self.switch_06)
         self.adw_action_row_verText.set_activatable_widget(widget=self.switch_06)
         self.abox.append(self.adw_action_row_verText)
+        
+        # Adw.ActionRow - expand Preferences dropdown row
+        ## Gtk.Switch
+        self.switch_08 = Gtk.Switch.new()
+        if os.path.exists(f'{CONFIG}/expander_row.json'):
+            with open(f'{CONFIG}/expander_row.json') as r:
+                jR = json.load(r)
+            e_row = jR["save_expander_row_position"]
+            if e_row == "true":
+                self.switch_08.set_active(True)
+        self.switch_08.set_valign(align=Gtk.Align.CENTER)
+        self.switch_08.connect('notify::active', self.on_switch_08_toggled)
+        
+        ## Adw.ActionRow
+        self.adw_action_row_expander = Adw.ActionRow.new()
+        self.adw_action_row_expander.set_icon_name(icon_name='desktop-symbolic')
+        self.adw_action_row_expander.set_title(title=jT["save_expander_row_state"])
+        self.adw_action_row_expander.set_subtitle(subtitle=jT["save_expander_row_state_desc"])
+        self.adw_action_row_expander.add_suffix(widget=self.switch_08)
+        self.adw_action_row_expander.set_activatable_widget(widget=self.switch_08)
+        self.abox.append(self.adw_action_row_expander)
         
     def cancel_advanced(self, widget, *args):
         self.mainBox.append(self.lbox)
@@ -1290,6 +1324,15 @@ class TimerWindow(Gtk.ApplicationWindow):
         else:
             with open(f'{CONFIG}/notification_name.json', 'w') as t:
                 t.write('{\n "show_appname_in_notification": "false"\n}')
+                
+    ## Save Preferences expander row state configuration
+    def on_switch_08_toggled(self, switch08, GParamBoolean):
+        if switch08.get_active():
+            with open(f'{CONFIG}/expander_row.json', 'w') as t:
+                t.write('{\n "save_expander_row_position": "true"\n}')
+        else:
+            with open(f'{CONFIG}/expander_row.json', 'w') as t:
+                t.write('{\n "save_expander_row_position": "false"\n}')
     
     ## Save Combobox (actions) configuration
     def on_combo_box_text_s_changed(self, comborow, GParamObject):
