@@ -1097,9 +1097,25 @@ class TimerWindow(Gtk.ApplicationWindow):
         if keycode == ord('c'):
             print(jT["timing_ended"])
             self.stop_timer()
-        if keycode == 0xFF1B: # Alternative key for stop timer (EsC)
+        if keycode == 0xFF1B: # Alternative key for stop timer and close Notification settings and More settings (EsC)
             print(jT["timing_ended"])
             self.stop_timer()
+            try:
+                self.mainBox.remove(self.cbox)
+                self.headerbar.remove(self.backButton)
+                self.mainBox.set_valign(Gtk.Align.CENTER)
+                self.mainBox.set_margin_top(0)
+                self.set_title(jT["timer_title"])
+            except:
+                print("")
+            try:
+                self.mainBox.remove(self.abox)
+                self.headerbar.remove(self.backButton_A)
+                self.mainBox.set_valign(Gtk.Align.CENTER)
+                self.mainBox.set_margin_top(0)
+                self.set_title(jT["timer_title"])
+            except:
+                print("")
         if keycode == ord('r'):
             self.reset_timer()
         if keycode == ord('p'):
