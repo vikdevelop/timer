@@ -491,6 +491,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.adw_expander_row = Adw.ExpanderRow.new()
         self.adw_expander_row.set_title(title=jT["preferences"])
         self.adw_expander_row.set_subtitle(subtitle=jT["preferences_desc"])
+        self.adw_expander_row.set_expanded(True)
         self.lbox.append(child=self.adw_expander_row)
         
         # Adw.ComboRow - Actions
