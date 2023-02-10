@@ -214,6 +214,46 @@ class Dialog_keys(Gtk.Dialog):
         adw_action_row_cont.add_prefix(box_coTimer)
         listbox.append(adw_action_row_cont)
         
+        # Ctrl+N shortcut
+        box_nTimer = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        box_nTimer.set_margin_top(10)
+        box_nTimer.set_margin_bottom(10)
+        
+        button_nc = Gtk.Button.new_with_label("Ctrl")
+        box_nTimer.append(button_nc)
+        
+        label_plus = Gtk.Label.new(str="+")
+        box_nTimer.append(label_plus)
+        
+        button_n = Gtk.Button.new_with_label("N")
+        box_nTimer.append(button_n)
+        
+        adw_action_row_notification = Adw.ActionRow()
+        adw_action_row_notification.set_title(jT["go_to_notification_settings"])
+        adw_action_row_notification.set_title_lines(3)
+        adw_action_row_notification.add_prefix(box_nTimer)
+        listbox.append(adw_action_row_notification)
+        
+        # Ctrl+M shortcut
+        box_mTimer = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        box_mTimer.set_margin_top(10)
+        box_mTimer.set_margin_bottom(10)
+        
+        button_mc = Gtk.Button.new_with_label("Ctrl")
+        box_mTimer.append(button_mc)
+        
+        label_plus = Gtk.Label.new(str="+")
+        box_mTimer.append(label_plus)
+        
+        button_m = Gtk.Button.new_with_label("M")
+        box_mTimer.append(button_m)
+        
+        adw_action_row_more_settings = Adw.ActionRow()
+        adw_action_row_more_settings.set_title(jT["go_to_more_settings"])
+        adw_action_row_more_settings.set_title_lines(3)
+        adw_action_row_more_settings.add_prefix(box_mTimer)
+        listbox.append(adw_action_row_more_settings)
+        
         # F1 shortcut
         box_about = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         box_about.set_margin_top(10)
@@ -512,7 +552,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.setButton = Gtk.Button.new_from_icon_name('go-next-symbolic')
         self.setButton.add_css_class('circular')
         self.setButton.add_css_class('flat')
-        self.setButton.connect('clicked', self.custom_notification)
+        self.setButton.connect('clicked', self.on_notification_button_clicked)
         
         ## Adw.EntryRow
         self.entry = Adw.EntryRow()
@@ -535,7 +575,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.advButton = Gtk.Button.new_from_icon_name('go-next-symbolic')
         self.advButton.add_css_class('circular')
         self.advButton.add_css_class('flat')
-        self.advButton.connect('clicked', self.advanced)
+        self.advButton.connect('clicked', self.on_advButton_clicked)
         
         ## Adw.ActionRow
         self.adw_action_row_adv = Adw.ActionRow.new()
@@ -547,7 +587,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.adw_expander_row.add_row(child=self.adw_action_row_adv)
         
     ## Set custom notification text
-    def custom_notification(self, widget, *args):
+    def custom_notification(self):
         self.mainBox.remove(self.lbox)
         self.mainBox.set_valign(Gtk.Align.START)
         self.mainBox.set_margin_top(15)
@@ -646,7 +686,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.set_title(jT["timer_title"])
         
     ## Advanced settings section
-    def advanced(self, widget, *args):
+    def advanced(self):
         self.mainBox.remove(self.lbox)
         self.mainBox.set_valign(Gtk.Align.START)
         self.mainBox.set_margin_top(15)
@@ -1070,6 +1110,10 @@ class TimerWindow(Gtk.ApplicationWindow):
             except:
                 print("")
             self.continue_timer()
+        if keycode == ord('n'):
+            self.custom_notification()
+        if keycode == ord('m'):
+            self.advanced()
         if keycode == 0xFFBF:
             self.style_manager.set_color_scheme(
                     color_scheme=Adw.ColorScheme.PREFER_DARK
@@ -1126,6 +1170,14 @@ class TimerWindow(Gtk.ApplicationWindow):
     ## Continue button action
     def on_buttonCont_clicked(self, buttonPause):
         self.continue_timer()
+        
+    ## action of notification button
+    def on_notification_button_clicked(self, widget, *args):
+        self.custom_notification()
+    
+    ## action of advButton
+    def on_advButton_clicked(self, widget, *args):
+        self.advanced()
     
     def on_SpinnerWindow_destroy(self, widget, *args):
         """ procesing closing window """
