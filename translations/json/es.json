@@ -9,7 +9,6 @@
     "about_app": "Acerca de la aplicación",
     "simple_timer": "Temporizador simple",
     "preferences": "Preferencias",
-    "spinner_size_desc": "Seleccione el tamaño del spinner:",
     "resizable_of_window": "Cambio de tamaño de la ventana",
     "default": "por defecto",
     "theme_desc": "Utilícelo si el temporizador no sigue el tema del sistema.",
@@ -49,5 +48,17 @@
     "paused": "En pausa.",
     "pause_timer": "Pausar el Temporizador",
     "continue_timer": "Continuar el tiempo",
-    "use_in_alarm_clock": "Usar en el cuadro de diálogo del reloj de alarma"
+    "use_in_alarm_clock": "Usar en el cuadro de diálogo del reloj de alarma",
+    "show_appname": "Show application name in notification",
+    "notification_text": "<b>Notification</b>",
+    "alarm_clock_dialog_text": "<b>Alarm clock dialog</b>",
+    "advanced": "More settings",
+    "go_to_more_settings": "Go to More settings",
+    "go_to_notification_settings": "Go to Notification settings",
+    "alternative_key": "The alternative keyboard shortcut is: {}",
+    "vertical_text": "Vertical text in countdown page",
+    "vertical_text_desc": "Displays vertical text that counts down the time on the countdown page",
+    "save_expander_row_state": "Expand Preferences dropdown row",
+    "save_expander_row_state_desc": "When you start the Timer application, the Preferences drop-down row will automatically expand.",
+    "show_appicon": "Show application icon in notification"
 }
