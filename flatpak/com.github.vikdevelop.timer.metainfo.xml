@@ -25,16 +25,19 @@
     
     <screenshots>
         <screenshot type="default">
-            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/Timer-gtk4_2-7_1.png</image>
+            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-9_1.png</image>
         </screenshot>
         <screenshot>
-            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/Timer-gtk4_2-7_2.png</image>
+            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-9_2.png</image>
         </screenshot>
         <screenshot>
-            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-7_timing.png</image>
+            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-9_3.png</image>
         </screenshot>
         <screenshot>
-            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-8_keys.png</image>
+            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-9_4.png</image>
+        </screenshot>
+        <screenshot>
+            <image>https://raw.githubusercontent.com/vikdevelop/timer/main/img/timer-gtk4_2-9_5.png</image>
         </screenshot>
     </screenshots>
     
@@ -45,6 +48,17 @@
     </categories>
     
     <releases>
+        <release version="2.9" date="2023-02-11">
+            <description>
+                <ul>
+                    <li>Option of set dark theme, resizable of Window and now also option of set vertical text in countdown page and option of expand the Preferences drop-down row after launching the Timer app has been moved to the tab "More settings" in the Preferences drop-down row</li>
+                    <li>Removed spinner animation and option of set spinner size</li>
+                    <li>If the "Resizable of Window" option is enabled, the Timer will save the current window size set by the user<//li>
+                    <li>added alternative keys for stop timer (EsC) and new keyboard shortcuts: Ctrl+M for show more settings and Ctrl+N for show notification settings</li>
+                    </li>minor UI changes</li>
+                </ul>
+            </description>
+        </release>
         <release version="2.8" date="2023-01-28">
             <description>
                 <ul>
