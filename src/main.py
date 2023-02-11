@@ -758,6 +758,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.adw_action_row_theme.set_title(title=jT["dark_theme"])
         self.adw_action_row_theme.set_subtitle(subtitle=jT["theme_desc"])
         self.adw_action_row_theme.add_suffix(widget=self.switch_01)
+        self.adw_action_row_theme.set_activatable_widget(self.switch_01)
         self.abox.append(self.adw_action_row_theme)
         
         # Adw ActionRow - Resizable of Window configuration
@@ -796,6 +797,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.adw_action_row_verText = Adw.ActionRow.new()
         self.adw_action_row_verText.set_icon_name(icon_name='history-symbolic')
         self.adw_action_row_verText.set_title(title=jT["vertical_text"])
+        self.adw_action_row_verText.set_subtitle(subtitle=jT["vertical_text_desc"])
         self.adw_action_row_verText.add_suffix(widget=self.switch_06)
         self.adw_action_row_verText.set_activatable_widget(widget=self.switch_06)
         self.abox.append(self.adw_action_row_verText)
