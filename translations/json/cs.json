@@ -59,6 +59,6 @@
     "save_expander_row_state_desc": "Po spuštění aplikace Časovač se automaticky rozbalí rozevírací řádek Předvolby.",
     "show_appicon": "Zobrazit ikonu aplikace v oznámení",
     "show_appname": "Zobrazit název aplikace v oznámení",
-    "notification_text": "<b>Notifikace </b>",
+    "notification_text": "<b>Notifikace</b>",
     "alarm_clock_dialog_text": "<b>Dialogové okno budíku</b>"
 }
