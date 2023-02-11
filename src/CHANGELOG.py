@@ -6,7 +6,7 @@ release_29 = '<p>v2.9\
     <li>If the "Resizable of Window" option is enabled, the Timer will save the current window size set by the user</li>\
     <li>added alternative keys for stop timer (EsC) and new keyboard shortcuts: Ctrl+M for show more settings and Ctrl+N for show notification settings</li>\
     </li>minor UI changes</li>\
-</ul>
+</ul>'
 
 release_28 = "<p>2.8</p>\
 <ul>\
