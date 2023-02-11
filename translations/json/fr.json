@@ -9,12 +9,9 @@
     "about_app": "À propos de l’appli",
     "simple_timer": "Minuterie simple",
     "preferences": "Préférences",
-    "spinner": "Girouette",
     "spinner_size_desc": "Sélectionnez la taille de la girouette :",
-    "select": "Sélectionner",
     "resizable_of_window": "Redimensionnement de la fenêtre",
     "default": "par défaut",
-    "preferences_saved": "Préférences enregistrées.",
     "theme_desc": "Utilisez cette option si le minuteur ne suit pas le thème du système.",
     "dark_theme": "Thème sombre",
     "contributors": "Contributeurs",
@@ -52,6 +49,5 @@
     "paused": "Paused.",
     "pause_timer": "Pause timer",
     "continue_timer": "Continue in timing",
-    "use_in_alarm_clock": "Use in alarm clock dialog",
-    "use_in_notification": "Use in notification"
+    "use_in_alarm_clock": "Use in alarm clock dialog"
 }

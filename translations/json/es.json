@@ -9,12 +9,9 @@
     "about_app": "Acerca de la aplicación",
     "simple_timer": "Temporizador simple",
     "preferences": "Preferencias",
-    "spinner": "Spinner",
     "spinner_size_desc": "Seleccione el tamaño del spinner:",
-    "select": "Seleccione",
     "resizable_of_window": "Cambio de tamaño de la ventana",
     "default": "por defecto",
-    "preferences_saved": "Preferencias guardadas.",
     "theme_desc": "Utilícelo si el temporizador no sigue el tema del sistema.",
     "dark_theme": "Tema oscuro",
     "contributors": "Colaboradores",
@@ -52,6 +49,5 @@
     "paused": "En pausa.",
     "pause_timer": "Pausar el Temporizador",
     "continue_timer": "Continuar el tiempo",
-    "use_in_notification": "Uso en la notificación",
     "use_in_alarm_clock": "Usar en el cuadro de diálogo del reloj de alarma"
 }

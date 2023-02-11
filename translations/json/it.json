@@ -9,12 +9,9 @@
     "about_app": "Informazioni sull'app",
     "simple_timer": "Timer semplice",
     "preferences": "Preferenze",
-    "spinner": "Spinner",
     "spinner_size_desc": "Seleziona la dimensione dello spinner:",
-    "select": "Seleziona",
     "resizable_of_window": "Finestra ridimensionabile",
     "default": "predefinito",
-    "preferences_saved": "Preferenze salvate.",
     "theme_desc": "Usa questo se Timer non segue il tema del sistema.",
     "dark_theme": "Tema scuro",
     "contributors": "Contributori",
@@ -52,6 +49,5 @@
     "paused": "In pausa.",
     "pause_timer": "Timer di pausa",
     "continue_timer": "Continua a conteggiare",
-    "use_in_notification": "Use in notification",
     "use_in_alarm_clock": "Use in alarm clock dialog"
 }

@@ -9,12 +9,9 @@
     "about_app": "Om programmet",
     "simple_timer": "Enkelt tidsur",
     "preferences": "Innstillinger",
-    "spinner": "Spinner",
     "spinner_size_desc": "Velg spinner-størrelse:",
-    "select": "Velg",
     "resizable_of_window": "Justering av vindusstørrelse",
     "default": "forvalg",
-    "preferences_saved": "Innstillinger lagret.",
     "theme_desc": "Bruk dette hvis tidsuret ikke er iført systemdrakt.",
     "dark_theme": "Mørk drakt",
     "contributors": "Bidragsytere",
@@ -52,6 +49,5 @@
     "paused": "Paused.",
     "pause_timer": "Pause timer",
     "continue_timer": "Continue in timing",
-    "use_in_notification": "Use in notification",
     "use_in_alarm_clock": "Use in alarm clock dialog"
 }

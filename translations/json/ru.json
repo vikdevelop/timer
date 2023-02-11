@@ -9,12 +9,9 @@
     "about_app": "О приложении",
     "simple_timer": "Простой таймер",
     "preferences": "Настройки",
-    "spinner": "Спиннер",
     "spinner_size_desc": "Выберите размер спиннера:",
-    "select": "Выбрать",
     "resizable_of_window": "Изменяемый размер окна",
     "default": "по умолчанию",
-    "preferences_saved": "Настройки сохранены.",
     "theme_desc": "Используйте это, если Таймер не соответствует системной теме.",
     "dark_theme": "Тёмная тема",
     "contributors": "Участники",
@@ -52,6 +49,5 @@
     "paused": "Paused.",
     "pause_timer": "Pause timer",
     "continue_timer": "Continue in timing",
-    "use_in_notification": "Use in notification",
     "use_in_alarm_clock": "Use in alarm clock dialog"
 }

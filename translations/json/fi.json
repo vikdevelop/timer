@@ -9,12 +9,9 @@
     "about_app": "Tietoja sovelluksesta",
     "simple_timer": "Yksinkertainen ajastin",
     "preferences": "Asetukset",
-    "spinner": "Spinner",
     "spinner_size_desc": "Select size of spinner:",
-    "select": "Valitse",
     "resizable_of_window": "Ikkunan kokoa muutettava",
     "default": "oletus",
-    "preferences_saved": "Asetukset tallennettu.",
     "theme_desc": "Käytä tätä, jos Ajastin ei noudata järjestelmän teemaa.",
     "dark_theme": "Tumma teema",
     "contributors": "Osallistujat",
@@ -52,6 +49,5 @@
     "paused": "Paused.",
     "pause_timer": "Pause timer",
     "continue_timer": "Continue in timing",
-    "use_in_notification": "Use in notification",
     "use_in_alarm_clock": "Use in alarm clock dialog"
 }

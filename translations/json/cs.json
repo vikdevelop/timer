@@ -9,12 +9,9 @@
     "about_app": "O aplikaci",
     "simple_timer": "Jednoduchý časovač",
     "preferences": "Předvolby",
-    "spinner": "Spinner",
     "spinner_size_desc": "Vyberte velikost spinneru:",
-    "select": "Vybrat",
     "resizable_of_window": "Změnit velikost okna",
     "default": "výchozí",
-    "preferences_saved": "Předvolby byly uloženy.",
     "theme_desc": "Povolte následující, pokud Časovač se neřídí systémovým motivem.",
     "dark_theme": "Tmavý motiv",
     "contributors": "Přispěvatelé",
@@ -52,6 +49,5 @@
     "paused": "Pozastaveno.",
     "pause_timer": "Pozastavit časovač",
     "continue_timer": "Pokračovat v časování",
-    "use_in_notification": "Použít v oznámení",
     "use_in_alarm_clock": "Použít v dialogovém okně budíku"
 }
