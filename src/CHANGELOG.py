@@ -1,4 +1,13 @@
 # CHANGELOG.py
+release_29 = '<p>v2.9\
+<ul>\
+    <li>Option of set dark theme, resizable of Window and now also option of set vertical text in countdown page and option of expand the Preferences drop-down row after launching the Timer app has been moved to the tab "More settings" in the Preferences drop-down row</li>\
+    <li>Removed spinner animation and option of set spinner size</li>\
+    <li>If the "Resizable of Window" option is enabled, the Timer will save the current window size set by the user</li>\
+    <li>added alternative keys for stop timer (EsC) and new keyboard shortcuts: Ctrl+M for show more settings and Ctrl+N for show notification settings</li>\
+    </li>minor UI changes</li>\
+</ul>
+
 release_28 = "<p>2.8</p>\
 <ul>\
     <li>The keyboard shortcuts Ctrl+P to pause the timer and Ctrl+T to continue in timing are now used instead of the original F6 and F7</li>\
