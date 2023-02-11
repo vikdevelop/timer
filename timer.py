@@ -35,6 +35,7 @@ elif subprocess.getoutput("locale | grep 'LANG'") == 'LANG=es_ES.UTF-8':
 else:
     lang = 'en.json'
 
+"""
 if os.path.exists("{}/.var/app/com.github.vikdevelop.timer/cache/{}".format(Path.home(), lang)):
     try:
         locale = open("{}/.var/app/com.github.vikdevelop.timer/cache/{}".format(Path.home(), lang))
@@ -42,9 +43,11 @@ if os.path.exists("{}/.var/app/com.github.vikdevelop.timer/cache/{}".format(Path
         locale = open(f"/app/translations/{lang}")
 else:
     locale = open(f"/app/translations/{lang}")
+"""
 
-# Load JSON local file
-jT = json.load(locale)
+with open(f"/app/translations/{lang}") as l:
+    # Load JSON local file
+    jT = json.load(l)
 
 # import main file - source code
 import src.main
