@@ -9,7 +9,6 @@
     "about_app": "Tietoja sovelluksesta",
     "simple_timer": "Yksinkertainen ajastin",
     "preferences": "Asetukset",
-    "spinner_size_desc": "Select size of spinner:",
     "resizable_of_window": "Ikkunan kokoa muutettava",
     "default": "oletus",
     "theme_desc": "Käytä tätä, jos Ajastin ei noudata järjestelmän teemaa.",
@@ -49,5 +48,17 @@
     "paused": "Paused.",
     "pause_timer": "Pause timer",
     "continue_timer": "Continue in timing",
-    "use_in_alarm_clock": "Use in alarm clock dialog"
+    "use_in_alarm_clock": "Use in alarm clock dialog",
+    "advanced": "More settings",
+    "go_to_more_settings": "Go to More settings",
+    "go_to_notification_settings": "Go to Notification settings",
+    "alternative_key": "The alternative keyboard shortcut is: {}",
+    "vertical_text": "Vertical text in countdown page",
+    "vertical_text_desc": "Displays vertical text that counts down the time on the countdown page",
+    "save_expander_row_state": "Expand Preferences dropdown row",
+    "save_expander_row_state_desc": "When you start the Timer application, the Preferences drop-down row will automatically expand.",
+    "show_appicon": "Show application icon in notification",
+    "show_appname": "Show application name in notification",
+    "notification_text": "<b>Notification</b>",
+    "alarm_clock_dialog_text": "<b>Alarm clock dialog</b>"
 }
