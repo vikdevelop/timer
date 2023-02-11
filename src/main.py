@@ -614,10 +614,29 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.backButton.connect('clicked', self.cancel_custom_notification)
         self.headerbar.pack_start(self.backButton)
         
+        self.label_n = Gtk.Label.new()
+        self.label_n.set_markup(jT["notification_text"])
+        self.label_n.set_justify(Gtk.Justification.LEFT)
+        self.label_n.set_xalign(-1)
+        self.label_n.set_yalign(-1)
+        self.mainBox.append(self.label_n)
+        
         self.cbox = Gtk.ListBox.new()
         self.cbox.set_selection_mode(mode=Gtk.SelectionMode.NONE)
         self.cbox.get_style_context().add_class(class_name='boxed-list')
         self.mainBox.append(self.cbox)
+        
+        self.label_d = Gtk.Label.new()
+        self.label_d.set_markup(jT["alarm_clock_dialog_text"])
+        self.label_d.set_justify(Gtk.Justification.LEFT)
+        self.label_d.set_xalign(-1)
+        self.label_d.set_yalign(-1)
+        self.mainBox.append(self.label_d)
+        
+        self.dbox = Gtk.ListBox.new()
+        self.dbox.set_selection_mode(mode=Gtk.SelectionMode.NONE)
+        self.dbox.get_style_context().add_class(class_name='boxed-list')
+        self.mainBox.append(self.dbox)
         
         # Adw.ActionRow - use in alarm clock dialog
         ## Gtk.Switch
@@ -645,29 +664,6 @@ class TimerWindow(Gtk.ApplicationWindow):
         
         # Adw.ActionRow - use in alarm clock dialog
         ## Gtk.Switch
-        self.switch_05 = Gtk.Switch.new()
-        if os.path.exists(f'{CONFIG}/use_text_alarm.json'):
-            with open(f'{CONFIG}/use_text_alarm.json') as a:
-                jA = json.load(a)
-            use_dialog = jA["use_in_alarm_clock_dialog"]
-            if use_dialog == "true":
-                self.switch_05.set_active(True)
-            else:
-                self.switch_05.set_active(False)
-        else:
-            self.switch_05.set_active(False)
-        self.switch_05.set_valign(align=Gtk.Align.CENTER)
-        self.switch_05.connect('notify::active', self.on_switch_05_toggled)
-        
-        ## Adw.ActionRow
-        self.adw_action_row_07 = Adw.ActionRow.new()
-        self.adw_action_row_07.set_title(title=jT["use_in_alarm_clock"])
-        self.adw_action_row_07.add_suffix(widget=self.switch_05)
-        self.adw_action_row_07.set_activatable_widget(widget=self.switch_05)
-        self.cbox.append(self.adw_action_row_07)
-        
-        # Adw.ActionRow - use in alarm clock dialog
-        ## Gtk.Switch
         self.switch_07 = Gtk.Switch.new()
         if os.path.exists(f'{CONFIG}/notification_name.json'):
             with open(f'{CONFIG}/notification_name.json') as c:
@@ -689,9 +685,35 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.adw_action_row_08.set_activatable_widget(widget=self.switch_07)
         self.cbox.append(self.adw_action_row_08)
         
+        # Adw.ActionRow - use in alarm clock dialog
+        ## Gtk.Switch
+        self.switch_05 = Gtk.Switch.new()
+        if os.path.exists(f'{CONFIG}/use_text_alarm.json'):
+            with open(f'{CONFIG}/use_text_alarm.json') as a:
+                jA = json.load(a)
+            use_dialog = jA["use_in_alarm_clock_dialog"]
+            if use_dialog == "true":
+                self.switch_05.set_active(True)
+            else:
+                self.switch_05.set_active(False)
+        else:
+            self.switch_05.set_active(False)
+        self.switch_05.set_valign(align=Gtk.Align.CENTER)
+        self.switch_05.connect('notify::active', self.on_switch_05_toggled)
+        
+        ## Adw.ActionRow
+        self.adw_action_row_07 = Adw.ActionRow.new()
+        self.adw_action_row_07.set_title(title=jT["use_in_alarm_clock"])
+        self.adw_action_row_07.add_suffix(widget=self.switch_05)
+        self.adw_action_row_07.set_activatable_widget(widget=self.switch_05)
+        self.dbox.append(self.adw_action_row_07)
+        
     def cancel_custom_notification(self, widget, *args):
         self.mainBox.append(self.lbox)
         self.mainBox.remove(self.cbox)
+        self.mainBox.remove(self.dbox)
+        self.mainBox.remove(self.label_n)
+        self.mainBox.remove(self.label_d)
         self.mainBox.set_valign(Gtk.Align.CENTER)
         self.mainBox.set_margin_top(0)
         self.headerbar.pack_start(self.buttonStart)
@@ -1140,6 +1162,9 @@ class TimerWindow(Gtk.ApplicationWindow):
                 self.headerbar.remove(self.backButton)
                 self.mainBox.set_valign(Gtk.Align.CENTER)
                 self.mainBox.set_margin_top(0)
+                self.mainBox.remove(self.dbox)
+                self.mainBox.remove(self.label_n)
+                self.mainBox.remove(self.label_d)
                 self.set_title(jT["timer_title"])
             except:
                 print("")
