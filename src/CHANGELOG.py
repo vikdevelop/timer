@@ -1,4 +1,10 @@
 # CHANGELOG.py
+release_29T = '<p>v2.9T</p>\
+<ul>\
+    <li>Added Turkish translations, thanks to @sabriunal</li>\
+    <li>Updated translations</li>\
+</ul>'
+
 release_29 = '<p>v2.9</p>\
 <ul>\
     <li>Option of set dark theme, resizable of Window and now also option of set vertical text in countdown page and option of expand the Preferences drop-down row after launching the Timer app has been moved to the tab "More settings" in the Preferences drop-down row</li>\
