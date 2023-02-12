@@ -1,5 +1,5 @@
 # CHANGELOG.py
-release_29 = '<p>v2.9\
+release_29 = '<p>v2.9</p>\
 <ul>\
     <li>Option of set dark theme, resizable of Window and now also option of set vertical text in countdown page and option of expand the Preferences drop-down row after launching the Timer app has been moved to the tab "More settings" in the Preferences drop-down row</li>\
     <li>Removed spinner animation and option of set spinner size</li>\
