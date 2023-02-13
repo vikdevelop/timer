@@ -21,6 +21,8 @@ Name[uk]=Таймер
 Name[es]=Temporizador
 ## from translations/json/tr.json
 Name[tr]=Kronometre
+## from translations/json/nl.json
+Name[nl]=Tijdklok
 # Comment
 Comment=Simple timer
 ## from translations/json/cs.json
@@ -43,6 +45,8 @@ Comment[uk]=Простий таймер
 Comment[es]=Temporizador simple
 ## from translations/json/tr.json
 Comment[tr]=Basit kronometre
+## from translations/json/nl.json
+Comment[nl]=Een eenvoudige tijdklok
 Type=Application
 Icon=com.github.vikdevelop.timer
 Exec=timer.sh
