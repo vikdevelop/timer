@@ -34,6 +34,9 @@ elif subprocess.getoutput("locale | grep 'LANG'") == 'LANG=es_ES.UTF-8':
 # Turkish
 elif subprocess.getoutput("locale | grep 'LANG'") == 'LANG=tr_TR.UTF-8':
     lang = 'tr.json'
+# Dutch
+elif subprocess.getoutput("locale | grep 'LANG'") == 'LANG=nl_NL.UTF-8':
+    lang = 'nl.json'
 # English
 else:
     lang = 'en.json'
