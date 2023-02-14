@@ -1,4 +1,9 @@
 # CHANGELOG.py
+release_29T_20230214 = '<p>v2.9T_2023-02-14</p>\
+<ul>\
+    <li>Added Dutch translations, thanks to @Vistaus</li>\
+</ul>'
+
 release_29T = '<p>v2.9T</p>\
 <ul>\
     <li>Added Turkish translations, thanks to @sabriunal</li>\
