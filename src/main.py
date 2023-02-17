@@ -88,6 +88,7 @@ class Dialog_keys(Gtk.Dialog):
         
         adw_action_row_start = Adw.ActionRow()
         adw_action_row_start.set_title(jT["run_timer"])
+        adw_action_row_start.set_tooltip_text(jT["alternative_key"].format("Enter"))
         adw_action_row_start.set_title_lines(3)
         adw_action_row_start.add_prefix(box_sTimer)
         listbox.append(adw_action_row_start)
@@ -1050,9 +1051,11 @@ class TimerWindow(Gtk.ApplicationWindow):
         
     def start_again(self, w, response):
         if response == 'start':
+            self.present()
             self.start_timer()
             os.popen('pkill -15 bash && pkill -15 ffplay')
         elif response == 'cancel':
+            self.present()
             os.popen('pkill -15 bash && pkill -15 ffplay')
         else:
             os.popen('pkill -15 bash && pkill -15 ffplay')
@@ -1156,6 +1159,8 @@ class TimerWindow(Gtk.ApplicationWindow):
         if keycode == ord('c'):
             print(jT["timing_ended"])
             self.stop_timer()
+        if keycode == 0xFF0D:
+            self.start_timer()
         if keycode == 0xFF1B: # Alternative key for stop timer and close Notification settings and More settings (EsC)
             print(jT["timing_ended"])
             self.stop_timer()
@@ -1211,6 +1216,7 @@ class TimerWindow(Gtk.ApplicationWindow):
     
     # Action after closing Timer window
     def close_action(self, widget, *args):
+        self.set_hide_on_close(True)
         # Save current window size
         if os.path.exists(f'{CONFIG}/window.json'):
             if self.get_allocation().width > 425:
