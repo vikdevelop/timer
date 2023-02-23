@@ -1216,7 +1216,6 @@ class TimerWindow(Gtk.ApplicationWindow):
     
     # Action after closing Timer window
     def close_action(self, widget, *args):
-        self.set_hide_on_close(True)
         # Save current window size
         if os.path.exists(f'{CONFIG}/window.json'):
             if self.get_allocation().width > 425:
