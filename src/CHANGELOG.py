@@ -1,4 +1,10 @@
 # CHANGELOG.py
+release_29U = '<p>v2.9U</p>\
+<ul>\
+    <li>Added new alternative key for start timer: Enter</li>\
+    <li>Updated translations</li>\
+</ul>'
+
 release_29T_20230214 = '<p>v2.9T_2023-02-14</p>\
 <ul>\
     <li>Added Dutch translations, thanks to @Vistaus</li>\
