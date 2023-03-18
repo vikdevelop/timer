@@ -60,5 +60,7 @@
     "show_appicon": "Mostra l'icona dell'applicazione nella notifica",
     "show_appname": "Mostra il nome dell'applicazione nella notifica",
     "notification_text": "<b>Notifica</b>",
-    "alarm_clock_dialog_text": "<b>Finestra di dialogo Sveglia</b>"
+    "alarm_clock_dialog_text": "<b>Finestra di dialogo Sveglia</b>",
+    "apply": "Apply",
+    "edit_options": "Edit options"
 }
