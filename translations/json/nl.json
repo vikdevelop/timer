@@ -60,5 +60,7 @@
     "show_appname": "Toepassingsnaam op meldingen tonen",
     "notification_text": "<b>Melding</b>",
     "alarm_clock_dialog_text": "<b>Alarmgeluidvenster</b>",
-    "translator_credits": "Heimen Stoffels <https://github.com/Vistaus>"
+    "translator_credits": "Heimen Stoffels <https://github.com/Vistaus>",
+    "apply": "Apply",
+    "edit_options": "Edit options"
 }

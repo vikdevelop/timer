@@ -60,5 +60,7 @@
     "vertical_text_desc": "Muestra el texto en vertical de la cuenta atrás en la página de la cuenta atrás",
     "save_expander_row_state": "Expandir la fila del desplegable de las Preferencias",
     "save_expander_row_state_desc": "Expande automáticamente la fila desplegable Preferencias al iniciar la aplicación Temporizador.",
-    "show_appicon": "Mostrar el icono de la aplicación en las notificaciones"
+    "show_appicon": "Mostrar el icono de la aplicación en las notificaciones",
+    "apply": "Apply",
+    "edit_options": "Edit options"
 }

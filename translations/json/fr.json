@@ -60,5 +60,7 @@
     "show_appicon": "Afficher l'icône de l'application dans la notification",
     "show_appname": "Afficher le nom de l'application dans la notification",
     "notification_text": "<b>Notification</b>",
-    "alarm_clock_dialog_text": "<b>Dialogue d'alarme</b>"
+    "alarm_clock_dialog_text": "<b>Dialogue d'alarme</b>",
+    "apply": "Apply",
+    "edit_options": "Edit options"
 }

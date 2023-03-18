@@ -60,5 +60,7 @@
     "show_appname": "Uygulama adını bildirimde göster",
     "notification_text": "<b> Bildirim</b>",
     "alarm_clock_dialog_text": "<b> Çalar saat iletişim kutusu</b>",
-    "translator_credits": "Sabri Ünal <libreajans@gmail.com>"
+    "translator_credits": "Sabri Ünal <libreajans@gmail.com>",
+    "apply": "Apply",
+    "edit_options": "Edit options"
 }
