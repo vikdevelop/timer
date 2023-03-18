@@ -60,5 +60,7 @@
     "show_appname": "Show application name in notification",
     "notification_text": "<b>Notification</b>",
     "alarm_clock_dialog_text": "<b>Alarm clock dialog</b>",
+    "apply": "Apply",
+    "edit_options": "Edit options",
     "translator_credits": "vikdevelop https://github.com/vikdevelop"
 }
