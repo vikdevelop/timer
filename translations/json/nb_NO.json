@@ -60,5 +60,7 @@
     "save_expander_row_state": "Utvid rullegardinsraden for «Innstillinger»",
     "save_expander_row_state_desc": "Auto-utvider rullegardinsraden i innstillinger når Timer-programmet startes.",
     "notification_text": "<b>Merknad</b>",
-    "alarm_clock_dialog_text": "<b>Alarmklokkedialog</b>"
+    "alarm_clock_dialog_text": "<b>Alarmklokkedialog</b>",
+    "apply": "Apply",
+    "edit_options": "Edit options"
 }
