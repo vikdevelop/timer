@@ -60,5 +60,7 @@
     "show_appicon": "Показувати іконку застосунку у сповіщенні",
     "show_appname": "Показувати назву застосунку у сповіщенні",
     "notification_text": "<b>Сповіщення</b>",
-    "alarm_clock_dialog_text": "<b>Діалогове вікно будильника</b>"
+    "alarm_clock_dialog_text": "<b>Діалогове вікно будильника</b>",
+    "apply": "Apply",
+    "edit_options": "Edit options"
 }
