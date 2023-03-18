@@ -60,5 +60,7 @@
     "show_appname": "Show application name in notification",
     "notification_text": "<b>Notificação</b>",
     "alarm_clock_dialog_text": "<b>Caixa de diálogo do alarme</b>",
-    "translator_credits": "Felipe Nogueira https://github.com/fnogcps"
+    "translator_credits": "Felipe Nogueira https://github.com/fnogcps",
+    "apply": "Apply",
+    "edit_options": "Edit options"
 }
