@@ -48,6 +48,16 @@
     </categories>
     
     <releases>
+        <release version="3.0" date="2023-03-18">
+            <description>
+                <ul>
+                    <li>Added Hungarian translations, thanks to @danieluhrinyi</li>
+                    <li>Added Portugalese (Brasil) translations, thanks to @fnogcps</li>
+                    <li>Added Arabic translations, thanks to @fawaz006</li>
+                    <li>added option to change action after timer finishes, play sound, custom notification text during timer (#73)</li>
+                </ul>
+            </description>
+        </release>
         <release version="2.9" date="2023-02-11">
             <description>
                 <ul>
