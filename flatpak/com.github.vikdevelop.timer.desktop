@@ -23,6 +23,10 @@ Name[es]=Temporizador
 Name[tr]=Kronometre
 ## from translations/json/nl.json
 Name[nl]=Tijdklok
+## from translations/json/pt_BR.json
+Name[pt_BR]=Cronômetro
+## from translations/json/hu.json
+Name[hu]=Időzítő
 # Comment
 Comment=Simple timer
 ## from translations/json/cs.json
@@ -47,6 +51,10 @@ Comment[es]=Temporizador simple
 Comment[tr]=Basit kronometre
 ## from translations/json/nl.json
 Comment[nl]=Een eenvoudige tijdklok
+## from translations/json/pt_BR.json
+Comment[pt_BR]=Cronômetro simples
+## from translations/json/hu.json
+Comment[hu]=Egyszerű időzítő
 Type=Application
 Icon=com.github.vikdevelop.timer
 Exec=timer.sh
