@@ -353,6 +353,8 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.menu_button.set_menu_model(menu_model=self.menu_button_model)
         self.headerbar.pack_end(child=self.menu_button)
         
+        self.back_type = ""
+        
         # Gtk Box layout for timing page
         self.timingBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
         
@@ -361,6 +363,18 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.label_action = Gtk.Label()
         self.label_action.set_wrap(True)
         self.label_action.set_justify(Gtk.Justification.CENTER)
+        
+        # button for edit options
+        self.editButton = Gtk.Button.new()
+        self.edit_button_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
+        self.edit_button_box.set_halign(Gtk.Align.CENTER)
+        self.edit_button_box.append(Gtk.Image.new_from_icon_name( \
+            'list-edit-symbolic'))
+        self.edit_button_box.append(Gtk.Label.new("Edit options"))
+        self.editButton.set_child(self.edit_button_box)
+        self.editButton.add_css_class('flat')
+        self.editButton.set_can_focus(False)
+        self.editButton.connect('clicked', self.on_editButton_clicked)
         
         # Entry
         self.make_timer_box()
@@ -600,14 +614,68 @@ class TimerWindow(Gtk.ApplicationWindow):
                 self.adw_expander_row.set_expanded(False)
         else:
             self.adw_expander_row.set_expanded(False)
+    
+    # Edit options in ongoing timing
+    def edit_options(self):
+        self.back_type = "edit_options"
+        self.pause_timer()
+        self.headerbar.remove(self.buttonStop)
+        self.headerbar.remove(self.buttonCont)
+        
+        self.applyButton = Gtk.Button.new()
+        self.applyButton.add_css_class('suggested-action')
+        self.app_button_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
+        self.app_button_box.append(Gtk.Image.new_from_icon_name( \
+            'adw-entry-apply-symbolic'))
+        self.app_button_box.append(Gtk.Label.new("Apply"))
+        self.applyButton.set_child(self.app_button_box)
+        self.applyButton.connect('clicked', self.cancel_edit_options)
+        
+        self.headerbar.pack_start(self.applyButton)
+        self.ebox = Gtk.ListBox.new()
+        self.ebox.set_selection_mode(mode=Gtk.SelectionMode.NONE)
+        self.ebox.get_style_context().add_class(class_name='boxed-list')
+        self.mainBox.append(self.ebox)
+        self.mainBox.remove(self.lbox)
+        self.mainBox.remove(self.timingBox)
+        
+        self.adw_expander_row.remove(child=self.adw_action_row_notification)
+        self.adw_expander_row.remove(child=self.adw_action_row_timer)
+        self.adw_expander_row.remove(child=self.adw_action_row_beep)
+        
+        self.ebox.append(child=self.adw_action_row_timer)
+        self.ebox.append(child=self.adw_action_row_beep)
+        self.ebox.append(child=self.adw_action_row_notification)
+        
+    def cancel_edit_options(self, w):
+        self.headerbar.remove(self.applyButton)
+        self.headerbar.pack_start(self.buttonStop)
+        self.headerbar.pack_start(self.buttonPause)
+        self.ebox.remove(child=self.adw_action_row_timer)
+        self.ebox.remove(child=self.adw_action_row_beep)
+        self.ebox.remove(child=self.adw_action_row_notification)
+        self.mainBox.remove(self.ebox)
+        self.adw_expander_row.add_row(child=self.adw_action_row_timer)
+        self.adw_expander_row.add_row(child=self.adw_action_row_beep)
+        self.adw_expander_row.add_row(child=self.adw_action_row_notification)
+        self.continue_timer()
         
     ## Set custom notification text
     def custom_notification(self):
+        if self.back_type == "edit_options":
+            self.back_type = "edit_options"
+        else:
+            self.back_type = "custom_notification"
         self.mainBox.remove(self.lbox)
         self.mainBox.set_valign(Gtk.Align.START)
         self.mainBox.set_margin_top(15)
         self.headerbar.remove(self.buttonStart)
         self.headerbar.remove(self.buttonReset)
+        if self.back_type == 'edit_options':
+            self.mainBox.remove(self.ebox)
+            self.headerbar.remove(self.applyButton)
+        else:
+            self.mainBox.remove(self.lbox)
         self.set_title(jT["custom_notification"])
         
         # Back button
@@ -710,15 +778,22 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.dbox.append(self.adw_action_row_07)
         
     def cancel_custom_notification(self, widget, *args):
-        self.mainBox.append(self.lbox)
         self.mainBox.remove(self.cbox)
         self.mainBox.remove(self.dbox)
         self.mainBox.remove(self.label_n)
         self.mainBox.remove(self.label_d)
+        if self.back_type == 'custom_notification':
+            self.mainBox.append(self.lbox)
+            self.headerbar.pack_start(self.buttonStart)
+            self.headerbar.pack_end(self.buttonReset)
+        else:
+            self.mainBox.append(self.ebox)
+            self.headerbar.remove(self.buttonStart)
+            self.headerbar.remove(self.buttonReset)
+            self.headerbar.pack_start(self.applyButton)
+            self.mainBox.remove(self.lbox)
         self.mainBox.set_valign(Gtk.Align.CENTER)
         self.mainBox.set_margin_top(0)
-        self.headerbar.pack_start(self.buttonStart)
-        self.headerbar.pack_end(self.buttonReset)
         self.headerbar.remove(self.backButton)
         self.set_title(jT["timer_title"])
         
@@ -730,6 +805,10 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.headerbar.remove(self.buttonStart)
         self.headerbar.remove(self.buttonReset)
         self.set_title(jT["advanced"])
+        try:
+            self.mainBox.remove(self.ebox)
+        except:
+            print("")
         
         # Back button
         self.backButton_A = Gtk.Button.new_from_icon_name('go-next-symbolic-rtl')
@@ -983,6 +1062,7 @@ class TimerWindow(Gtk.ApplicationWindow):
     def non_activated_session(self):
         self.timingBox.append(self.label_action)
         self.timingBox.append(self.label)
+        self.timingBox.append(self.editButton)
         self.mainBox.append(self.timingBox)
         if os.path.exists(f'{CONFIG}/actions.json'):
             with open(f'{CONFIG}/actions.json') as a:
@@ -1253,6 +1333,10 @@ class TimerWindow(Gtk.ApplicationWindow):
     ## Continue button action
     def on_buttonCont_clicked(self, buttonPause):
         self.continue_timer()
+    
+    ## edit button action
+    def on_editButton_clicked(self, buttonStart):
+        self.edit_options()
         
     ## action of notification button
     def on_notification_button_clicked(self, widget, *args):
