@@ -370,7 +370,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.edit_button_box.set_halign(Gtk.Align.CENTER)
         self.edit_button_box.append(Gtk.Image.new_from_icon_name( \
             'list-edit-symbolic'))
-        self.edit_button_box.append(Gtk.Label.new("Edit options"))
+        self.edit_button_box.append(Gtk.Label.new(jT["edit_options"]))
         self.editButton.set_child(self.edit_button_box)
         self.editButton.add_css_class('flat')
         self.editButton.set_can_focus(False)
@@ -621,13 +621,14 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.pause_timer()
         self.headerbar.remove(self.buttonStop)
         self.headerbar.remove(self.buttonCont)
+        self.set_title(jT["edit_options"])
         
         self.applyButton = Gtk.Button.new()
         self.applyButton.add_css_class('suggested-action')
         self.app_button_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 5)
         self.app_button_box.append(Gtk.Image.new_from_icon_name( \
             'adw-entry-apply-symbolic'))
-        self.app_button_box.append(Gtk.Label.new("Apply"))
+        self.app_button_box.append(Gtk.Label.new(jT["apply"]))
         self.applyButton.set_child(self.app_button_box)
         self.applyButton.connect('clicked', self.cancel_edit_options)
         
@@ -642,6 +643,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.adw_expander_row.remove(child=self.adw_action_row_notification)
         self.adw_expander_row.remove(child=self.adw_action_row_timer)
         self.adw_expander_row.remove(child=self.adw_action_row_beep)
+        self.adw_expander_row.remove(child=self.adw_action_row_adv)
         
         self.ebox.append(child=self.adw_action_row_timer)
         self.ebox.append(child=self.adw_action_row_beep)
@@ -658,6 +660,8 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.adw_expander_row.add_row(child=self.adw_action_row_timer)
         self.adw_expander_row.add_row(child=self.adw_action_row_beep)
         self.adw_expander_row.add_row(child=self.adw_action_row_notification)
+        self.adw_expander_row.add_row(child=self.adw_action_row_adv)
+        self.set_title(jT["timer_title"])
         self.continue_timer()
         
     ## Set custom notification text
@@ -967,6 +971,7 @@ class TimerWindow(Gtk.ApplicationWindow):
     def start_timer(self):
         """ Run Timer. """
         self.check_and_save()
+        self.back_type = "edit_options"
         self.headerbar.pack_start(self.buttonStop)
         self.headerbar.pack_start(self.buttonPause)
         self.headerbar.remove(self.buttonStart)
@@ -1011,6 +1016,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.mainBox.remove(self.timingBox)
         self.headerbar.remove(self.buttonPause)
         self.headerbar.remove(self.buttonCont)
+        self.back_type = "custom_notification"
         try:
             self.timingBox.remove(self.label_pause)
             self.timingBox.remove(self.label_paused_status)
@@ -1062,6 +1068,10 @@ class TimerWindow(Gtk.ApplicationWindow):
     def non_activated_session(self):
         self.timingBox.append(self.label_action)
         self.timingBox.append(self.label)
+        try:
+            self.timingBox.remove(self.editButton)
+        except:
+            print("")
         self.timingBox.append(self.editButton)
         self.mainBox.append(self.timingBox)
         if os.path.exists(f'{CONFIG}/actions.json'):
