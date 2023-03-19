@@ -1,5 +1,9 @@
-<h1><img src="https://raw.githubusercontent.com/vikdevelop/timer/main/flatpak/appicon/com.github.vikdevelop.timer.png" width="32" height="32">Timer</h1>
-
+<div align="center">
+  <img src="https://raw.githubusercontent.com/vikdevelop/timer/main/flatpak/appicon/com.github.vikdevelop.timer.png" width="64">
+  <h1 align="center">Timer</h1>
+  <p align="center">Simple countdown</p>
+</div>
+  
 *Simple countdown timer* that allows:
 
 - timing in hours/minutes/seconds,
@@ -7,7 +11,7 @@
 - use keyboard shortcuts for start, pause or stop timer and reset timer counter values.
 - and more...
 
-<a href="https://flathub.org/apps/details/com.github.vikdevelop.timer"><img src="https://flathub.org/assets/badges/flathub-badge-en.png" width=165 height=53></a>
+<a href="https://flathub.org/apps/details/com.github.vikdevelop.timer"><img src="https://beta.flathub.org/assets/badges/flathub-badge-en.png" width=165 height=53></a>
 <h4>If you want to help localize the Timer project, you can use the <a href="https://hosted.weblate.org/projects/vikdevelop/timer/">Weblate</a> tool (it is possible to sign up using e.g. GitHub or Google) </h4>
 
 <a href="https://hosted.weblate.org/engage/vikdevelop/timer">
