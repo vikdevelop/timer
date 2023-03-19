@@ -661,6 +661,11 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.adw_expander_row.add_row(child=self.adw_action_row_beep)
         self.adw_expander_row.add_row(child=self.adw_action_row_notification)
         self.adw_expander_row.add_row(child=self.adw_action_row_adv)
+        try:
+            self.timingBox.remove(self.label_pause)
+            self.timingBox.remove(self.label_paused_status)
+        except:
+            print("")
         self.set_title(jT["timer_title"])
         self.continue_timer()
         
@@ -1039,6 +1044,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.label_pause = Gtk.Label.new()
         self.label_paused_status = Gtk.Label.new(str=jT["paused"])
         self.timingBox.remove(self.label_action)
+        self.timingBox.remove(self.editButton)
         self.timingBox.append(self.label_paused_status)
         if self.vertical_text == "true":
             self.label_pause.set_markup("<b><span size='31200'>{}</span></b>".format(self.label.get_text()))
@@ -1046,6 +1052,7 @@ class TimerWindow(Gtk.ApplicationWindow):
             self.label_pause.set_markup("<b><span size='25600'>{}</span></b>".format(self.label.get_text()))
         self.timingBox.append(self.label_pause)
         self.timingBox.remove(self.label)
+        self.timingBox.append(self.editButton)
         self.headerbar.remove(self.buttonPause)
         self.headerbar.pack_start(self.buttonCont)
         
@@ -1484,7 +1491,7 @@ class MyApp(Adw.Application):
         dialog = Adw.AboutWindow(transient_for=app.get_active_window())
         dialog.set_application_name(jT["timer_title"])
         dialog.set_version("2.9")
-        dialog.set_release_notes(release_29U + release_29T_20230214 + release_29T + release_29 + release_28 + release_27_11 + release_27I + release_27)
+        dialog.set_release_notes(release30B + release_29U + release_29T_20230214 + release_29T + release_29 + release_28 + release_27_11 + release_27I + release_27)
         dialog.set_developer_name("vikdevelop")
         self.add_translations_link(dialog)
         dialog.set_license_type(Gtk.License(Gtk.License.GPL_3_0))
