@@ -61,6 +61,6 @@
     "show_appname": "Показывать название приложения в уведомлении",
     "notification_text": "<b>Уведомление</b>",
     "alarm_clock_dialog_text": "<b>Диалог будильника</b>",
-    "apply": "Применить",
+    "apply": "Apply",
     "edit_options": "Изменить параметры"
 }
