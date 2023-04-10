@@ -40,13 +40,13 @@
     "start_again": "Iniciar novamente",
     "reset_counter": "Redefinir valores de contagem do crônometro",
     "play_alarm_clock_desc": "You will ring alarm clock in",
-    "dialog_remove_warning": "Do you really want to reset all Timer settings to default?",
+    "dialog_remove_warning": "Redefinir todas as configurações do cronômetro?",
     "activate_dark_theme": "Ativar tema escuro",
     "activate_system_theme": "Voltar para o tema do sistema",
     "show_about_dialog": "Show About app window",
     "paused": "Pausado.",
     "pause_timer": "Pausar cronômetro",
-    "continue_timer": "Continuar no tempo",
+    "continue_timer": "Continuar contagem",
     "use_in_alarm_clock": "Usar em janela de diálogo do alarme",
     "advanced": "Mais opções",
     "go_to_more_settings": "Ir para mais configurações",
@@ -61,6 +61,6 @@
     "notification_text": "<b>Notificação</b>",
     "alarm_clock_dialog_text": "<b>Caixa de diálogo do alarme</b>",
     "translator_credits": "Felipe Nogueira https://github.com/fnogcps",
-    "apply": "Apply",
-    "edit_options": "Edit options"
+    "apply": "Aplicar",
+    "edit_options": "Editar opções"
 }
