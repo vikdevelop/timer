@@ -48,6 +48,15 @@
     </categories>
     
     <releases>
+        <release version="3.1" date="2023-05-27">
+            <description>
+                <ul>
+                    <li>Added Persian translations, thanks to @Master811129</li>
+                    <li>Updated translations</li>
+                    <li>Added GSettings for better storing the Timer configuration</li>
+                </ul>
+            </description>
+        </release>
         <release version="3.0" date="2023-03-18">
             <description>
                 <ul>
