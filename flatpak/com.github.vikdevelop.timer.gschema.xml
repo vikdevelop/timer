@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<schemalist>
+    <schema id="com.github.vikdevelop.timer" path="/com/github/vikdevelop/timer/">
+        <key name="window-size" type="(ii)">
+            <default>(425,425)</default>
+            <summary>Window size</summary>
+        </key>
+        <key name="maximized" type="b">
+          <default>false</default>
+          <summary>Window maximize state</summary>
+        </key>
+        <key name="dark-theme" type="b">
+            <default>false</default>
+            <summary>Dark theme switch</summary>
+        </key>
+        <key name="resizable" type="b">
+            <default>false</default>
+            <summary>Resizable window switch</summary>
+        </key>
+        <key name="play-beep" type="b">
+            <default>true</default>
+            <summary>Play beep switch</summary>
+        </key>
+        <key name="show-notification-icon" type="b">
+            <default>true</default>
+            <summary>Show notification icon switch</summary>
+        </key>
+        <key name="use-in-alarm-clock" type="b">
+            <default>false</default>
+            <summary>Use notification text in alarm clock dialog</summary>
+        </key>
+        <key name="vertical-time-text" type="b">
+            <default>false</default>
+            <summary>Show vertical time text in countdown page</summary>
+        </key>
+        <key name="show-appname" type="b">
+            <default>true</default>
+            <summary>Show app name in notification</summary>
+        </key>
+        <key name="save-expander-row" type="b">
+            <default>false</default>
+            <summary>Save Expander row position</summary>
+        </key>
+        <key name="action" type="s">
+          <choices>
+                <choice value="default"/>
+                <choice value="Shut Down"/>
+                <choice value="Reboot"/>
+                <choice value="Suspend"/>
+                <choice value="Play alarm clock"/>
+            </choices>
+            <default>"default"</default>
+            <summary>Action after finished timer</summary>
+        </key>
+        <key name="notification-text" type="s">
+            <default>''</default>
+            <summary>Notification text</summary>
+        </key>
+        <key name="hours" type="i">
+            <default>0</default>
+            <summary>Hour entry</summary>
+        </key>
+        <key name="mins" type="i">
+            <default>1</default>
+            <summary>Minutes entry</summary>
+        </key>
+        <key name="seconds" type="i">
+            <default>0</default>
+            <summary>Seconds entry</summary>
+        </key>
+    </schema>
+</schemalist>
