@@ -936,7 +936,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.timingBox.remove(self.label_action)
         self.timingBox.remove(self.editButton)
         self.timingBox.append(self.label_paused_status)
-        if self.vertical_text == "true":
+        if self.switch_06.get_active() == True: 
             self.label_pause.set_markup("<b><span size='31200'>{}</span></b>".format(self.label.get_text()))
         else:
             self.label_pause.set_markup("<b><span size='25600'>{}</span></b>".format(self.label.get_text()))
