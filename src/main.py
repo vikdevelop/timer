@@ -321,20 +321,72 @@ class Dialog_keys(Gtk.Dialog):
 class TimerWindow(Gtk.ApplicationWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.set_resizable_w()
-        self.set_w_size()
         self.connect('close-request', self.close_action, self)
         self.application = kwargs.get('application')
         self.style_manager = self.application.get_style_manager()
-        self.set_theme()
         self.set_title(title=jT["timer_title"])
         self.headerbar = Gtk.HeaderBar.new()
         self.set_titlebar(titlebar=self.headerbar)
+        
+        self.settings = Gio.Settings.new_with_path("com.github.vikdevelop.timer", "/com/github/vikdevelop/timer/")
+        
+        self.set_size_request(425, 425)
+        (width, height) = self.settings["window-size"]
+        self.set_default_size(width, height)
+        
+        if self.settings["maximized"]:
+            self.maximize()
+            
+        if self.settings["resizable"]:
+            self.set_resizable(True)
+            
+        if self.settings["dark-theme"]:
+            self.style_manager.set_color_scheme(
+                color_scheme=Adw.ColorScheme.PREFER_DARK
+            )
         
         # Set up keyboard shortcuts
         keycont = Gtk.EventControllerKey()
         keycont.connect('key-pressed', self.keys, self)
         self.add_controller(keycont)
+        
+        # Gtk.Switches
+        self.switch_01 = Gtk.Switch.new()
+        if self.settings["dark-theme"]:
+            self.switch_01.set_active(True)
+        self.switch_01.set_valign(align=Gtk.Align.CENTER)
+        self.switch_01.connect('notify::active', self.on_switch_01_toggled)
+        
+        self.switch_02 = Gtk.Switch.new()
+        if self.settings["resizable"]:
+            self.switch_02.set_active(True)
+        self.switch_02.set_valign(align=Gtk.Align.CENTER)
+        self.switch_02.connect('notify::active', self.on_switch_02_toggled)
+        
+        self.switch_04 = Gtk.Switch.new()
+        if self.settings["show-notification-icon"]:
+            self.switch_04.set_active(True)
+        self.switch_04.set_valign(align=Gtk.Align.CENTER)
+        
+        self.switch_05 = Gtk.Switch.new()
+        if self.settings["use-in-alarm-clock"]:
+            self.switch_05.set_active(True)
+        self.switch_05.set_valign(align=Gtk.Align.CENTER)
+        
+        self.switch_06 = Gtk.Switch.new()
+        if self.settings["vertical-time-text"]:
+            self.switch_06.set_active(True)
+        self.switch_06.set_valign(align=Gtk.Align.CENTER)
+        
+        self.switch_07 = Gtk.Switch.new()
+        if self.settings["show-appname"]:
+            self.switch_07.set_active(True)
+        self.switch_07.set_valign(align=Gtk.Align.CENTER)
+        
+        self.switch_08 = Gtk.Switch.new()
+        if self.settings["save-expander-row"]:
+            self.switch_08.set_active(True)
+        self.switch_08.set_valign(align=Gtk.Align.CENTER)
 
         # Gtk.Box() layout
         self.mainBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
@@ -453,17 +505,6 @@ class TimerWindow(Gtk.ApplicationWindow):
     
     # Entries of seconds, minutes and hours
     def make_timer_box(self):
-        # Load counter.json (config file with time counter values)
-        if os.path.exists(f'{CONFIG}/counter.json'):
-            with open(f'{CONFIG}/counter.json') as jc:
-                jC = json.load(jc)
-            self.hour_e = jC["hour"]
-            self.min_e = jC["minutes"]
-            self.sec_e = jC["seconds"]
-        else:
-            self.hour_e = "0"
-            self.min_e = "1"
-            self.sec_e = "0"
         # Layout
         self.timerBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=1)
         self.timerBox.set_margin_start(0)
@@ -475,21 +516,21 @@ class TimerWindow(Gtk.ApplicationWindow):
         
         # Hour entry and label
         self.hour_entry = Adw.EntryRow()
-        self.hour_entry.set_text(self.hour_e)
+        self.hour_entry.set_text(str(self.settings["hours"]))
         self.hour_entry.set_title(jT["hours"])
         self.hour_entry.set_alignment(xalign=1)
         self.timerBox.append(self.hour_entry)
         
         # Minute entry and label
         self.minute_entry = Adw.EntryRow()
-        self.minute_entry.set_text(self.min_e)
+        self.minute_entry.set_text(str(self.settings["mins"]))
         self.minute_entry.set_title(jT["mins"])
         self.minute_entry.set_alignment(xalign=1)
         self.timerBox.append(self.minute_entry)
         
         # Second entry and label
         self.secs_entry = Adw.EntryRow()
-        self.secs_entry.set_text(self.sec_e)
+        self.secs_entry.set_text(str(self.settings["seconds"]))
         self.secs_entry.set_title(jT["secs"])
         self.secs_entry.set_alignment(xalign=1)
         self.timerBox.append(self.secs_entry)
@@ -519,41 +560,25 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.adw_action_row_timer.set_title(title=jT["action_after_timing"])
         self.adw_action_row_timer.set_title_lines(2)
         self.adw_action_row_timer.set_model(model=actions)
-        self.adw_action_row_timer.connect('notify::selected-item', self.on_combo_box_text_s_changed)
         self.adw_expander_row.add_row(child=self.adw_action_row_timer)
         
-        if os.path.exists(f'{CONFIG}/actions.json'):
-            with open(f'{CONFIG}/actions.json') as p:
-                jsonSpinner = json.load(p)
-            combobox_s = jsonSpinner["action"]
-            if combobox_s == jT["default"]:
-                self.adw_action_row_timer.set_selected(0)
-            elif combobox_s == jT["shut_down"]:
-                self.adw_action_row_timer.set_selected(1)
-            elif combobox_s == jT["reboot"]:
-                self.adw_action_row_timer.set_selected(2)
-            elif combobox_s == jT["suspend"]:
-                self.adw_action_row_timer.set_selected(3)
-            elif combobox_s == jT["play_alarm_clock"]:
-                self.adw_action_row_timer.set_selected(4)
-        else:
+        if self.settings["action"] == "Default":
             self.adw_action_row_timer.set_selected(0)
+        elif self.settings["action"] == "Shut down":
+            self.adw_action_row_timer.set_selected(1)
+        elif self.settings["action"] == "Reboot":
+            self.adw_action_row_timer.set_selected(2)
+        elif self.settings["action"] == "Suspend":
+            self.adw_action_row_timer.set_selected(3)
+        elif self.settings["action"] == "Play alarm clock":
+            self.adw_action_row_timer.set_selected(4)
             
         # Adw ActionRow - play beep
         ## Gtk.Switch
         self.switch_03 = Gtk.Switch.new()
-        if os.path.exists(f'{CONFIG}/beep.json'):
-            with open(f'{CONFIG}/beep.json') as r:
-                jR = json.load(r)
-            beep = jR["play-beep"]
-            if beep == "false":
-                self.switch_03.set_active(False)
-            else:
-                self.switch_03.set_active(True)
-        else:
+        if self.settings["play-beep"]:
             self.switch_03.set_active(True)
         self.switch_03.set_valign(align=Gtk.Align.CENTER)
-        self.switch_03.connect('notify::active', self.on_switch_03_toggled)
         
         ## Adw.ActionRow
         self.adw_action_row_beep = Adw.ActionRow.new()
@@ -572,11 +597,10 @@ class TimerWindow(Gtk.ApplicationWindow):
         
         ## Adw.EntryRow
         self.entry = Adw.EntryRow()
-        self.apply_entry_text()
+        self.entry.set_text(self.settings["notification-text"])
         self.entry.set_title(jT["custom_notification"])
         self.entry.set_show_apply_button(True)
         self.entry.set_enable_emoji_completion(True)
-        self.entry.connect('changed', self.on_entry_text_changed)
         
         ## Adw.ActionRow
         self.adw_action_row_notification = Adw.ActionRow.new()
@@ -604,16 +628,8 @@ class TimerWindow(Gtk.ApplicationWindow):
         
     ### Load Adw.ExpanderRow state
     def load_expander_row_state(self):
-        if os.path.exists(f'{CONFIG}/expander_row.json'):
-            with open(f'{CONFIG}/expander_row.json') as e:
-                jE = json.load(e)
-            e_row = jE["save_expander_row_position"]
-            if e_row == "true":
-                self.adw_expander_row.set_expanded(True)
-            else:
-                self.adw_expander_row.set_expanded(False)
-        else:
-            self.adw_expander_row.set_expanded(False)
+        if self.settings["save-expander-row"]:
+            self.adw_expander_row.set_expanded(True)
     
     # Edit options in ongoing timing
     def edit_options(self):
@@ -717,20 +733,6 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.mainBox.append(self.dbox)
         
         # Adw.ActionRow - use in alarm clock dialog
-        ## Gtk.Switch
-        self.switch_04 = Gtk.Switch.new()
-        if os.path.exists(f'{CONFIG}/notification_icon.json'):
-            with open(f'{CONFIG}/notification_icon.json') as i:
-                jI = json.load(i)
-            t_icon = jI["notification_icon"]
-            if t_icon == "true":
-                self.switch_04.set_active(True)
-            else:
-                self.switch_04.set_active(False)
-        else:
-            self.switch_04.set_active(True)
-        self.switch_04.set_valign(align=Gtk.Align.CENTER)
-        self.switch_04.connect('notify::active', self.on_switch_04_toggled)
         
         ## Adw.ActionRow
         self.adw_action_row_06 = Adw.ActionRow.new()
@@ -741,20 +743,6 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.cbox.append(self.adw_action_row_06)
         
         # Adw.ActionRow - use in alarm clock dialog
-        ## Gtk.Switch
-        self.switch_07 = Gtk.Switch.new()
-        if os.path.exists(f'{CONFIG}/notification_name.json'):
-            with open(f'{CONFIG}/notification_name.json') as c:
-                jC = json.load(c)
-            show_appname = jC["show_appname_in_notification"]
-            if show_appname == "true":
-                self.switch_07.set_active(True)
-            else:
-                self.switch_07.set_active(False)
-        else:
-            self.switch_07.set_active(True)
-        self.switch_07.set_valign(align=Gtk.Align.CENTER)
-        self.switch_07.connect('notify::active', self.on_switch_07_toggled)
         
         ## Adw.ActionRow
         self.adw_action_row_08 = Adw.ActionRow.new()
@@ -764,20 +752,6 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.cbox.append(self.adw_action_row_08)
         
         # Adw.ActionRow - use in alarm clock dialog
-        ## Gtk.Switch
-        self.switch_05 = Gtk.Switch.new()
-        if os.path.exists(f'{CONFIG}/use_text_alarm.json'):
-            with open(f'{CONFIG}/use_text_alarm.json') as a:
-                jA = json.load(a)
-            use_dialog = jA["use_in_alarm_clock_dialog"]
-            if use_dialog == "true":
-                self.switch_05.set_active(True)
-            else:
-                self.switch_05.set_active(False)
-        else:
-            self.switch_05.set_active(False)
-        self.switch_05.set_valign(align=Gtk.Align.CENTER)
-        self.switch_05.connect('notify::active', self.on_switch_05_toggled)
         
         ## Adw.ActionRow
         self.adw_action_row_07 = Adw.ActionRow.new()
@@ -830,16 +804,6 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.mainBox.append(self.abox)
             
         # Adw ActionRow - Theme configuration
-        ## Gtk.Switch
-        self.switch_01 = Gtk.Switch.new()
-        if os.path.exists(f'{CONFIG}/theme.json'):
-            with open(f'{CONFIG}/theme.json') as r:
-                jR = json.load(r)
-            dark = jR["theme"]
-            if dark == "dark":
-                self.switch_01.set_active(True)
-        self.switch_01.set_valign(align=Gtk.Align.CENTER)
-        self.switch_01.connect('notify::active', self.on_switch_01_toggled)
         
         ## Adw.ActionRow
         self.adw_action_row_theme = Adw.ActionRow.new()
@@ -851,16 +815,6 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.abox.append(self.adw_action_row_theme)
         
         # Adw ActionRow - Resizable of Window configuration
-        ## Gtk.Switch
-        self.switch_02 = Gtk.Switch.new()
-        if os.path.exists(f'{CONFIG}/window.json'):
-            with open(f'{CONFIG}/window.json') as r:
-                jR = json.load(r)
-            resizable = jR["resizable"]
-            if resizable == "true":
-                self.switch_02.set_active(True)
-        self.switch_02.set_valign(align=Gtk.Align.CENTER)
-        self.switch_02.connect('notify::active', self.on_switch_02_toggled)
         
         ## Adw.ActionRow
         self.adw_action_row_window = Adw.ActionRow.new()
@@ -871,16 +825,6 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.abox.append(self.adw_action_row_window)
         
         # Adw.ActionRow - show vertical countdown timer text
-        ## Gtk.Switch
-        self.switch_06 = Gtk.Switch.new()
-        if os.path.exists(f'{CONFIG}/countdown.json'):
-            with open(f'{CONFIG}/countdown.json') as r:
-                jR = json.load(r)
-            vertical = jR["vertical_time_text"]
-            if vertical == "true":
-                self.switch_06.set_active(True)
-        self.switch_06.set_valign(align=Gtk.Align.CENTER)
-        self.switch_06.connect('notify::active', self.on_switch_06_toggled)
         
         ## Adw.ActionRow
         self.adw_action_row_verText = Adw.ActionRow.new()
@@ -892,16 +836,6 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.abox.append(self.adw_action_row_verText)
         
         # Adw.ActionRow - expand Preferences dropdown row
-        ## Gtk.Switch
-        self.switch_08 = Gtk.Switch.new()
-        if os.path.exists(f'{CONFIG}/expander_row.json'):
-            with open(f'{CONFIG}/expander_row.json') as r:
-                jR = json.load(r)
-            e_row = jR["save_expander_row_position"]
-            if e_row == "true":
-                self.switch_08.set_active(True)
-        self.switch_08.set_valign(align=Gtk.Align.CENTER)
-        self.switch_08.connect('notify::active', self.on_switch_08_toggled)
         
         ## Adw.ActionRow
         self.adw_action_row_expander = Adw.ActionRow.new()
@@ -921,42 +855,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.headerbar.pack_end(self.buttonReset)
         self.headerbar.remove(self.backButton_A)
         self.set_title(jT["timer_title"])
-    
-    # After launching
-    ## Set selected theme
-    def set_theme(self):
-        if os.path.exists(f'{CONFIG}/theme.json'):
-            with open(f'{CONFIG}/theme.json') as jt:
-                t = json.load(jt)
-            theme = t["theme"]
-            if theme == "dark":
-                self.style_manager.set_color_scheme(
-                    color_scheme=Adw.ColorScheme.PREFER_DARK
-                )
-    
-    ## Set window size
-    def set_w_size(self):
-        if os.path.exists(f'{CONFIG}/window_size.json'):
-            with open(f'{CONFIG}/window_size.json') as s:
-                jS = json.load(s)
-            width = jS["width"]
-            height = jS["height"]
-            self.set_default_size(int(width), int(height))
-            self.set_size_request(425, 425)
-        else:
-            self.set_default_size(425, 425)
-            self.set_size_request(425, 425)
-    
-    ## Set resizable of window configuration
-    def set_resizable_w(self):
-        if os.path.exists(f'{CONFIG}/window.json'):
-            with open(f'{CONFIG}/window.json') as jr:
-                rezisable = json.load(jr)
-            if rezisable == "true":
-                self.set_resizable(True)
-        else:
-            self.set_resizable(False)
-    
+        
     # Timer actions
     ## On timeout function
     tick_counter = timedelta(milliseconds = 250) # static object so we don't recreate the object every time
@@ -990,23 +889,14 @@ class TimerWindow(Gtk.ApplicationWindow):
         
     ### Set time text function
     def set_time_text(self):
-        if os.path.exists(f'{CONFIG}/countdown.json'):
-            with open(f'{CONFIG}/countdown.json') as c:
-                jC = json.load(c)
-            self.vertical_text = jC["vertical_time_text"]
-            if self.vertical_text == "true":
-                self.label.set_markup("<span size='31200'>{}</span>".format(
-                    strfdelta(self.counter, "<b>{hours}</b> %s \n<b>{minutes}</b> %s \n<b>{seconds}</b> %s" % (jT["hours"], jT["mins"], jT["secs"]))
-                ))
-            else:
-                self.label.set_markup("<span size='25600'>{}</span>".format(
-                    strfdelta(self.counter, "<b>{hours}</b> %s <b>{minutes}</b> %s <b>{seconds}</b> %s" % (jT["hours"], jT["mins"], jT["secs"]))
-                ))
+        if self.switch_06.get_active() == True:
+            self.label.set_markup("<span size='31200'>{}</span>".format(
+                strfdelta(self.counter, "<b>{hours}</b> %s \n<b>{minutes}</b> %s \n<b>{seconds}</b> %s" % (jT["hours"], jT["mins"], jT["secs"]))
+            ))
         else:
             self.label.set_markup("<span size='25600'>{}</span>".format(
-                    strfdelta(self.counter, "<b>{hours}</b> %s <b>{minutes}</b> %s <b>{seconds}</b> %s" % (jT["hours"], jT["mins"], jT["secs"]))
-                ))
-            self.vertical_text = "false"
+                strfdelta(self.counter, "<b>{hours}</b> %s <b>{minutes}</b> %s <b>{seconds}</b> %s" % (jT["hours"], jT["mins"], jT["secs"]))
+            ))
         
     ## Stop timer function
     def stop_timer(self):
@@ -1081,50 +971,43 @@ class TimerWindow(Gtk.ApplicationWindow):
             print("")
         self.timingBox.append(self.editButton)
         self.mainBox.append(self.timingBox)
-        if os.path.exists(f'{CONFIG}/actions.json'):
-            with open(f'{CONFIG}/actions.json') as a:
-                jA = json.load(a)
-            action = jA["action"]
-            if action == jT["default"]:
-                self.label_action.set_text(jT["notification_desc"])
-            elif action == jT["shut_down"]:
-                self.label_action.set_text(jT["shut_down_desc"])
-            elif action == jT["reboot"]:
-                self.label_action.set_text(jT["reboot_desc"])
-            elif action == jT["suspend"]:
-                self.label_action.set_text(jT["suspend_desc"])
-            elif action == jT["play_alarm_clock"]:
-                self.label_action.set_text(jT["play_alarm_clock_desc"])
+        at = self.adw_action_row_timer.get_selected_item()
+        action = at.get_string()
+        if action == jT["default"]:
+            self.label_action.set_text(jT["notification_desc"])
+        elif action == jT["shut_down"]:
+            self.label_action.set_text(jT["shut_down_desc"])
+        elif action == jT["reboot"]:
+            self.label_action.set_text(jT["reboot_desc"])
+        elif action == jT["suspend"]:
+            self.label_action.set_text(jT["suspend_desc"])
+        elif action == jT["play_alarm_clock"]:
+            self.label_action.set_text(jT["play_alarm_clock_desc"])
         else:
             self.label_action.set_text(jT["notification_desc"])
     
     # After finished timer
     ## Function, that allocates actions after finished timer (e.g. shut down/reboot/suspend system)
     def session(self):
-        if os.path.exists(f'{CONFIG}/actions.json'):
-            with open(f'{CONFIG}/actions.json') as a:
-                jA = json.load(a)
-            action = jA["action"]
-            if action == jT["default"]:
-                self.play_beep()
-                self.notification()
-            elif action == jT["shut_down"]:
-                self.play_beep()
-                time.sleep(2)
-                os.system('dbus-send --system --print-reply --dest=org.freedesktop.login1 /org/freedesktop/login1 "org.freedesktop.login1.Manager.PowerOff" boolean:true')
-            elif action == jT["reboot"]:
-                self.play_beep()
-                time.sleep(2)
-                os.system('dbus-send --system --print-reply --dest=org.freedesktop.login1 /org/freedesktop/login1 "org.freedesktop.login1.Manager.Reboot" boolean:true')
-            elif action == jT["suspend"]:
-                self.play_beep()
-                time.sleep(2)
-                os.system('dbus-send --system --print-reply --dest=org.freedesktop.login1 /org/freedesktop/login1 "org.freedesktop.login1.Manager.Suspend" boolean:true')
-            elif action == jT["play_alarm_clock"]:
-                self.alarm_clock()
-        else:
+        at = self.adw_action_row_timer.get_selected_item()
+        action = at.get_string()
+        if action == jT["default"]:
             self.play_beep()
             self.notification()
+        elif action == jT["shut_down"]:
+            self.play_beep()
+            time.sleep(2)
+            os.system('dbus-send --system --print-reply --dest=org.freedesktop.login1 /org/freedesktop/login1 "org.freedesktop.login1.Manager.PowerOff" boolean:true')
+        elif action == jT["reboot"]:
+            self.play_beep()
+            time.sleep(2)
+            os.system('dbus-send --system --print-reply --dest=org.freedesktop.login1 /org/freedesktop/login1 "org.freedesktop.login1.Manager.Reboot" boolean:true')
+        elif action == jT["suspend"]:
+            self.play_beep()
+            time.sleep(2)
+            os.system('dbus-send --system --print-reply --dest=org.freedesktop.login1 /org/freedesktop/login1 "org.freedesktop.login1.Manager.Suspend" boolean:true')
+        elif action == jT["play_alarm_clock"]:
+            self.alarm_clock()
             
     ## Play alarm clock
     def alarm_clock(self):
@@ -1158,76 +1041,40 @@ class TimerWindow(Gtk.ApplicationWindow):
             os.popen('pkill -15 bash && pkill -15 ffplay')
             
     def use_custom_text(self):
-        if os.path.exists(f'{CONFIG}/notification.json'):
-            with open(f'{CONFIG}/notification.json') as n:
-                jN = json.load(n)
-            text = jN["text"]
-            if text == "":
-                text = f'{jT["timing_finished"]}'
-        else:
+        if self.entry.get_text() == "":
             text = f'{jT["timing_finished"]}'
-        if os.path.exists(f'{CONFIG}/use_text_alarm.json'):
-           with open(f'{CONFIG}/use_text_alarm.json') as a:
-                jA = json.load(a)
-                if jA["use_in_alarm_clock_dialog"] == "true":
-                    self.dialogRingstone.set_heading(text)
-                else:
-                    self.dialogRingstone.set_heading(jT["timing_finished"])
         else:
+            text = f'{self.entry.get_text()}'
+        if self.switch_05.get_active() == True:
             self.dialogRingstone.set_heading(text)
+        else:
+            self.dialogRingstone.set_heading(jT["timing_finished"])
     
     ## Send notification after finished timer (if this action is selected in actions.json config file)
     def notification(self):
-        if os.path.exists(f'{CONFIG}/notification_name.json'):
-            with open(f'{CONFIG}/notification_name.json') as p:
-                jP = json.load(p)
-            t_name = jP["show_appname_in_notification"]
-            if t_name == "true":
-                timer_name = f'{jT["timer_title"]}'
-            else:
-                timer_name = ''
-        else:
+        if self.switch_07.get_active():
             timer_name = f'{jT["timer_title"]}'
-        if os.path.exists(f'{CONFIG}/notification_icon.json'):
-            with open(f'{CONFIG}/notification_icon.json') as i:
-                jI = json.load(i)
-            t_icon = jI["notification_icon"]
-            if t_icon == "true":
-                timer_icon = '-i com.github.vikdevelop.timer'
-            else:
-                timer_icon = '-i d'
         else:
+            timer_name = ''
+        if self.switch_04.get_active() == "true":
             timer_icon = '-i com.github.vikdevelop.timer'
-        if os.path.exists(f'{CONFIG}/notification.json'):
-            with open(f'{CONFIG}/notification.json') as r:
-                jR = json.load(r)
-            notification = jR["text"]
-            if notification == "":
-                if timer_name == "":
-                    os.system('notify-send "{}" {}'.format(jT["timing_finished"],timer_icon))
-                else:
-                    os.system('notify-send {} "{}" {}'.format(timer_name, jT["timing_finished"],timer_icon))
-            else:
-                if timer_name == "":
-                    os.system('notify-send "{}" {}'.format(notification, timer_icon))
-                else:
-                    os.system('notify-send {} "{}" {}'.format(timer_name, notification,timer_icon))
         else:
+            timer_icon = '-i d'
+        if self.entry.get_text() == "":
             if timer_name == "":
-                    os.system('notify-send "{}" {}'.format(jT["timing_finished"],timer_icon))
+                os.system('notify-send "{}" {}'.format(jT["timing_finished"],timer_icon))
             else:
                 os.system('notify-send {} "{}" {}'.format(timer_name, jT["timing_finished"],timer_icon))
+        else:
+            if timer_name == "":
+                os.system('notify-send "{}" {}'.format(notification, timer_icon))
+            else:
+                os.system('notify-send {} "{}" {}'.format(timer_name, notification,timer_icon))
     
     ## Play beep after finished timer
     def play_beep(self):
-        if os.path.exists(f'{CONFIG}/beep.json'):
-            with open(f'{CONFIG}/beep.json') as r:
-                jR = json.load(r)
-            beep = jR["play-beep"]
-            if beep == "false":
-                print("")
-            else:
-                os.popen("ffplay -nodisp -autoexit /app/share/beeps/Oxygen.ogg > /dev/null 2>&1")
+        if self.switch_03.get_active() == True:
+            print("")
         else:
             os.popen("ffplay -nodisp -autoexit /app/share/beeps/Oxygen.ogg > /dev/null 2>&1")
     
@@ -1239,9 +1086,6 @@ class TimerWindow(Gtk.ApplicationWindow):
             self.minute_entry.set_text('0')
         elif self.secs_entry.get_text() == "":
             self.secs_entry.set_text('0')
-        # Save time counter values
-        with open(f'{CONFIG}/counter.json', 'w') as c:
-            c.write('{\n' + f' "hour": "{self.hour_entry.get_text()}",\n'+ f' "minutes": "{self.minute_entry.get_text()}",\n' + f' "seconds": "{self.secs_entry.get_text()}"' + '\n}')
     
     # Keyboard shortcuts action
     def keys(self, keyval, keycode, state, user_data, win):
@@ -1313,15 +1157,35 @@ class TimerWindow(Gtk.ApplicationWindow):
     
     # Action after closing Timer window
     def close_action(self, widget, *args):
-        # Save current window size
-        if os.path.exists(f'{CONFIG}/window.json'):
-            if self.get_allocation().width > 425:
-                print("")
-            if self.get_allocation().height > 425:
-                print("")
-            with open(f'{CONFIG}/window_size.json', 'w') as s:
-                s.write('{\n "width": "%s",\n "height": "%s"\n}' % (self.get_allocation().width, self.get_allocation().height))
-            
+        (width, height) = self.get_default_size()
+        straction = self.adw_action_row_timer.get_selected_item()
+        pr_action = straction.get_string()
+        if pr_action == jT["default"]:
+            action = "default"
+        elif pr_action == jT["shut_down"]:
+            action = "Shut down"
+        elif pr_action == jT["reboot"]:
+            action = "Reboot"
+        elif pr_action == jT["suspend"]:
+            action = "Suspend"
+        elif pr_action == jT["play_alarm_clock"]:
+            action = "Play alarm clock"
+        self.settings["window-size"] = (width, height)
+        self.settings["maximized"] = self.is_maximized()
+        self.settings["dark-theme"] = self.switch_01.get_active()
+        self.settings["resizable"] = self.switch_02.get_active()
+        self.settings["play-beep"] = self.switch_03.get_active()
+        self.settings["show-notification-icon"] = self.switch_04.get_active()
+        self.settings["use-in-alarm-clock"] = self.switch_05.get_active()
+        self.settings["vertical-time-text"] = self.switch_06.get_active()
+        self.settings["show-appname"] = self.switch_07.get_active()
+        self.settings["save-expander-row"] = self.switch_08.get_active()
+        self.settings["action"] = action
+        self.settings["notification-text"] = self.entry.get_text()
+        self.settings["hours"] = int(self.hour_entry.get_text())
+        self.settings["mins"] = int(self.minute_entry.get_text())
+        self.settings["seconds"] = int(self.secs_entry.get_text())
+        
     # Button actions
     ## Start button action
     def on_buttonStart_clicked(self, widget, *args):
@@ -1369,33 +1233,14 @@ class TimerWindow(Gtk.ApplicationWindow):
             GLib.source_remove(self.timeout_id)
             self.timeout_id = None
         Gtk.main_quit()
-        
-    # Adw.ActionRow functions for activate tasks
-    ## Save entry text (custom notification text)
-    def on_entry_text_changed(self, entry):
-        entry = self.entry.get_text()
-        with open(f'{CONFIG}/notification.json', 'w') as n:
-            n.write('{\n "custom-notification": "true",\n "text": "%s"\n}' % entry)
-    
-    ### Apply entry text from file (custom notification text)
-    def apply_entry_text(self):
-        if os.path.exists(f'{CONFIG}/notification.json'):
-            with open(f'{CONFIG}/notification.json') as n:
-                jN = json.load(n)
-            text = jN["text"]
-            self.entry.set_text(text)
     
     ## Save app theme configuration
     def on_switch_01_toggled(self, switch01, GParamBoolean):
         if switch01.get_active():
-            with open(f'{CONFIG}/theme.json', 'w') as t:
-                t.write('{\n "theme": "dark"\n}')
             self.style_manager.set_color_scheme(
                     color_scheme=Adw.ColorScheme.PREFER_DARK
                 )
         else:
-            with open(f'{CONFIG}/theme.json', 'w') as t:
-                t.write('{\n "theme": "system"\n}')
             self.style_manager.set_color_scheme(
                     color_scheme=Adw.ColorScheme.FORCE_LIGHT
                 )
@@ -1403,75 +1248,11 @@ class TimerWindow(Gtk.ApplicationWindow):
     ## Save resizable window configuration
     def on_switch_02_toggled(self, switch02, GParamBoolean):
         if switch02.get_active():
-            with open(f'{CONFIG}/window.json', 'w') as w:
-                w.write('{\n "resizable": "true"\n}')
                 self.set_resizable(True)
         else:
-            os.remove(f'{CONFIG}/window.json')
             self.set_resizable(False)
             self.set_default_size(425, 425)
             self.set_size_request(425, 425)
-            os.remove(f'{CONFIG}/window_size.json')
-    
-    ## Save playing beep configuration
-    def on_switch_03_toggled(self, switch03, GParamBoolean):
-        if switch03.get_active():
-            with open(f'{CONFIG}/beep.json', 'w') as t:
-                t.write('{\n "play-beep": "true"\n}')
-        else:
-            with open(f'{CONFIG}/beep.json', 'w') as t:
-                t.write('{\n "play-beep": "false"\n}')
-      
-    ## Save show timer icon switch configuration
-    def on_switch_04_toggled(self, switch04, GParamBoolean):
-        if switch04.get_active():
-            with open(f'{CONFIG}/notification_icon.json', 'w') as t:
-                t.write('{\n "notification_icon": "true"\n}')
-        else:
-            with open(f'{CONFIG}/notification_icon.json', 'w') as t:
-                t.write('{\n "notification_icon": "false"\n}')
-      
-    ## Save alarm clock text switch config
-    def on_switch_05_toggled(self, switch05, GParamBoolean):
-        if switch05.get_active():
-            with open(f'{CONFIG}/use_text_alarm.json', 'w') as t:
-                t.write('{\n "use_in_alarm_clock_dialog": "true"\n}')
-        else:
-            with open(f'{CONFIG}/use_text_alarm.json', 'w') as t:
-                t.write('{\n "use_in_alarm_clock_dialog": "false"\n}')
-                
-    ## Save configuration of vertical text in countdown page
-    def on_switch_06_toggled(self, switch06, GParamBoolean):
-        if switch06.get_active():
-            with open(f'{CONFIG}/countdown.json', 'w') as t:
-                t.write('{\n "vertical_time_text": "true"\n}')
-        else:
-            with open(f'{CONFIG}/countdown.json', 'w') as t:
-                t.write('{\n "vertical_time_text": "false"\n}')
-    
-    ## Save show application in notification configuration
-    def on_switch_07_toggled(self, switch07, GParamBoolean):
-        if switch07.get_active():
-            with open(f'{CONFIG}/notification_name.json', 'w') as t:
-                t.write('{\n "show_appname_in_notification": "true"\n}')
-        else:
-            with open(f'{CONFIG}/notification_name.json', 'w') as t:
-                t.write('{\n "show_appname_in_notification": "false"\n}')
-                
-    ## Save Preferences expander row state configuration
-    def on_switch_08_toggled(self, switch08, GParamBoolean):
-        if switch08.get_active():
-            with open(f'{CONFIG}/expander_row.json', 'w') as t:
-                t.write('{\n "save_expander_row_position": "true"\n}')
-        else:
-            with open(f'{CONFIG}/expander_row.json', 'w') as t:
-                t.write('{\n "save_expander_row_position": "false"\n}')
-    
-    ## Save Combobox (actions) configuration
-    def on_combo_box_text_s_changed(self, comborow, GParamObject):
-        selected_item = comborow.get_selected_item()
-        with open(f'{CONFIG}/actions.json', 'w') as a:
-            a.write('{\n "action": "%s"\n}' % selected_item.get_string())
         
 # Adw Application class
 class MyApp(Adw.Application):
