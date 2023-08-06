@@ -20,7 +20,7 @@ def strfdelta(tdelta, fmt):
     return fmt.format(**d)
 
 # Path for config files
-CONFIG = os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data'
+CONFIG = os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/config'
 # Print about timer status
 print(jT["timer_running"])
 
@@ -42,7 +42,7 @@ class Dialog_reset(Adw.MessageDialog):
 
     def dialog_response(self, dialog, response):
         if response == 'yes':
-            os.popen(f'rm {CONFIG}/*')
+            os.popen(f'rm -rf {CONFIG}/*')
             app = sys.executable
             os.execl(app, app, *sys.argv)
 
@@ -323,7 +323,8 @@ class TimerWindow(Gtk.ApplicationWindow):
         super().__init__(*args, **kwargs)
         self.connect('close-request', self.close_action, self)
         self.application = kwargs.get('application')
-        self.style_manager = self.application.get_style_manager()
+        #self.style_manager = self.application.get_style_manager()
+        self.style_manager = Adw.StyleManager()
         self.set_title(title=jT["timer_title"])
         self.headerbar = Gtk.HeaderBar.new()
         self.set_titlebar(titlebar=self.headerbar)
@@ -337,11 +338,9 @@ class TimerWindow(Gtk.ApplicationWindow):
         if self.settings["maximized"]:
             self.maximize()
             
-        if self.settings["resizable"] == True:
-            self.set_resizable(True)
-        else:
+        if self.settings["resizable"] == False:
             self.set_resizable(False)
-            
+        
         if self.settings["dark-theme"]:
             self.style_manager.set_color_scheme(
                 color_scheme=Adw.ColorScheme.PREFER_DARK
@@ -1144,16 +1143,14 @@ class TimerWindow(Gtk.ApplicationWindow):
             self.style_manager.set_color_scheme(
                     color_scheme=Adw.ColorScheme.PREFER_DARK
                 )
-            with open(f'{CONFIG}/theme.json', 'w') as kT:
-                kT.write('{\n "theme": "dark"\n}')
             self.switch_01.set_active(True)
+            self.settings["dark-theme"] = self.switch_01.get_active()
         if keycode == 0xFFC0:
             self.style_manager.set_color_scheme(
                     color_scheme=Adw.ColorScheme.FORCE_LIGHT
                 )
-            with open(f'{CONFIG}/theme.json', 'w') as kT:
-                kT.write('{\n "theme": "system"\n}')
             self.switch_01.set_active(False)
+            self.settings["dark-theme"] = self.switch_01.get_active()
         if keycode == 0xFFC2:
             self.dialog_reset = Dialog_reset(self)
     
@@ -1273,7 +1270,7 @@ class MyApp(Adw.Application):
     def on_about_action(self, action, param):
         dialog = Adw.AboutWindow(transient_for=app.get_active_window())
         dialog.set_application_name(jT["timer_title"])
-        dialog.set_version("3.1.1")
+        dialog.set_version("3.1.2")
         dialog.set_release_notes(release_30B + release_29U + release_29T_20230214 + release_29T + release_29 + release_28 + release_27_11 + release_27I + release_27)
         dialog.set_developer_name("vikdevelop")
         self.add_translations_link(dialog)
