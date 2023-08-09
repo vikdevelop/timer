@@ -891,13 +891,14 @@ class TimerWindow(Gtk.ApplicationWindow):
     ### Set time text function
     def set_time_text(self):
         if self.switch_06.get_active() == True:
-            self.label.set_markup("<span size='31200'>{}</span>".format(
+            self.label.set_text("<span size='31200'>{}</span>".format(
                 strfdelta(self.counter, "<b>{hours}</b> %s \n<b>{minutes}</b> %s \n<b>{seconds}</b> %s" % (jT["hours"], jT["mins"], jT["secs"]))
             ))
         else:
-            self.label.set_markup("<span size='25600'>{}</span>".format(
+            self.label.set_text("<span size='25600'>{}</span>".format(
                 strfdelta(self.counter, "<b>{hours}</b> %s <b>{minutes}</b> %s <b>{seconds}</b> %s" % (jT["hours"], jT["mins"], jT["secs"]))
             ))
+        self.label.set_use_markup(True)
         
     ## Stop timer function
     def stop_timer(self):
@@ -1169,6 +1170,18 @@ class TimerWindow(Gtk.ApplicationWindow):
             action = "Suspend"
         elif pr_action == jT["play_alarm_clock"]:
             action = "Play alarm clock"
+        
+        if self.label.get_text() == "":
+            print("")
+            start_background = False
+        else:
+            o_text = self.label.get_text()
+            htext = o_text.replace(f'{jT["hours"]}', "")
+            mtext = htext.replace(f'{jT["mins"]}', "")
+            stext = mtext.replace(f'{jT["secs"]}', "")
+            text = stext.split()
+            start_background = True  
+        
         self.settings["window-size"] = (width, height)
         self.settings["maximized"] = self.is_maximized()
         self.settings["dark-theme"] = self.switch_01.get_active()
@@ -1181,9 +1194,20 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.settings["save-expander-row"] = self.switch_08.get_active()
         self.settings["action"] = action
         self.settings["notification-text"] = self.entry.get_text()
-        self.settings["hours"] = int(self.hour_entry.get_text())
-        self.settings["mins"] = int(self.minute_entry.get_text())
-        self.settings["seconds"] = int(self.secs_entry.get_text())
+        self.set_hide_on_close(True)
+        if start_background == True:
+            self.settings["hours"] = int(text[0])
+            self.settings["mins"] = int(text[1])
+            self.settings["seconds"] = int(text[2])
+            GLib.timeout_add(2, self.exit)
+        else:
+            self.settings["hours"] = int(self.hour_entry.get_text())
+            self.settings["mins"] = int(self.minute_entry.get_text())
+            self.settings["seconds"] = int(self.secs_entry.get_text())
+        
+    def exit(self):
+        os.system("python3 /app/src/background.py")
+        exit()
         
     # Button actions
     ## Start button action
@@ -1270,7 +1294,7 @@ class MyApp(Adw.Application):
     def on_about_action(self, action, param):
         dialog = Adw.AboutWindow(transient_for=app.get_active_window())
         dialog.set_application_name(jT["timer_title"])
-        dialog.set_version("3.1.2")
+        dialog.set_version("3.2")
         dialog.set_release_notes(release_30B + release_29U + release_29T_20230214 + release_29T + release_29 + release_28 + release_27_11 + release_27I + release_27)
         dialog.set_developer_name("vikdevelop")
         self.add_translations_link(dialog)
