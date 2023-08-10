@@ -1213,6 +1213,7 @@ class TimerWindow(Gtk.ApplicationWindow):
             self.settings["hours"] = int(self.hour_entry.get_text())
             self.settings["mins"] = int(self.minute_entry.get_text())
             self.settings["seconds"] = int(self.secs_entry.get_text())
+            exit()
         
     def exit(self):
         os.system("python3 /app/src/background.py")
