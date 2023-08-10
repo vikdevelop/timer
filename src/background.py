@@ -1,10 +1,26 @@
 import time
 import datetime
 import os
+from pathlib import Path
+import locale
+import json
 import gi
 from gi.repository import Gio
 
+# Load system language
+p_lang = locale.getlocale()[0]
+if p_lang == 'pt_BR':
+    r_lang = 'pt_BR'
+elif p_lang == 'nb_NO':
+    r_lang = 'nb_NO'
+else:
+    r_lang = p_lang[:-3]
+    
+locale = open(f"/app/translations/{r_lang}.json")
+_ = json.load(locale)
+
 settings = Gio.Settings.new_with_path("com.github.vikdevelop.timer", "/com/github/vikdevelop/timer/")
+DATA = f"{Path.home()}/.var/app/com.github.vikdevelop.timer/data"
  
 # Create class that acts as a countdown
 def countdown(h, m, s):
@@ -31,7 +47,7 @@ def countdown(h, m, s):
     if settings["action"] == "default":
         os.system("ffplay -nodisp -autoexit /app/share/beeps/Oxygen.ogg > /dev/null 2>&1")
         if settings["notification-text"] == "":
-            text = "Timing has been finished"
+            text = _["timing_finished"]
         else:
             text = settings["notification-text"]
         os.system(f"notify-send 'Timer' '{text}' -i com.github.vikdevelop.timer")
@@ -45,7 +61,7 @@ def countdown(h, m, s):
         os.system("ffplay -nodisp -autoexit /app/share/beeps/Oxygen.ogg > /dev/null 2>&1")
         os.system('dbus-send --system --print-reply --dest=org.freedesktop.login1 /org/freedesktop/login1 "org.freedesktop.login1.Manager.Suspend" boolean:true')
     else:
-        os.system("notify-send 'Playing alarm clock is currently not supported.'")
+        import alarm_notification
  
 # Inputs for hours, minutes, seconds on timer
 h = settings["hours"]
