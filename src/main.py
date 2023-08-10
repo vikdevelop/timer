@@ -1203,8 +1203,8 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.settings["save-expander-row"] = self.switch_08.get_active()
         self.settings["action"] = action
         self.settings["notification-text"] = self.entry.get_text()
-        self.set_hide_on_close(True)
         if start_background == True:
+            self.set_hide_on_close(True)
             self.settings["hours"] = int(text[0])
             self.settings["mins"] = int(text[1])
             self.settings["seconds"] = int(text[2])
