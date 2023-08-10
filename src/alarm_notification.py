@@ -2,6 +2,7 @@ import gi
 import sys
 import os
 import locale
+from pathlib import Path
 import json
 
 gi.require_version("Gtk", "4.0")
@@ -19,6 +20,8 @@ else:
     
 locale = open(f"/app/translations/{r_lang}.json")
 _ = json.load(locale)
+
+DATA = f'{Path.home()}/.var/app/com.github.vikdevelop.timer/data'
 
 class ShowAlarmclock(Gtk.ApplicationWindow):
     def __init__(self, *args, **kwargs):
@@ -72,6 +75,8 @@ class ShowAlarmclock(Gtk.ApplicationWindow):
     def start_again(self, w):
         self.close()
         os.popen("pkill -15 bash && pkill -15 ffplay")
+        with open(f"{DATA}/start_timer_again.json", "w") as s:
+            s.write('{\n "start_timer_again": "true"\n}')
         os.popen("python3 /app/src/main.py")
     
     def on_close(self, widget, *args):
