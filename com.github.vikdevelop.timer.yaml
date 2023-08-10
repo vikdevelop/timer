@@ -1,0 +1,42 @@
+app-id: com.github.vikdevelop.timer
+runtime: org.gnome.Platform
+runtime-version: '44'
+sdk: org.gnome.Sdk
+command: timer.sh
+finish-args:
+    - --share=ipc
+    # for continuous localization from Hosted Weblate
+    - --share=network
+    - --socket=wayland
+    - --socket=fallback-x11
+    # for potentional problems with GPU accellaration
+    - --device=dri
+    # for send notification about finished timing
+    - --talk-name=org.freedesktop.Notifications
+    # for realization shut down/reboot/suspend system after finished timer
+    - --system-talk-name=org.freedesktop.login1
+    # for play beep after finished timer and play alarm clock
+    - --socket=pulseaudio
+modules:
+  - name: timer
+    buildsystem: simple
+    build-commands:
+       - chmod +x timer.sh
+       - install -D -t /app/bin timer.sh
+       - install -D -t /app/src src/alarm.sh
+       - install -D -t /app timer.py
+       - install -D -t /app/src src/main.py
+       - install -D -t /app/src src/CHANGELOG.py
+       - install -D -t /app/src src/background.py
+       - install -D -t /app/src src/alarm_notification.py
+       - install -D -t /app/share/beeps src/beeps/Oxygen.ogg && install -D -t /app/share/beeps src/beeps/Oxygen-Im-Phone-Ring.ogg
+       - mkdir /app/translations && cp translations/json/* /app/translations
+       - install -D -t /app/share/applications flatpak/com.github.vikdevelop.timer.desktop
+       - install -D -t /app/share/icons/hicolor/128x128/apps flatpak/appicon/com.github.vikdevelop.timer.png
+       - install -D -t /app/share/metainfo flatpak/com.github.vikdevelop.timer.metainfo.xml
+       - install -D -t /app/share/glib-2.0/schemas flatpak/com.github.vikdevelop.timer.gschema.xml
+       - glib-compile-schemas /app/share/glib-2.0/schemas
+       - cp flatpak/icons-symbolic/* /app/share/icons/hicolor/128x128/apps/
+    sources:
+          - type: dir
+            path: .
