@@ -21,6 +21,7 @@ def strfdelta(tdelta, fmt):
 
 # Path for config files
 CONFIG = os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/config'
+DATA = os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data'
 # Print about timer status
 print(jT["timer_running"])
 
@@ -407,6 +408,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.headerbar.pack_end(child=self.menu_button)
         
         self.back_type = ""
+        self.stop_timing = False
         
         # Gtk Box layout for timing page
         self.timingBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
@@ -503,6 +505,8 @@ class TimerWindow(Gtk.ApplicationWindow):
         
         self.timeout_id = None
         self.connect("destroy", self.on_SpinnerWindow_destroy)
+        
+        self.start_again_dialog()
     
     # Entries of seconds, minutes and hours
     def make_timer_box(self):
@@ -914,6 +918,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.headerbar.remove(self.buttonPause)
         self.headerbar.remove(self.buttonCont)
         self.back_type = "custom_notification"
+        self.stop_timing = True
         try:
             self.timingBox.remove(self.label_pause)
             self.timingBox.remove(self.label_paused_status)
@@ -947,6 +952,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.timingBox.append(self.editButton)
         self.headerbar.remove(self.buttonPause)
         self.headerbar.pack_start(self.buttonCont)
+        self.stop_timing = True
         
     ## Continue timer
     def continue_timer(self):
@@ -961,6 +967,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.timingBox.remove(self.label_paused_status)
         self.headerbar.pack_start(self.buttonPause)
         self.headerbar.remove(self.buttonCont)
+        self.stop_timing = False
         self.start_timer()
     
     # Function, that allocates labels in the current timing
@@ -1174,6 +1181,8 @@ class TimerWindow(Gtk.ApplicationWindow):
         if self.label.get_text() == "":
             print("")
             start_background = False
+        elif self.stop_timing == True:
+            start_background = False
         else:
             o_text = self.label.get_text()
             htext = o_text.replace(f'{jT["hours"]}', "")
@@ -1209,6 +1218,14 @@ class TimerWindow(Gtk.ApplicationWindow):
         os.system("python3 /app/src/background.py")
         exit()
         
+    def start_again_dialog(self):
+        if os.path.exists(f"{DATA}/start_timer_again.json"):
+            with open(f"{DATA}/start_timer_again.json") as s:
+                rs = json.load(s)
+            if rs["start_timer_again"] == "true":
+                self.start_timer()
+                os.popen(f"rm -rf {DATA}/*")
+    
     # Button actions
     ## Start button action
     def on_buttonStart_clicked(self, widget, *args):
