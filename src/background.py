@@ -50,7 +50,15 @@ def countdown(h, m, s):
             text = _["timing_finished"]
         else:
             text = settings["notification-text"]
-        os.system(f"notify-send 'Timer' '{text}' -i com.github.vikdevelop.timer")
+        if settings["show-appname"] == True:
+            appname = _["timer_title"]
+        else:
+            appname = " "
+        if settings["show-notification-icon"] == True:
+            icon = "-i com.github.vikdevelop.timer"
+        else:
+            icon = "-i d"
+        os.system(f"notify-send '{appname}' '{text}' {icon}")
     elif settings["action"] == "Reboot":
         os.system("ffplay -nodisp -autoexit /app/share/beeps/Oxygen.ogg > /dev/null 2>&1")
         os.system('dbus-send --system --print-reply --dest=org.freedesktop.login1 /org/freedesktop/login1 "org.freedesktop.login1.Manager.Reboot" boolean:true')
