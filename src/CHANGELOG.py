@@ -1,4 +1,10 @@
 # CHANGELOG.py
+release_32 = "<p>v3.2</p> \
+<ul>\
+    <li>Added support for timing on the background</li>\
+    <li>Fixed minor bugs</li>\
+</ul>"
+
 release_30B = '<p>v3.0B</p>\
 <ul>\
     <li>Bug fixes</li>\
