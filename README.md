@@ -14,7 +14,7 @@
 <a href="https://flathub.org/apps/details/com.github.vikdevelop.timer"><img src="https://beta.flathub.org/assets/badges/flathub-badge-en.png" width=165 height=53></a>
 <h4>If you want to help localize the Timer project, you can use the <a href="https://hosted.weblate.org/projects/vikdevelop/timer/">Weblate</a> tool (it is possible to sign up using e.g. GitHub or Google) </h4>
 
-<a href="https://hosted.weblate.org/engage/vikdevelop/timer">
+<a href="https://hosted.weblate.org/projects/vikdevelop/timer">
 <img src="https://hosted.weblate.org/widgets/vikdevelop/-/timer/287x66-grey.png" alt="Translation status" />
 </a>
 
