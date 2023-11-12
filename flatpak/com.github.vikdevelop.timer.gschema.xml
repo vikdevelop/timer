@@ -68,5 +68,9 @@
             <default>0</default>
             <summary>Seconds entry</summary>
         </key>
+        <key name="shortcut-name" type="s">
+            <default>''</default>
+            <summary>Shortcut name</summary>
+        </key>
     </schema>
 </schemalist>
