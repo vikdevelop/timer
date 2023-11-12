@@ -48,6 +48,18 @@
     </categories>
     
     <releases>
+        <release version="3.3" date="2023-11-12">
+            <description>
+                <ul>
+                    <li>Added shortcuts</li>
+                    <li>Added Catalan translations, thanks to @BennyBeat</li>
+                    <li>Added Chinese translations, thanks to @carrothu-cn</li>
+                    <li>Added Japanese translations, thanks to @inkch</li>
+                    <li>Added Polish translations, thanks to Antoni Błoński (Weblate)</li>
+                    <li>Updated translations</li>
+                </ul>
+            </description>
+        </release>
         <release version="3.2" date="2023-08-11">
             <description>
                 <ul>
