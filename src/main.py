@@ -955,7 +955,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.time_row.add_suffix(self.entry_s)
         self.expand.add_row(self.time_row)
         
-        self.add_btn = Gtk.Button.new_with_label("Add")
+        self.add_btn = Gtk.Button.new_with_label(jT["add"])
         self.add_btn.add_css_class("suggested-action")
         self.add_btn.connect("clicked", self.on_add)
         self.add_btn.set_valign(Gtk.Align.CENTER)
