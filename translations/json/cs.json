@@ -69,5 +69,6 @@
     "shortcuts_warning": "Nemáte žádnou zkratku …",
     "shortcut_removed": "Zkratka '{}' odstraněna",
     "manage_shortcuts": "Spravovat zkratky",
-    "new_shortcut": "Přidat novou zkratku"
+    "new_shortcut": "Přidat novou zkratku",
+    "add": "Add"
 }
