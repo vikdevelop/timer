@@ -62,5 +62,12 @@
     "alarm_clock_dialog_text": "<b>Alarm clock dialog</b>",
     "apply": "Apply",
     "edit_options": "Edit options",
+    "manage_shortcuts": "Manage Shortcuts",
+    "remove": "Remove",
+    "shortcuts_warning": "You haven't any shortcut ...",
+    "existing_shortcut": "<b>Select an existing shortcut</b>",
+    "new_shortcut": "Add a new shortcut",
+    "shortcut_name": "Shortcut name",
+    "shortcut_removed": "Shortcut '{}' removed",
     "translator_credits": "vikdevelop https://github.com/vikdevelop"
 }
