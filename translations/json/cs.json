@@ -63,11 +63,11 @@
     "alarm_clock_dialog_text": "<b>Dialogové okno budíku</b>",
     "apply": "Použít",
     "edit_options": "Upravit možnosti",
-    "remove": "Remove",
-    "existing_shortcut": "<b>Select an existing shortcut</b>",
-    "shortcut_name": "Shortcut name",
-    "shortcuts_warning": "You haven't any shortcut ...",
-    "shortcut_removed": "Shortcut '{}' removed",
-    "manage_shortcuts": "Manage Shortcuts",
-    "new_shortcut": "Add a new shortcut"
+    "remove": "Odstranit",
+    "existing_shortcut": "<b>Vybrat existující zkratkut</b>",
+    "shortcut_name": "Název zkratky",
+    "shortcuts_warning": "Nemáte žádnou zkratku …",
+    "shortcut_removed": "Zkratka '{}' odstraněna",
+    "manage_shortcuts": "Spravovat zkratky",
+    "new_shortcut": "Přidat novou zkratku"
 }
