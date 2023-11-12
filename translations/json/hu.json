@@ -62,5 +62,12 @@
     "alarm_clock_dialog_text": "<b>Riasztás párbeszédpanel</b>",
     "translator_credits": "Daniel Uhrinyi https://github.com/danieluhrinyi",
     "apply": "Alkalmaz",
-    "edit_options": "Beállítások szerkesztése"
+    "edit_options": "Beállítások szerkesztése",
+    "remove": "Remove",
+    "existing_shortcut": "<b>Select an existing shortcut</b>",
+    "shortcut_name": "Shortcut name",
+    "shortcuts_warning": "You haven't any shortcut ...",
+    "shortcut_removed": "Shortcut '{}' removed",
+    "manage_shortcuts": "Manage Shortcuts",
+    "new_shortcut": "Add a new shortcut"
 }
