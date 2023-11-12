@@ -62,5 +62,12 @@
     "save_expander_row_state_desc": "Expande automáticamente la fila desplegable Preferencias al iniciar la aplicación Temporizador.",
     "show_appicon": "Mostrar el icono de la aplicación en las notificaciones",
     "apply": "Aplicar",
-    "edit_options": "Editar las opciones"
+    "edit_options": "Editar las opciones",
+    "remove": "Remove",
+    "existing_shortcut": "<b>Select an existing shortcut</b>",
+    "shortcut_name": "Shortcut name",
+    "shortcuts_warning": "You haven't any shortcut ...",
+    "shortcut_removed": "Shortcut '{}' removed",
+    "manage_shortcuts": "Manage Shortcuts",
+    "new_shortcut": "Add a new shortcut"
 }
