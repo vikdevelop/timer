@@ -69,5 +69,6 @@
     "shortcuts_warning": "You haven't any shortcut ...",
     "shortcut_removed": "Shortcut '{}' removed",
     "manage_shortcuts": "Manage Shortcuts",
-    "new_shortcut": "Add a new shortcut"
+    "new_shortcut": "Add a new shortcut",
+    "add": "Add"
 }
