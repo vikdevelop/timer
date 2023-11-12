@@ -25,6 +25,11 @@ DATA = os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data'
 # Print about timer status
 print(jT["timer_running"])
 
+if not os.path.exists(f"{DATA}/shortcuts.txt"):
+    with open(f"{DATA}/shortcuts.txt", "w") as w:
+        w.write("")
+        
+
 # Reset all timer settings dialog
 class Dialog_reset(Adw.MessageDialog):
     def __init__(self, parent, **kwargs):
@@ -331,6 +336,8 @@ class TimerWindow(Gtk.ApplicationWindow):
         
         self.settings = Gio.Settings.new_with_path("com.github.vikdevelop.timer", "/com/github/vikdevelop/timer/")
         
+        self.get_from_gsettings = False
+        
         self.set_size_request(425, 425)
         (width, height) = self.settings["window-size"]
         self.set_default_size(width, height)
@@ -577,6 +584,18 @@ class TimerWindow(Gtk.ApplicationWindow):
         elif self.settings["action"] == "Play alarm clock":
             self.adw_action_row_timer.set_selected(4)
             
+        self.btn = Gtk.Button.new_from_icon_name("go-next-symbolic")
+        self.btn.add_css_class("flat")
+        self.btn.connect("clicked", self.open_shortcuts_dialog)
+        
+        ## Adw.ActionRow
+        self.adw_action_row_sh = Adw.ActionRow.new()
+        self.adw_action_row_sh.set_icon_name(icon_name='shortcuts')
+        self.adw_action_row_sh.set_title(title=jT["manage_shortcuts"])
+        self.adw_action_row_sh.add_suffix(widget=self.btn)     
+        self.adw_action_row_sh.set_activatable_widget(widget=self.btn)
+        self.adw_expander_row.add_row(child=self.adw_action_row_sh)    
+        
         # Adw ActionRow - play beep
         ## Gtk.Switch
         self.switch_03 = Gtk.Switch.new()
@@ -859,6 +878,120 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.headerbar.pack_end(self.buttonReset)
         self.headerbar.remove(self.backButton_A)
         self.set_title(jT["timer_title"])
+    
+    def open_shortcuts_dialog(self, w):
+        self.shortcuts_dialog()
+    
+    def shortcuts_dialog(self):
+        self.setDialog = Adw.MessageDialog.new(self)
+        self.setDialog.set_heading(jT["manage_shortcuts"])
+        self.setDialog.set_body_use_markup(True)
+        
+        self.setDialog.add_response('cancel', jT["cancel"])
+        self.setDialog.add_response('remove', jT["remove"])
+        self.setDialog.add_response('ok', jT["apply"])
+        self.setDialog.set_response_appearance('ok', Adw.ResponseAppearance.SUGGESTED)
+        self.setDialog.set_response_appearance('remove', Adw.ResponseAppearance.DESTRUCTIVE)
+        self.setDialog.connect('response', self.setDialog_closed)
+        
+        # Box for appending widgets
+        self.mBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=15)
+        self.setDialog.set_extra_child(self.mBox)
+        
+        self.setdBox = Gtk.ListBox.new()
+        self.setdBox.set_selection_mode(mode=Gtk.SelectionMode.NONE)
+        self.setdBox.get_style_context().add_class(class_name='boxed-list')
+        
+        self.setdBox_02 = Gtk.ListBox.new()
+        self.setdBox_02.set_selection_mode(mode=Gtk.SelectionMode.NONE)
+        self.setdBox_02.get_style_context().add_class(class_name='boxed-list')
+        
+        if os.stat(f"{DATA}/shortcuts.txt").st_size == 0:
+            self.label_not = Gtk.Label.new(str=jT["shortcuts_warning"])
+            self.mBox.append(self.label_not)
+            self.setDialog.set_response_enabled('remove', False)
+        else:
+            self.label_y = Gtk.Label.new(str=jT["existing_shortcut"])
+            self.label_y.set_use_markup(True)
+            self.mBox.append(self.label_y)
+            
+            os.system(f"awk -i inplace 'NF' {DATA}/shortcuts.txt")
+            get_data = subprocess.getoutput(f"cat {DATA}/shortcuts.txt")
+            split_data = get_data.splitlines()
+                    
+            model = Gtk.StringList.new(strings=split_data)
+            
+            self.row = Adw.ComboRow.new()
+            self.row.set_title("")
+            self.row.set_model(model)
+            self.setdBox.append(self.row)
+            self.mBox.append(self.setdBox)
+        
+        self.label_add = Gtk.Label.new(str=f"<b>{jT['new_shortcut']}</b>")
+        self.label_add.set_use_markup(True)
+        self.mBox.append(self.label_add)
+        
+        self.expand = Adw.ExpanderRow.new()
+        self.expand.set_title(title=jT['new_shortcut'])
+        self.setdBox_02.append(self.expand)
+        self.mBox.append(self.setdBox_02)
+        
+        self.entry_add = Adw.EntryRow.new()
+        self.entry_add.set_title(jT["shortcut_name"])
+        self.expand.add_row(self.entry_add)
+        
+        self.entry_h = Adw.EntryRow.new()
+        self.entry_h.set_title(jT["hours"])
+        
+        self.entry_m = Adw.EntryRow.new()
+        self.entry_m.set_title(jT["mins"])
+        
+        self.entry_s = Adw.EntryRow.new()
+        self.entry_s.set_title(jT["secs"])
+        
+        self.time_row = Adw.ActionRow.new()
+        self.time_row.add_suffix(self.entry_h)
+        self.time_row.add_suffix(self.entry_m)
+        self.time_row.add_suffix(self.entry_s)
+        self.expand.add_row(self.time_row)
+        
+        self.add_btn = Gtk.Button.new_with_label("Add")
+        self.add_btn.add_css_class("suggested-action")
+        self.add_btn.connect("clicked", self.on_add)
+        self.add_btn.set_valign(Gtk.Align.CENTER)
+        self.add_btn.set_margin_start(60)
+        self.add_btn.set_margin_end(60)
+        self.expand.add_row(self.add_btn)
+        
+        self.setDialog.show()
+
+    def setDialog_closed(self, w, response):
+        item = self.row.get_selected_item()
+        get = item.get_string()
+        get_split = get.split()
+        if response == 'ok':
+            self.settings["shortcut-name"] = get_split[0]
+            self.settings["hours"] = int(get_split[1])
+            self.settings["mins"] = int(get_split[2])
+            self.settings["seconds"] = int(get_split[3])
+            
+            self.get_from_gsettings = True
+            
+            self.start_timer()
+        elif response == 'remove':
+            os.system(f"sed -i 's\%s\ \ ' %s/shortcuts.txt" % (get, DATA))
+            os.system(f"notify-send '" + jT["shortcut_removed"].format(get) + "' -i com.github.vikdevelop.timer")
+            
+    def on_add(self, w):
+        if " " in self.entry_add.get_text():
+            incorrect_text = self.entry_add.get_text()
+            correct_text = incorrect_text.replace(" ", "_")
+        else:
+            correct_text = self.entry_add.get_text()
+        with open(f"{DATA}/shortcuts.txt", "a") as d:
+            d.write(f"\n{correct_text} {self.entry_h.get_text()} {self.entry_m.get_text()} {self.entry_s.get_text()}")
+        self.setDialog.close()
+        self.shortcuts_dialog()
         
     # Timer actions
     ## On timeout function
@@ -885,7 +1018,10 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.headerbar.remove(self.buttonStart)
         self.headerbar.remove(self.buttonReset)
         self.mainBox.remove(self.lbox)
-        self.counter = timedelta(hours = int(self.hour_entry.get_text()), minutes = int(self.minute_entry.get_text()), seconds = int(self.secs_entry.get_text()))
+        if not self.get_from_gsettings:
+            self.counter = timedelta(hours = int(self.hour_entry.get_text()), minutes = int(self.minute_entry.get_text()), seconds = int(self.secs_entry.get_text()))
+        else:
+            self.counter = timedelta(hours = int(self.settings["hours"]), minutes = int(self.settings["mins"]), seconds = int(self.settings["seconds"]))
         #self.play_beep()
         self.set_time_text()
         self.non_activated_session()
@@ -1049,10 +1185,16 @@ class TimerWindow(Gtk.ApplicationWindow):
             os.popen('pkill -15 bash && pkill -15 ffplay')
             
     def use_custom_text(self):
-        if self.entry.get_text() == "":
-            text = f'{jT["timing_finished"]}'
+        if not self.get_from_gsettings:
+            if self.entry.get_text() == "":
+                text = f'{jT["timing_finished"]}'
+            else:
+                text = f'{self.entry.get_text()}'
         else:
-            text = f'{self.entry.get_text()}'
+            if self.settings["shortcut-name"] == "":
+                text = f'{jT["timing_finished"]}'
+            else:
+                text = f'{self.settings["shortcut-name"]}'
         if self.switch_05.get_active() == True:
             self.dialogRingstone.set_heading(text)
         else:
@@ -1207,7 +1349,10 @@ class TimerWindow(Gtk.ApplicationWindow):
             self.settings["hours"] = int(text[0])
             self.settings["mins"] = int(text[1])
             self.settings["seconds"] = int(text[2])
-            GLib.timeout_add(2, self.exit)
+            self.hide()
+            self.start_timer()
+            return True
+            #GLib.timeout_add(2, self.exit)
         else:
             self.settings["hours"] = int(self.hour_entry.get_text())
             self.settings["mins"] = int(self.minute_entry.get_text())
@@ -1215,8 +1360,7 @@ class TimerWindow(Gtk.ApplicationWindow):
             exit()
         
     def exit(self):
-        os.system("python3 /app/src/background.py")
-        exit()
+        os.popen("python3 /app/src/background.py")
         
     def start_again_dialog(self):
         if os.path.exists(f"{DATA}/start_timer_again.json"):
