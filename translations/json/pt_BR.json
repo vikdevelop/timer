@@ -62,5 +62,12 @@
     "alarm_clock_dialog_text": "<b>Caixa de diálogo do alarme</b>",
     "translator_credits": "Felipe Nogueira https://github.com/fnogcps",
     "apply": "Aplicar",
-    "edit_options": "Editar opções"
+    "edit_options": "Editar opções",
+    "remove": "Remove",
+    "existing_shortcut": "<b>Select an existing shortcut</b>",
+    "shortcut_name": "Shortcut name",
+    "shortcuts_warning": "You haven't any shortcut ...",
+    "shortcut_removed": "Shortcut '{}' removed",
+    "manage_shortcuts": "Manage Shortcuts",
+    "new_shortcut": "Add a new shortcut"
 }
