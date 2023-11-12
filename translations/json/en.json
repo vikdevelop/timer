@@ -69,5 +69,6 @@
     "new_shortcut": "Add a new shortcut",
     "shortcut_name": "Shortcut name",
     "shortcut_removed": "Shortcut '{}' removed",
+    "add": "Add",
     "translator_credits": "vikdevelop https://github.com/vikdevelop"
 }
