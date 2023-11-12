@@ -62,5 +62,12 @@
     "notification_text": "<b>Notifikace</b>",
     "alarm_clock_dialog_text": "<b>Dialogové okno budíku</b>",
     "apply": "Použít",
-    "edit_options": "Upravit možnosti"
+    "edit_options": "Upravit možnosti",
+    "remove": "Odstranit",
+    "existing_shortcut": "<b>Vybrat existující zkratkut</b>",
+    "shortcut_name": "Název zkratky",
+    "shortcuts_warning": "Nemáte žádnou zkratku …",
+    "shortcut_removed": "Zkratka '{}' odstraněna",
+    "manage_shortcuts": "Spravovat zkratky",
+    "new_shortcut": "Přidat novou zkratku"
 }

@@ -62,5 +62,12 @@
     "notification_text": "<b>Notification</b>",
     "alarm_clock_dialog_text": "<b>Dialogue d'alarme</b>",
     "apply": "Appliquer",
-    "edit_options": "Modifier les options"
+    "edit_options": "Modifier les options",
+    "remove": "Remove",
+    "existing_shortcut": "<b>Select an existing shortcut</b>",
+    "shortcut_name": "Shortcut name",
+    "shortcuts_warning": "You haven't any shortcut ...",
+    "shortcut_removed": "Shortcut '{}' removed",
+    "manage_shortcuts": "Manage Shortcuts",
+    "new_shortcut": "Add a new shortcut"
 }

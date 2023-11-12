@@ -62,5 +62,12 @@
     "notification_text": "<b>Уведомление</b>",
     "alarm_clock_dialog_text": "<b>Диалог будильника</b>",
     "apply": "Применить",
-    "edit_options": "Изменить параметры"
+    "edit_options": "Изменить параметры",
+    "remove": "Remove",
+    "existing_shortcut": "<b>Select an existing shortcut</b>",
+    "shortcut_name": "Shortcut name",
+    "shortcuts_warning": "You haven't any shortcut ...",
+    "shortcut_removed": "Shortcut '{}' removed",
+    "manage_shortcuts": "Manage Shortcuts",
+    "new_shortcut": "Add a new shortcut"
 }

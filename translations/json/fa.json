@@ -62,5 +62,12 @@
     "alarm_clock_dialog_text": "<b>پنجره ی آلارم</b>",
     "apply": "اعمال",
     "edit_options": "ویرایش",
-    "translator_credits": "Master81 https://github.com/master811129"
+    "translator_credits": "Master81 https://github.com/master811129",
+    "remove": "Remove",
+    "existing_shortcut": "<b>Select an existing shortcut</b>",
+    "shortcut_name": "Shortcut name",
+    "shortcuts_warning": "You haven't any shortcut ...",
+    "shortcut_removed": "Shortcut '{}' removed",
+    "manage_shortcuts": "Manage Shortcuts",
+    "new_shortcut": "Add a new shortcut"
 }
