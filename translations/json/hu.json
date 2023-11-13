@@ -63,12 +63,12 @@
     "translator_credits": "Daniel Uhrinyi https://github.com/danieluhrinyi",
     "apply": "Alkalmaz",
     "edit_options": "Beállítások szerkesztése",
-    "remove": "Remove",
+    "remove": "Eltávolítás",
     "existing_shortcut": "<b>Select an existing shortcut</b>",
     "shortcut_name": "Shortcut name",
     "shortcuts_warning": "You haven't any shortcut ...",
     "shortcut_removed": "Shortcut '{}' removed",
-    "manage_shortcuts": "Manage Shortcuts",
+    "manage_shortcuts": "Parancsikonok kezelése",
     "new_shortcut": "Add a new shortcut",
     "add": "Add"
 }

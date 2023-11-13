@@ -63,12 +63,12 @@
     "translator_credits": "Heimen Stoffels <https://github.com/Vistaus>",
     "apply": "Toepassen",
     "edit_options": "Opties bewerken",
-    "remove": "Remove",
-    "existing_shortcut": "<b>Select an existing shortcut</b>",
-    "shortcut_name": "Shortcut name",
-    "shortcuts_warning": "You haven't any shortcut ...",
-    "shortcut_removed": "Shortcut '{}' removed",
-    "manage_shortcuts": "Manage Shortcuts",
-    "new_shortcut": "Add a new shortcut",
-    "add": "Add"
+    "remove": "Verwijderen",
+    "existing_shortcut": "<b>Kies een bestaande sneltoets</b>",
+    "shortcut_name": "Sneltoetsnaam",
+    "shortcuts_warning": "U heeft nog geen sneltoets ingesteld…",
+    "shortcut_removed": "‘{}’ is verwijderd",
+    "manage_shortcuts": "Sneltoetsen beheren",
+    "new_shortcut": "Sneltoets toevoegen",
+    "add": "Toevoegen"
 }
