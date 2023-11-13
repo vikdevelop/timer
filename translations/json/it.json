@@ -63,12 +63,12 @@
     "alarm_clock_dialog_text": "<b>Finestra di dialogo Sveglia</b>",
     "apply": "Applica",
     "edit_options": "Modifica opzioni",
-    "remove": "Remove",
-    "existing_shortcut": "<b>Select an existing shortcut</b>",
-    "shortcut_name": "Shortcut name",
-    "shortcuts_warning": "You haven't any shortcut ...",
-    "shortcut_removed": "Shortcut '{}' removed",
-    "manage_shortcuts": "Manage Shortcuts",
-    "new_shortcut": "Add a new shortcut",
-    "add": "Add"
+    "remove": "Rimuovi",
+    "existing_shortcut": "<b>Seleziona una scorciatoia esistente</b>",
+    "shortcut_name": "Nome  scorciatoia",
+    "shortcuts_warning": "Non hai scorciatoie …",
+    "shortcut_removed": "Scorciatoia '{}' rimossa",
+    "manage_shortcuts": "Gestisci scorciatoie",
+    "new_shortcut": "Aggiungi una nuova scorciatoia",
+    "add": "Aggiungi"
 }
