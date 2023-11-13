@@ -980,7 +980,7 @@ class TimerWindow(Gtk.ApplicationWindow):
             self.start_timer()
         elif response == 'remove':
             os.system(f"sed -i 's\%s\ \ ' %s/shortcuts.txt" % (get, DATA))
-            os.system(f"notify-send '" + jT["shortcut_removed"].format(get) + "' -i com.github.vikdevelop.timer")
+            os.system(f"notify-send \"{jT['shortcut_removed'].format(get)}\" -i com.github.vikdevelop.timer")
             
     def on_add(self, w):
         if " " in self.entry_add.get_text():
@@ -1206,20 +1206,28 @@ class TimerWindow(Gtk.ApplicationWindow):
             timer_name = f'{jT["timer_title"]}'
         else:
             timer_name = ''
-        if self.switch_04.get_active() == "true":
+        if self.switch_04.get_active() == True:
             timer_icon = '-i com.github.vikdevelop.timer'
         else:
             timer_icon = '-i d'
-        if self.entry.get_text() == "":
-            if timer_name == "":
-                os.system('notify-send "{}" {}'.format(jT["timing_finished"],timer_icon))
+        if not self.get_from_gsettings:
+            if self.settings["notification-text"] == "":
+                time_text = jT["timing_finished"]
             else:
-                os.system('notify-send {} "{}" {}'.format(timer_name, jT["timing_finished"],timer_icon))
+                time_text = self.settings["notification-text"]
+            if self.entry.get_text() == "":
+                self.set_text_of_notification(timer_name, timer_icon, time_text)
+            else:
+                self.set_text_of_notification(timer_name, timer_icon, time_text)
         else:
-            if timer_name == "":
-                os.system('notify-send "{}" {}'.format(notification, timer_icon))
-            else:
-                os.system('notify-send {} "{}" {}'.format(timer_name, notification,timer_icon))
+            time_text = self.settings["shortcut-name"]
+            self.set_text_of_notification(timer_name, timer_icon, time_text)
+        
+    def set_text_of_notification(self, timer_name, timer_icon, time_text):
+        if timer_name == "":
+            os.system('notify-send "{}" {}'.format(time_text,timer_icon))
+        else:
+            os.system('notify-send {} "{}" {}'.format(timer_name, time_text ,timer_icon))
     
     ## Play beep after finished timer
     def play_beep(self):
@@ -1455,7 +1463,7 @@ class MyApp(Adw.Application):
     def on_about_action(self, action, param):
         dialog = Adw.AboutWindow(transient_for=app.get_active_window())
         dialog.set_application_name(jT["timer_title"])
-        dialog.set_version("3.2")
+        dialog.set_version("3.3")
         dialog.set_release_notes(release_32 + release_30B + release_29U + release_29T_20230214 + release_29T + release_29 + release_28 + release_27_11 + release_27I + release_27)
         dialog.set_developer_name("vikdevelop")
         self.add_translations_link(dialog)
@@ -1470,7 +1478,7 @@ class MyApp(Adw.Application):
         dialog.show()
     
     def add_translations_link(self, dialog):
-        if lang == "en.json":
+        if r_lang == "en":
             dialog.add_link("Translate Timer to your language", "https://hosted.weblate.org/projects/vikdevelop/timer/")
         else:
             dialog.add_link("Contribute to translations", "https://hosted.weblate.org/projects/vikdevelop/timer/")
