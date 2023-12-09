@@ -23,7 +23,7 @@
     "custom_notification": "Пользовательский текст уведомления",
     "play_beep": "Звуковой сигнал",
     "suspend": "Ждущий режим",
-    "translator_credits": "vikdevelop https://github.com/vikdevelop",
+    "translator_credits": "None",
     "notification_desc": "Вы получите уведомление и звуковой сигнал через",
     "reboot_desc": "Ваша система будет перезагружена через",
     "shut_down_desc": "Ваша система будет отключена через",
