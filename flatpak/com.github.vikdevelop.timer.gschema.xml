@@ -68,6 +68,18 @@
             <default>0</default>
             <summary>Seconds entry</summary>
         </key>
+        <key name="hours-shortcut" type="i">
+            <default>0</default>
+            <summary>Hour entry</summary>
+        </key>
+        <key name="mins-shortcut" type="i">
+            <default>1</default>
+            <summary>Minutes entry</summary>
+        </key>
+        <key name="seconds-shortcut" type="i">
+            <default>0</default>
+            <summary>Seconds entry</summary>
+        </key>
         <key name="shortcut-name" type="s">
             <default>''</default>
             <summary>Shortcut name</summary>
