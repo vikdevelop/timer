@@ -971,9 +971,9 @@ class TimerWindow(Gtk.ApplicationWindow):
         get_split = get.split()
         if response == 'ok':
             self.settings["shortcut-name"] = get_split[0]
-            self.settings["hours"] = int(get_split[1])
-            self.settings["mins"] = int(get_split[2])
-            self.settings["seconds"] = int(get_split[3])
+            self.settings["hours-shortcut"] = int(get_split[1])
+            self.settings["mins-shortcut"] = int(get_split[2])
+            self.settings["seconds-shortcut"] = int(get_split[3])
             
             self.get_from_gsettings = True
             
@@ -1018,10 +1018,10 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.headerbar.remove(self.buttonStart)
         self.headerbar.remove(self.buttonReset)
         self.mainBox.remove(self.lbox)
-        if not self.get_from_gsettings:
+        if not self.get_from_gsettings == True:
             self.counter = timedelta(hours = int(self.hour_entry.get_text()), minutes = int(self.minute_entry.get_text()), seconds = int(self.secs_entry.get_text()))
         else:
-            self.counter = timedelta(hours = int(self.settings["hours"]), minutes = int(self.settings["mins"]), seconds = int(self.settings["seconds"]))
+            self.counter = timedelta(hours = int(self.settings["hours-shortcut"]), minutes = int(self.settings["mins-shortcut"]), seconds = int(self.settings["seconds-shortcut"]))
         #self.play_beep()
         self.set_time_text()
         self.non_activated_session()
@@ -1059,6 +1059,9 @@ class TimerWindow(Gtk.ApplicationWindow):
             self.timingBox.remove(self.label_paused_status)
         except AttributeError:
             print("")
+            
+        if self.get_from_gsettings == True:
+           self.get_from_gsettings = False
         #self.label.set_label(alabeltext)
         #self.play_beep()
     
