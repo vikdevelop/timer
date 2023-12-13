@@ -15,8 +15,12 @@ elif 'zh' in p_lang:
     r_lang = 'zh_Hans'
 else:
     r_lang = p_lang[:-3]
+
+try:
+    locale = open(f"/app/translations/{r_lang}.json")
+except:
+    locale = open(f"/app/translations/en.json")
     
-locale = open(f"/app/translations/{r_lang}.json")
 # Load JSON local file
 jT = json.load(locale)
         
