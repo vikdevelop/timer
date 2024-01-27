@@ -75,6 +75,8 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.settings = Gio.Settings.new_with_path("com.github.vikdevelop.timer", "/com/github/vikdevelop/timer/")
         
         self.get_from_gsettings = False
+        self.use_shortcut_text = False
+        self.continue_shortcut = False
         
         self.set_size_request(425, 425)
         (width, height) = self.settings["window-size"]
@@ -715,6 +717,7 @@ class TimerWindow(Gtk.ApplicationWindow):
             
             self.get_from_gsettings = True
             self.use_shortcut_text = True
+            self.continue_shortcut = True
             
             self.start_timer()
         elif response == 'remove':
@@ -732,7 +735,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.setDialog.close()
         self.shortcuts_dialog()
         
-    # Timer actions
+    # Timer actionsuse_shortcut_text
     ## On timeout function
     tick_counter = timedelta(milliseconds = 250) # static object so we don't recreate the object every time
     zero_counter = timedelta()
@@ -740,7 +743,6 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.counter -= self.tick_counter
         if self.counter <= self.zero_counter:
             self.stop_timer()
-            #self.label.set_markup("<b>" + jT["timing_finished"]+ "</b>")
             self.session()
             print(jT["timing_finished"])
             return False
@@ -798,11 +800,6 @@ class TimerWindow(Gtk.ApplicationWindow):
             self.timingBox.remove(self.label_paused_status)
         except AttributeError:
             print("")
-            
-        if self.get_from_gsettings == True:
-           self.get_from_gsettings = False
-        #self.label.set_label(alabeltext)
-        #self.play_beep()
     
     ## Reset time counter values action
     def reset_timer(self):
@@ -874,7 +871,7 @@ class TimerWindow(Gtk.ApplicationWindow):
             self.label_action.set_text(jT["notification_desc"])
     
     # After finished timer
-    ## Function, that allocates actions after finished timer (e.g. shut down/reboot/suspend system)
+    ## Function, that allocates actions after finished timer (e.gself.continue_shortcut = True. shut down/reboot/suspend system)
     def session(self):
         at = self.adw_action_row_timer.get_selected_item()
         action = at.get_string()
@@ -899,15 +896,14 @@ class TimerWindow(Gtk.ApplicationWindow):
     ## Play alarm clock
     def alarm_clock(self):
         self.dialogRingstone = Adw.MessageDialog.new(self)
+        self.rLabel = Gtk.Label.new()
         self.use_custom_text()
         rBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=3)
         self.adw_action_row_beep.add_suffix(widget=self.switch_03)      
         rImage = Gtk.Image.new_from_icon_name("history")
         rImage.set_pixel_size(40)
         rBox.append(rImage)
-        rLabel = Gtk.Label.new()
-        rLabel.set_markup("{} {} {} {} {} {}".format(self.hour_entry.get_text(), jT["hours"], self.minute_entry.get_text(), jT["mins"], self.secs_entry.get_text(), jT["secs"]))
-        rBox.append(rLabel)
+        rBox.append(self.rLabel)
         self.dialogRingstone.set_extra_child(rBox)
         self.dialogRingstone.add_response('cancel', jT["cancel"])
         self.dialogRingstone.add_response('start', jT["start_again"])
@@ -918,26 +914,42 @@ class TimerWindow(Gtk.ApplicationWindow):
         
     def start_again(self, w, response):
         if response == 'start':
+            if self.continue_shortcut == True:
+                self.get_from_gsettings = True
+                self.use_shortcut_text = True
             self.present()
             self.start_timer()
             os.popen('pkill -15 bash && pkill -15 ffplay')
         elif response == 'cancel':
             self.present()
             os.popen('pkill -15 bash && pkill -15 ffplay')
+            if self.get_from_gsettings == True:
+                self.get_from_gsettings = False
+                self.use_shortcut_text = False
+                self.continue_shortcut = False
         else:
             os.popen('pkill -15 bash && pkill -15 ffplay')
+            if self.get_from_gsettings == True:
+                self.get_from_gsettings = False
+                self.use_shortcut_text = False
+                self.continue_shortcut = False
             
     def use_custom_text(self):
+        print(self.use_shortcut_text)
         if self.use_shortcut_text == True:
             if self.settings["shortcut-name"] == "":
                 text = f'{jT["timing_finished"]}'
             else:
                 text = f'{self.settings["shortcut-name"]}'
+            self.rLabel.set_markup("{} {} {} {} {} {}".format(self.settings["hours-shortcut"], jT["hours"], self.settings["mins-shortcut"], jT["mins"], self.settings["seconds-shortcut"], jT["secs"]))
+            
         else:
             if self.entry.get_text() == "":
                 text = f'{jT["timing_finished"]}'
             else:
                 text = f'{self.entry.get_text()}'
+            self.rLabel.set_markup("{} {} {} {} {} {}".format(self.hour_entry.get_text(), jT["hours"], self.minute_entry.get_text(), jT["mins"], self.secs_entry.get_text(), jT["secs"]))
+            
         if self.switch_05.get_active() == True:
             self.dialogRingstone.set_heading(text)
         else:
