@@ -1218,7 +1218,7 @@ class MyApp(Adw.Application):
     def on_about_action(self, action, param):
         dialog = Adw.AboutWindow(transient_for=app.get_active_window())
         dialog.set_application_name(jT["timer_title"])
-        dialog.set_version("3.4")
+        dialog.set_version("3.3.3")
         dialog.set_release_notes(release_32 + release_30B + release_29U + release_29T_20230214 + release_29T + release_29 + release_28 + release_27_11 + release_27I + release_27)
         dialog.set_developer_name("vikdevelop")
         self.add_translations_link(dialog)
