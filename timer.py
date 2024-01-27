@@ -23,6 +23,3 @@ except:
     
 # Load JSON local file
 jT = json.load(locale)
-        
-# import main file - source code
-import src.main
