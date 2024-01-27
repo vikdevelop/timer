@@ -1,2 +1,2 @@
 #/bin/sh
-exec python3 /app/timer.py "$@"
+exec python3 /app/src/main.py "$@"
