@@ -794,6 +794,7 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.headerbar.remove(self.buttonCont)
         self.back_type = "custom_notification"
         self.stop_timing = True
+        self.get_from_gsettings = False
         try:
             self.timingBox.remove(self.label_pause)
             self.timingBox.remove(self.label_paused_status)
