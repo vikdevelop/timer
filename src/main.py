@@ -1218,7 +1218,7 @@ class MyApp(Adw.Application):
     def on_about_action(self, action, param):
         dialog = Adw.AboutWindow(transient_for=app.get_active_window())
         dialog.set_application_name(jT["timer_title"])
-        dialog.set_version("3.3.3")
+        dialog.set_version("3.3.4")
         dialog.set_developer_name("vikdevelop")
         self.add_translations_link(dialog)
         dialog.set_release_notes("<p>Fixed bug when continuing timing in the shortcut mode, the time is countdown from scratch. From now on, the time continues on. Also improved the Keyboard shortcuts window</p>")
