@@ -1221,7 +1221,7 @@ class MyApp(Adw.Application):
         dialog.set_version("3.3.4")
         dialog.set_developer_name("vikdevelop")
         self.add_translations_link(dialog)
-        dialog.set_release_notes("<p>Fixed bug when continuing timing in the shortcut mode, the time is countdown from scratch. From now on, the time continues on. Also improved the Keyboard shortcuts window</p>")
+        dialog.set_release_notes("<p>Fixed minor bugs with timing in the entry box after using shortcuts</p>")
         dialog.set_license_type(Gtk.License(Gtk.License.GPL_3_0))
         dialog.set_website("https://github.com/vikdevelop/timer")
         dialog.set_issue_url("https://github.com/vikdevelop/timer/issues")
