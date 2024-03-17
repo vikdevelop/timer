@@ -46,6 +46,11 @@
     <categories>
         <category>Utility</category>
     </categories>
+
+    <branding>
+        <color type="primary" scheme_preference="light">#BBDBFF</color>
+        <color type="primary" scheme_preference="dark">#3E6B8B</color>
+    </branding>
     
     <releases>
         <release version="3.3" date="2023-11-12">
