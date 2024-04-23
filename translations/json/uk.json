@@ -64,11 +64,11 @@
     "apply": "Застосувати",
     "edit_options": "Редагувати параметри",
     "remove": "Видалити",
-    "existing_shortcut": "<b>Select an existing shortcut</b>",
-    "shortcut_name": "Shortcut name",
-    "shortcuts_warning": "You haven't any shortcut ...",
-    "shortcut_removed": "Shortcut '{}' removed",
+    "existing_shortcut": "<b>Оберіть існуюче клавіатурне скорочення</b>",
+    "shortcut_name": "Назва клавіатурного скорочення",
+    "shortcuts_warning": "Не назначено жодного клавіатурного скорочення…",
+    "shortcut_removed": "Клавіатурне скорочення '{}' було видалено",
     "manage_shortcuts": "Керування клавіатурними скороченнями",
-    "new_shortcut": "Add a new shortcut",
+    "new_shortcut": "Додати нове клавіатурне скорочення",
     "add": "Додати"
 }
