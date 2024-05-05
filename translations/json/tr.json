@@ -70,5 +70,6 @@
     "shortcut_removed": "'{}' kısayolu kaldırıldı",
     "manage_shortcuts": "Kısayolları Yönet",
     "new_shortcut": "Yeni kısayol ekle",
-    "add": "Ekle"
+    "add": "Ekle",
+    "new_window": "New window"
 }

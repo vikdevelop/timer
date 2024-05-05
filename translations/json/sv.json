@@ -70,5 +70,6 @@
     "shortcut_name": "Genvägens namn",
     "shortcut_removed": "Genvägen '{}' togs bort",
     "add": "Lägg till",
-    "translator_credits": "vikdevelop https://github.com/vikdevelop"
+    "translator_credits": "vikdevelop https://github.com/vikdevelop",
+    "new_window": "New window"
 }
