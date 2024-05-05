@@ -70,5 +70,6 @@
     "shortcut_removed": "Acceso directo '{}' eliminado",
     "manage_shortcuts": "Gestionar los accesos directos",
     "new_shortcut": "Añadir un nuevo acceso directo",
-    "add": "Añadir"
+    "add": "Añadir",
+    "new_window": "New window"
 }
