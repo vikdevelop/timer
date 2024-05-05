@@ -70,5 +70,6 @@
     "shortcut_removed": "Shortcut '{}' removed",
     "manage_shortcuts": "Parancsikonok kezelése",
     "new_shortcut": "Add a new shortcut",
-    "add": "Add"
+    "add": "Add",
+    "new_window": "New window"
 }
