@@ -70,5 +70,6 @@
     "shortcut_removed": "Scorciatoia '{}' rimossa",
     "manage_shortcuts": "Gestisci scorciatoie",
     "new_shortcut": "Aggiungi una nuova scorciatoia",
-    "add": "Aggiungi"
+    "add": "Aggiungi",
+    "new_window": "New window"
 }
