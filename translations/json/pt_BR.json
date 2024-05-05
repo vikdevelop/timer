@@ -70,5 +70,6 @@
     "shortcut_removed": "Atalho '{}' removido",
     "manage_shortcuts": "Gerenciar atalhos",
     "new_shortcut": "Criar novo atalho",
-    "add": "Novo"
+    "add": "Novo",
+    "new_window": "New window"
 }
