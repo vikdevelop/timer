@@ -1219,7 +1219,7 @@ class MyApp(Adw.Application):
         dialog.set_version("3.4")
         dialog.set_developer_name("vikdevelop")
         self.add_translations_link(dialog)
-        dialog.set_release_notes("<p>Updated translations and added brand colors</p>")
+        dialog.set_release_notes("<ul><li>Setted up shortcut for opening new app windows (Ctrl+N)</li><li>added Hindi translations, thanks to @Scrambled777</li>Updated translations<li></li>")
         dialog.set_license_type(Gtk.License(Gtk.License.GPL_3_0))
         dialog.set_website("https://github.com/vikdevelop/timer")
         dialog.set_issue_url("https://github.com/vikdevelop/timer/issues")
