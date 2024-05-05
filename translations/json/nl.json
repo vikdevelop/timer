@@ -70,5 +70,6 @@
     "shortcut_removed": "‘{}’ is verwijderd",
     "manage_shortcuts": "Sneltoetsen beheren",
     "new_shortcut": "Sneltoets toevoegen",
-    "add": "Toevoegen"
+    "add": "Toevoegen",
+    "new_window": "New window"
 }
