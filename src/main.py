@@ -61,7 +61,7 @@ class ShortcutsWindow(Gtk.ShortcutsWindow):
         super().__init__(**kwargs)
 
 # Timer Application window
-class TimerWindow(Gtk.ApplicationWindow):
+class TimerWindow(Adw.ApplicationWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.connect('close-request', self.close_action, self)
@@ -69,7 +69,9 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.style_manager = self.application.get_style_manager()
         self.set_title(title=jT["timer_title"])
         self.headerbar = Gtk.HeaderBar.new()
-        self.set_titlebar(titlebar=self.headerbar)
+        self.toolbarview = Adw.ToolbarView.new()
+        self.toolbarview.add_top_bar(self.headerbar)
+        self.set_default_widget(self.toolbarview)
         
         self.settings = Gio.Settings.new_with_path("com.github.vikdevelop.timer", "/com/github/vikdevelop/timer/")
         
@@ -141,7 +143,8 @@ class TimerWindow(Gtk.ApplicationWindow):
         self.mainBox.set_valign(Gtk.Align.CENTER)
         self.mainBox.set_margin_start(47)
         self.mainBox.set_margin_end(47)
-        self.set_child(self.mainBox)
+        self.toolbarview.set_content(self.mainBox)
+        self.set_content(self.toolbarview)
         
         # App menu
         self.menu_button_model = Gio.Menu()
@@ -1219,7 +1222,7 @@ class MyApp(Adw.Application):
         dialog.set_version("3.4")
         dialog.set_developer_name("vikdevelop")
         self.add_translations_link(dialog)
-        dialog.set_release_notes("<ul><li>Setted up shortcut for opening new app windows (Ctrl+N)</li><li>added Hindi translations, thanks to @Scrambled777</li>Updated translations<li></li>")
+        dialog.set_release_notes("<ul><li>Setted up shortcut for opening new app windows (Ctrl+N)</li><li>added Hindi translations, thanks to @Scrambled777</li><li>Updated translations</li></ul>")
         dialog.set_license_type(Gtk.License(Gtk.License.GPL_3_0))
         dialog.set_website("https://github.com/vikdevelop/timer")
         dialog.set_issue_url("https://github.com/vikdevelop/timer/issues")
