@@ -1045,8 +1045,6 @@ class TimerWindow(Gtk.ApplicationWindow):
             except:
                 print("")
             self.continue_timer()
-        if keycode == ord('n'):
-            self.custom_notification()
         if keycode == ord('m'):
             self.advanced()
         if keycode == 0xFFBF:
@@ -1118,7 +1116,6 @@ class TimerWindow(Gtk.ApplicationWindow):
             self.settings["hours"] = int(self.hour_entry.get_text())
             self.settings["mins"] = int(self.minute_entry.get_text())
             self.settings["seconds"] = int(self.secs_entry.get_text())
-            exit()
         
     def exit(self):
         os.popen("python3 /app/src/background.py")
@@ -1207,6 +1204,7 @@ class MyApp(Adw.Application):
         self.create_action('shortcuts', self.on_shortcuts_action, ["<primary>question"])
         self.create_action('about', self.on_about_action, ["F1"])
         self.create_action('reset_settings', self.on_reset_settings_action, ["F5"])
+        self.create_action('new_win', self.new_window, ["<primary>n"])
 
     # Run Keyboard shortcuts dialog
     def on_shortcuts_action(self, action, param):
@@ -1218,7 +1216,7 @@ class MyApp(Adw.Application):
     def on_about_action(self, action, param):
         dialog = Adw.AboutWindow(transient_for=app.get_active_window())
         dialog.set_application_name(jT["timer_title"])
-        dialog.set_version("3.3.5")
+        dialog.set_version("3.4")
         dialog.set_developer_name("vikdevelop")
         self.add_translations_link(dialog)
         dialog.set_release_notes("<p>Updated translations and added brand colors</p>")
@@ -1242,6 +1240,10 @@ class MyApp(Adw.Application):
         
     def load_locales(self):
         os.popen("cd ~/.var/app/com.github.vikdevelop.timer/cache && wget -c {}/{} > /dev/null 2>&1 && pkill -15 wget && pkill -15 sh".format(BASE_URL, lang))
+        
+    def new_window(self, action, param):
+        self.win2 = TimerWindow(application=app)
+        self.win2.present()
         
     def create_action(self, name, callback, shortcuts=None):
         action = Gio.SimpleAction.new(name, None)
