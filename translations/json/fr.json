@@ -70,5 +70,6 @@
     "shortcut_removed": "Raccourci '{}' supprimé",
     "manage_shortcuts": "Gestion des raccourcis",
     "new_shortcut": "Ajouter un nouveau raccourci",
-    "add": "Ajouter"
+    "add": "Ajouter",
+    "new_window": "New window"
 }
