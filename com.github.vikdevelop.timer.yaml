@@ -1,6 +1,6 @@
 app-id: com.github.vikdevelop.timer
 runtime: org.gnome.Platform
-runtime-version: '45'
+runtime-version: '46'
 sdk: org.gnome.Sdk
 command: timer.sh
 finish-args:
