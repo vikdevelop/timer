@@ -44,7 +44,7 @@
         <key name="action" type="s">
           <choices>
                 <choice value="default"/>
-                <choice value="Shut Down"/>
+                <choice value="Shut down"/>
                 <choice value="Reboot"/>
                 <choice value="Suspend"/>
                 <choice value="Play alarm clock"/>
