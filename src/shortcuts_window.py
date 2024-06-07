@@ -59,12 +59,6 @@ SHORTCUTS_WINDOW = '<?xml version="1.0" encoding="UTF-8"?>\
                 <property name="title" translatable="yes">%s</property>\
               </object>\
             </child>\
-            <child>\
-              <object class="GtkShortcutsShortcut">\
-                <property name="accelerator">&lt;primary&gt;m</property>\
-                <property name="title" translatable="yes">%s</property>\
-              </object>\
-            </child>\
           </object>\
         </child>\
         <child>\
@@ -99,4 +93,4 @@ SHORTCUTS_WINDOW = '<?xml version="1.0" encoding="UTF-8"?>\
       </object>\
     </child>\
   </template>\
-</interface>' % (jT["run_timer"], jT["stop_timer"], jT["quit"], jT["show"], jT["reset_counter"], jT["pause_timer"], jT["continue_timer"], jT["new_window"], jT["go_to_more_settings"], jT["show_about_dialog"], jT["activate_dark_theme"], jT["activate_system_theme"], jT["delete_timer_settings"])
+</interface>' % (jT["run_timer"], jT["stop_timer"], jT["quit"], jT["show"], jT["reset_counter"], jT["pause_timer"], jT["continue_timer"], jT["new_window"], jT["show_about_dialog"], jT["activate_dark_theme"], jT["activate_system_theme"], jT["delete_timer_settings"])
