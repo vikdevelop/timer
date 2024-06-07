@@ -53,6 +53,15 @@
     </branding>
     
     <releases>
+        <release version="3.4" date="2024-05-05">
+            <description>
+                <ul>
+                    <li>Setted up shortcut for opening new app windows (Ctrl+N)</li>
+                    <li>Added Hindi translations, thanks to @Scrambled777</li>
+                    <li>Updated translations</li>
+                </ul>
+            </description>
+        </release>
         <release version="3.3" date="2023-11-12">
             <description>
                 <ul>
