@@ -330,6 +330,22 @@ class TimerWindow(Adw.ApplicationWindow):
         self.btn.add_css_class("flat")
         self.btn.connect("clicked", self.open_shortcuts_dialog)
         
+        ## Gtk.Switch
+        self.switch_03 = Gtk.Switch.new()
+        if self.settings["play-beep"]:
+            self.switch_03.set_active(True)
+        self.switch_03.set_valign(align=Gtk.Align.CENTER)
+        
+        # Adw ActionRow - play beep
+        if self.settings["action"] == "default":
+            ## Adw.ActionRow
+            self.adw_action_row_beep = Adw.ActionRow.new()
+            self.adw_action_row_beep.set_icon_name(icon_name='folder-music-symbolic')
+            self.adw_action_row_beep.set_title(title=jT["play_beep"])
+            self.adw_action_row_beep.add_suffix(widget=self.switch_03)     
+            self.adw_action_row_beep.set_activatable_widget(widget=self.switch_03)
+            self.adw_expander_row.add_row(child=self.adw_action_row_beep)
+        
         ## Adw.ActionRow
         self.adw_action_row_sh = Adw.ActionRow.new()
         self.adw_action_row_sh.set_icon_name(icon_name='shortcuts')
@@ -337,21 +353,6 @@ class TimerWindow(Adw.ApplicationWindow):
         self.adw_action_row_sh.add_suffix(widget=self.btn)     
         self.adw_action_row_sh.set_activatable_widget(widget=self.btn)
         self.adw_expander_row.add_row(child=self.adw_action_row_sh)    
-        
-        # Adw ActionRow - play beep
-        ## Gtk.Switch
-        self.switch_03 = Gtk.Switch.new()
-        if self.settings["play-beep"]:
-            self.switch_03.set_active(True)
-        self.switch_03.set_valign(align=Gtk.Align.CENTER)
-        
-        ## Adw.ActionRow
-        self.adw_action_row_beep = Adw.ActionRow.new()
-        self.adw_action_row_beep.set_icon_name(icon_name='folder-music-symbolic')
-        self.adw_action_row_beep.set_title(title=jT["play_beep"])
-        self.adw_action_row_beep.add_suffix(widget=self.switch_03)     
-        self.adw_action_row_beep.set_activatable_widget(widget=self.switch_03)
-        self.adw_expander_row.add_row(child=self.adw_action_row_beep)
         
         # Adw ActionRow - custom notification
         ## Gtk.Button
