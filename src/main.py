@@ -903,7 +903,6 @@ class TimerWindow(Adw.ApplicationWindow):
         self.rLabel = Gtk.Label.new()
         self.use_custom_text()
         rBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=3)
-        self.adw_action_row_beep.add_suffix(widget=self.switch_03)      
         rImage = Gtk.Image.new_from_icon_name("history")
         rImage.set_pixel_size(40)
         rBox.append(rImage)
