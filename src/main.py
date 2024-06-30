@@ -1222,7 +1222,7 @@ class MyApp(Adw.Application):
         dialog.set_version("3.4")
         dialog.set_developer_name("vikdevelop")
         self.add_translations_link(dialog)
-        dialog.set_release_notes("<ul><li>Removed the keyboard shortcut Ctrl+M for going to more settings in the app</li><li>Updated translations</li><li>Switch \"Play beep\" button is now showing if the action of the timer is the default action only</li></ul>")
+        dialog.set_release_notes("<ul><li>Fixed bug with playing alarm clock dialog after finished timer</li><li>Updated translations</li></ul>")
         dialog.set_license_type(Gtk.License(Gtk.License.GPL_3_0))
         dialog.set_website("https://github.com/vikdevelop/timer")
         dialog.set_issue_url("https://github.com/vikdevelop/timer/issues")
