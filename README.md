@@ -11,7 +11,7 @@
 - use keyboard shortcuts for start, pause or stop timer and reset timer counter values.
 - and more...
 
-<a href="https://flathub.org/apps/details/com.github.vikdevelop.timer"><img src="https://beta.flathub.org/assets/badges/flathub-badge-en.png" width=165 height=53></a>
+<a href="https://flathub.org/apps/details/com.github.vikdevelop.timer"><img width='240' alt='Get it on Flathub' src='https://flathub.org/api/badge?svg&locale=en'/></a>
 <h4>If you want to help localize the Timer project, you can use the <a href="https://hosted.weblate.org/projects/vikdevelop/timer/">Weblate</a> tool (it is possible to sign up using e.g. GitHub or Google) </h4>
 
 <a href="https://hosted.weblate.org/projects/vikdevelop/timer">
