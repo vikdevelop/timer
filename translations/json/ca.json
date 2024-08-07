@@ -63,13 +63,13 @@
     "apply": "Aplica",
     "edit_options": "Edita les opcions",
     "translator_credits": "BennyBeat https://github.com/BennyBeat",
-    "remove": "Remove",
-    "existing_shortcut": "<b>Select an existing shortcut</b>",
-    "shortcut_name": "Shortcut name",
-    "shortcuts_warning": "You haven't any shortcut ...",
-    "shortcut_removed": "Shortcut '{}' removed",
-    "manage_shortcuts": "Manage Shortcuts",
-    "new_shortcut": "Add a new shortcut",
-    "add": "Add",
-    "new_window": "New window"
+    "remove": "Suprimeix",
+    "existing_shortcut": "<b>Trieu una drecera existent</b>",
+    "shortcut_name": "Nom de la drecera",
+    "shortcuts_warning": "No teniu cap drecera…",
+    "shortcut_removed": "Drecera '{}' suprimida",
+    "manage_shortcuts": "Gestiona les dreceres",
+    "new_shortcut": "Afegeix una drecera nova",
+    "add": "Afegeix",
+    "new_window": "Finestra nova"
 }
