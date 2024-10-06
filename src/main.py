@@ -28,12 +28,11 @@ print(jT["timer_running"])
 if not os.path.exists(f"{DATA}/shortcuts.txt"):
     with open(f"{DATA}/shortcuts.txt", "w") as w:
         w.write("")
-        
 
 # Reset all timer settings dialog
-class Dialog_reset(Adw.MessageDialog):
+class Dialog_reset(Adw.AlertDialog):
     def __init__(self, parent, **kwargs):
-        super().__init__(transient_for=app.get_active_window(), **kwargs)
+        super().__init__()
 
         self.set_heading(heading=jT["delete_timer_settings"])
         self.set_body(body=jT["dialog_remove_warning"])
@@ -44,6 +43,7 @@ class Dialog_reset(Adw.MessageDialog):
             appearance=Adw.ResponseAppearance.DESTRUCTIVE
         )
         self.connect('response', self.dialog_response)
+        self.choose(app.get_active_window(), None, None, None)
         self.show()
 
     def dialog_response(self, dialog, response):
@@ -93,11 +93,6 @@ class TimerWindow(Adw.ApplicationWindow):
             self.style_manager.set_color_scheme(
                 color_scheme=Adw.ColorScheme.PREFER_DARK
             )
-        
-        # Set up keyboard shortcuts
-        keycont = Gtk.EventControllerKey()
-        keycont.connect('key-pressed', self.keys, self)
-        self.add_controller(keycont)
         
         # Gtk.Switches
         self.switch_01 = Gtk.Switch.new()
@@ -265,7 +260,7 @@ class TimerWindow(Adw.ApplicationWindow):
         
         self.lbox = Gtk.ListBox.new()
         self.lbox.set_selection_mode(mode=Gtk.SelectionMode.NONE)
-        self.lbox.get_style_context().add_class(class_name='boxed-list')
+        self.lbox.get_style_context().add_class(class_name='boxed-list-separate')
         
         # Hour entry and label
         self.hour_entry = Adw.EntryRow()
@@ -297,6 +292,20 @@ class TimerWindow(Adw.ApplicationWindow):
     
     # Properties
     def properties(self):
+        def get_action(comborow, GParamObject):
+            if self.adw_action_row_timer.get_selected_item().get_string() == jT["default"]:
+                self.adw_action_row_beep = Adw.ActionRow.new()
+                self.adw_action_row_beep.set_icon_name(icon_name='folder-music-symbolic')
+                self.adw_action_row_beep.set_title(title=jT["play_beep"])
+                self.adw_action_row_beep.add_suffix(widget=self.switch_03)     
+                self.adw_action_row_beep.set_activatable_widget(widget=self.switch_03)
+                self.adw_expander_row.add_row(child=self.adw_action_row_beep)
+            else:
+                try:
+                    self.adw_expander_row.remove(self.adw_action_row_beep)
+                except:
+                    pass
+        
         self.adw_expander_row = Adw.ExpanderRow.new()
         self.adw_expander_row.set_title(title=jT["preferences"])
         self.adw_expander_row.set_subtitle(subtitle=jT["preferences_desc"])
@@ -313,6 +322,7 @@ class TimerWindow(Adw.ApplicationWindow):
         self.adw_action_row_timer.set_title(title=jT["action_after_timing"])
         self.adw_action_row_timer.set_title_lines(2)
         self.adw_action_row_timer.set_model(model=actions)
+        self.adw_action_row_timer.connect("notify::selected-item", get_action)
         self.adw_expander_row.add_row(child=self.adw_action_row_timer)
         
         if self.settings["action"] == "Default":
@@ -424,11 +434,11 @@ class TimerWindow(Adw.ApplicationWindow):
         
         self.adw_expander_row.remove(child=self.adw_action_row_notification)
         self.adw_expander_row.remove(child=self.adw_action_row_timer)
-        self.adw_expander_row.remove(child=self.adw_action_row_beep)
+        self.adw_expander_row.remove(child=self.adw_action_row_beep) if self.settings["action"] == "default" else None
         self.adw_expander_row.remove(child=self.adw_action_row_adv)
         
         self.ebox.append(child=self.adw_action_row_timer)
-        self.ebox.append(child=self.adw_action_row_beep)
+        self.ebox.append(child=self.adw_action_row_beep) if self.settings["action"] == "default" else None
         self.ebox.append(child=self.adw_action_row_notification)
         
     def cancel_edit_options(self, w):
@@ -436,11 +446,11 @@ class TimerWindow(Adw.ApplicationWindow):
         self.headerbar.pack_start(self.buttonStop)
         self.headerbar.pack_start(self.buttonPause)
         self.ebox.remove(child=self.adw_action_row_timer)
-        self.ebox.remove(child=self.adw_action_row_beep)
+        self.ebox.remove(child=self.adw_action_row_beep) if self.settings["action"] == "default" else None
         self.ebox.remove(child=self.adw_action_row_notification)
         self.mainBox.remove(self.ebox)
         self.adw_expander_row.add_row(child=self.adw_action_row_timer)
-        self.adw_expander_row.add_row(child=self.adw_action_row_beep)
+        self.adw_expander_row.add_row(child=self.adw_action_row_beep) if self.settings["action"] == "default" else None
         self.adw_expander_row.add_row(child=self.adw_action_row_notification)
         self.adw_expander_row.add_row(child=self.adw_action_row_adv)
         try:
@@ -568,18 +578,6 @@ class TimerWindow(Adw.ApplicationWindow):
         self.abox.set_selection_mode(mode=Gtk.SelectionMode.NONE)
         self.abox.get_style_context().add_class(class_name='boxed-list')
         self.mainBox.append(self.abox)
-            
-        # Adw ActionRow - Theme configuration
-        
-        ## Adw.ActionRow
-        self.adw_action_row_theme = Adw.ActionRow.new()
-        self.adw_action_row_theme.set_icon_name(icon_name='weather-clear-night-symbolic')
-        self.adw_action_row_theme.set_title(title=jT["dark_theme"])
-        self.adw_action_row_theme.set_subtitle(subtitle=jT["theme_desc"])
-        self.adw_action_row_theme.add_suffix(widget=self.switch_01)
-        self.adw_action_row_theme.set_activatable_widget(self.switch_01)
-        self.abox.append(self.adw_action_row_theme)
-        
         # Adw ActionRow - Resizable of Window configuration
         
         ## Adw.ActionRow
@@ -626,9 +624,10 @@ class TimerWindow(Adw.ApplicationWindow):
         self.shortcuts_dialog()
     
     def shortcuts_dialog(self):
-        self.setDialog = Adw.MessageDialog.new(self)
+        self.setDialog = Adw.AlertDialog.new()
         self.setDialog.set_heading(jT["manage_shortcuts"])
         self.setDialog.set_body_use_markup(True)
+        self.setDialog.choose(self, None, None, None)
         
         self.setDialog.add_response('cancel', jT["cancel"])
         self.setDialog.add_response('remove', jT["remove"])
@@ -899,7 +898,7 @@ class TimerWindow(Adw.ApplicationWindow):
             
     ## Play alarm clock
     def alarm_clock(self):
-        self.dialogRingstone = Adw.MessageDialog.new(self)
+        self.dialogRingstone = Adw.AlertDialog.new()
         self.rLabel = Gtk.Label.new()
         self.use_custom_text()
         rBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=3)
@@ -912,6 +911,7 @@ class TimerWindow(Adw.ApplicationWindow):
         self.dialogRingstone.add_response('start', jT["start_again"])
         self.dialogRingstone.set_response_appearance('start', Adw.ResponseAppearance.SUGGESTED)
         self.dialogRingstone.connect('response', self.start_again)
+        self.dialogRingstone.choose(self, None, None, None)
         self.dialogRingstone.show()
         os.popen("bash /app/src/alarm.sh")
         
@@ -990,9 +990,9 @@ class TimerWindow(Adw.ApplicationWindow):
     ## Play beep after finished timer
     def play_beep(self):
         if self.switch_03.get_active() == True:
-            print("")
-        else:
             os.popen("ffplay -nodisp -autoexit /app/share/beeps/Oxygen.ogg > /dev/null 2>&1")
+        else:
+            pass
     
     # Checking whether the entered values are correct and then saving them
     def check_and_save(self):
@@ -1003,70 +1003,9 @@ class TimerWindow(Adw.ApplicationWindow):
         elif self.secs_entry.get_text() == "":
             self.secs_entry.set_text('0')
     
-    # Keyboard shortcuts action
-    def keys(self, keyval, keycode, state, user_data, win):
-        if keycode == ord('q'):
-            win.close()
-        if keycode == ord('s'):
-            self.menu_button.set_can_focus(True)
-            self.menu_button.do_focus(self.menu_button, True)
-            self.start_timer()
-        if keycode == ord('c'):
-            print(jT["timing_ended"])
-            self.stop_timer()
-        if keycode == 0xFF0D:
-            self.start_timer()
-        if keycode == 0xFF1B: # Alternative key for stop timer and close Notification settings and More settings (EsC)
-            print(jT["timing_ended"])
-            self.stop_timer()
-            try:
-                self.mainBox.remove(self.cbox)
-                self.headerbar.remove(self.backButton)
-                self.mainBox.set_valign(Gtk.Align.CENTER)
-                self.mainBox.set_margin_top(0)
-                self.mainBox.remove(self.dbox)
-                self.mainBox.remove(self.label_n)
-                self.mainBox.remove(self.label_d)
-                self.set_title(jT["timer_title"])
-            except:
-                print("")
-            try:
-                self.mainBox.remove(self.abox)
-                self.headerbar.remove(self.backButton_A)
-                self.mainBox.set_valign(Gtk.Align.CENTER)
-                self.mainBox.set_margin_top(0)
-                self.set_title(jT["timer_title"])
-            except:
-                print("")
-        if keycode == ord('r'):
-            self.reset_timer()
-        if keycode == ord('p'):
-            self.pause_timer()
-        if keycode == ord('t'):
-            try:
-                self.timingBox.remove(label_pause)
-            except:
-                print("")
-            self.continue_timer()
-        if keycode == ord('m'):
-            self.advanced()
-        if keycode == 0xFFBF:
-            self.style_manager.set_color_scheme(
-                    color_scheme=Adw.ColorScheme.PREFER_DARK
-                )
-            self.switch_01.set_active(True)
-            self.settings["dark-theme"] = self.switch_01.get_active()
-        if keycode == 0xFFC0:
-            self.style_manager.set_color_scheme(
-                    color_scheme=Adw.ColorScheme.FORCE_LIGHT
-                )
-            self.switch_01.set_active(False)
-            self.settings["dark-theme"] = self.switch_01.get_active()
-        if keycode == 0xFFC2:
-            self.dialog_reset = Dialog_reset(self)
-    
     # Action after closing Timer window
-    def close_action(self, widget, *args):
+    none = ""
+    def close_action(self, w, none):
         (width, height) = self.get_default_size()
         straction = self.adw_action_row_timer.get_selected_item()
         pr_action = straction.get_string()
@@ -1114,14 +1053,10 @@ class TimerWindow(Adw.ApplicationWindow):
             self.hide()
             self.start_timer()
             return True
-            #GLib.timeout_add(2, self.exit)
         else:
             self.settings["hours"] = int(self.hour_entry.get_text())
             self.settings["mins"] = int(self.minute_entry.get_text())
             self.settings["seconds"] = int(self.secs_entry.get_text())
-        
-    def exit(self):
-        os.popen("python3 /app/src/background.py")
         
     def start_again_dialog(self):
         if os.path.exists(f"{DATA}/start_timer_again.json"):
@@ -1208,21 +1143,54 @@ class MyApp(Adw.Application):
         self.create_action('about', self.on_about_action, ["F1"])
         self.create_action('reset_settings', self.on_reset_settings_action, ["F5"])
         self.create_action('new_win', self.new_window, ["<primary>n"])
+        self.create_action('start_timer', self.call_start_timer, ["<primary>s"])
+        self.create_action('stop_timer', self.call_stop_timer, ["<primary>c"])
+        self.create_action('continue_timer', self.call_continue_timer, ["<primary>t"])
+        self.create_action('reset_timer', self.call_reset_timer, ["<primary>r"])
+        self.create_action('pause_timer', self.call_pause_timer, ["<primary>p"])
+        self.create_action('quit', self.app_quit, ["<primary>q"])
+        
+    def call_start_timer(self, action, param):
+        self.win.menu_button.set_can_focus(True)
+        self.win.menu_button.do_focus(self.win.menu_button, True)
+        self.win.start_timer()
+        
+    def call_stop_timer(self, action, param):
+        print(jT["timing_ended"])
+        self.win.stop_timer()
+        
+    def call_continue_timer(self, action, param):
+        try:
+            self.win.timingBox.remove(label_pause)
+        except:
+            pass
+        self.win.continue_timer()
+        
+    def call_reset_timer(self, action, param):
+        self.win.reset_timer()
+        
+    def call_pause_timer(self, action, param):
+        self.win.pause_timer()
 
     # Run Keyboard shortcuts dialog
     def on_shortcuts_action(self, action, param):
         shortcuts_window = ShortcutsWindow(
             transient_for=self.get_active_window())
         shortcuts_window.present()
+        
+    def app_quit(self, action, param):
+        w = ""
+        none = ""
+        self.win.close_action(w, none)
+        app.quit()
     
     # Run About dialog
     def on_about_action(self, action, param):
-        dialog = Adw.AboutWindow(transient_for=app.get_active_window())
+        dialog = Adw.AboutDialog()
         dialog.set_application_name(jT["timer_title"])
-        dialog.set_version("3.4")
+        dialog.set_version("3.4.3")
         dialog.set_developer_name("vikdevelop")
-        self.add_translations_link(dialog)
-        dialog.set_release_notes("<ul><li>Fixed bug with playing alarm clock dialog after finished timer</li><li>Updated translations</li></ul>")
+        dialog.set_release_notes("<ul><li>Fixed minor bugs and UI improvements</li></ul>")
         dialog.set_license_type(Gtk.License(Gtk.License.GPL_3_0))
         dialog.set_website("https://github.com/vikdevelop/timer")
         dialog.set_issue_url("https://github.com/vikdevelop/timer/issues")
@@ -1230,19 +1198,10 @@ class MyApp(Adw.Application):
         dialog.set_copyright("© 2022 vikdevelop")
         dialog.set_developers(["vikdevelop https://github.com/vikdevelop"])
         dialog.set_application_icon("com.github.vikdevelop.timer")
-        dialog.show()
-    
-    def add_translations_link(self, dialog):
-        if r_lang == "en":
-            dialog.add_link("Translate Timer to your language", "https://hosted.weblate.org/projects/vikdevelop/timer/")
-        else:
-            dialog.add_link("Contribute to translations", "https://hosted.weblate.org/projects/vikdevelop/timer/")
+        dialog.present(app.get_active_window())
 
     def on_reset_settings_action(self, action, param):
         self.dialog_reset = Dialog_reset(self)
-        
-    def load_locales(self):
-        os.popen("cd ~/.var/app/com.github.vikdevelop.timer/cache && wget -c {}/{} > /dev/null 2>&1 && pkill -15 wget && pkill -15 sh".format(BASE_URL, lang))
         
     def new_window(self, action, param):
         self.win2 = TimerWindow(application=app)
