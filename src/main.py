@@ -5,7 +5,7 @@ import time
 from datetime import timedelta
 sys.path.append('/app')
 from timer import *
-from shortcuts_window import SHORTCUTS_WINDOW
+from shortcuts_window import *
 import gi
 
 gi.require_version("Gtk", "4.0")
@@ -26,8 +26,7 @@ DATA = os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data'
 print(jT["timer_running"])
 
 if not os.path.exists(f"{DATA}/shortcuts.txt"):
-    with open(f"{DATA}/shortcuts.txt", "w") as w:
-        w.write("")
+    os.system(f"echo > {DATA}/shortcuts.txt")
 
 # Reset all timer settings dialog
 class Dialog_reset(Adw.AlertDialog):
@@ -44,21 +43,13 @@ class Dialog_reset(Adw.AlertDialog):
         )
         self.connect('response', self.dialog_response)
         self.choose(app.get_active_window(), None, None, None)
-        self.show()
+        self.present()
 
     def dialog_response(self, dialog, response):
         if response == 'yes':
             os.popen(f'rm -rf {CONFIG}/*')
             app = sys.executable
             os.execl(app, app, *sys.argv)
-
-# Shortcuts window
-@Gtk.Template(string=SHORTCUTS_WINDOW) # from shortcuts_window.py
-class ShortcutsWindow(Gtk.ShortcutsWindow):
-    __gtype_name__ = 'ShortcutsWindow'
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
 
 # Timer Application window
 class TimerWindow(Adw.ApplicationWindow):
@@ -68,7 +59,7 @@ class TimerWindow(Adw.ApplicationWindow):
         self.application = kwargs.get('application')
         self.style_manager = self.application.get_style_manager()
         self.set_title(title=jT["timer_title"])
-        self.headerbar = Gtk.HeaderBar.new()
+        self.headerbar = Adw.HeaderBar.new()
         self.toolbarview = Adw.ToolbarView.new()
         self.toolbarview.add_top_bar(self.headerbar)
         self.set_default_widget(self.toolbarview)
@@ -79,7 +70,7 @@ class TimerWindow(Adw.ApplicationWindow):
         self.use_shortcut_text = False
         self.continue_shortcut = False
         
-        self.set_size_request(425, 425)
+        #self.set_size_request(425, 425)
         (width, height) = self.settings["window-size"]
         self.set_default_size(width, height)
         
@@ -247,20 +238,15 @@ class TimerWindow(Adw.ApplicationWindow):
         self.buttonCont.connect("clicked", self.on_buttonCont_clicked)
         
         self.timeout_id = None
-        self.connect("destroy", self.on_SpinnerWindow_destroy)
-        
-        self.start_again_dialog()
     
     # Entries of seconds, minutes and hours
     def make_timer_box(self):
         # Layout
         self.timerBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=1)
-        self.timerBox.set_margin_start(0)
-        self.timerBox.set_margin_end(0)
         
         self.lbox = Gtk.ListBox.new()
         self.lbox.set_selection_mode(mode=Gtk.SelectionMode.NONE)
-        self.lbox.get_style_context().add_class(class_name='boxed-list-separate')
+        self.lbox.add_css_class('boxed-list-separate')
         
         # Hour entry and label
         self.hour_entry = Adw.EntryRow()
@@ -284,7 +270,6 @@ class TimerWindow(Adw.ApplicationWindow):
         self.timerBox.append(self.secs_entry)
         
         self.adw_action_row_time = Adw.ActionRow.new()
-        self.adw_action_row_time.set_icon_name(icon_name='com.github.vikdevelop.timer')
         self.adw_action_row_time.add_suffix(widget=self.timerBox)
         self.lbox.append(child=self.adw_action_row_time)
         
@@ -295,7 +280,7 @@ class TimerWindow(Adw.ApplicationWindow):
         def get_action(comborow, GParamObject):
             if self.adw_action_row_timer.get_selected_item().get_string() == jT["default"]:
                 self.adw_action_row_beep = Adw.ActionRow.new()
-                self.adw_action_row_beep.set_icon_name(icon_name='folder-music-symbolic')
+                self.adw_action_row_beep.add_prefix(Gtk.Image.new_from_icon_name('folder-music-symbolic'))
                 self.adw_action_row_beep.set_title(title=jT["play_beep"])
                 self.adw_action_row_beep.add_suffix(widget=self.switch_03)     
                 self.adw_action_row_beep.set_activatable_widget(widget=self.switch_03)
@@ -318,9 +303,9 @@ class TimerWindow(Adw.ApplicationWindow):
         ])
         
         self.adw_action_row_timer = Adw.ComboRow.new()
-        self.adw_action_row_timer.set_icon_name(icon_name='timer-symbolic')
+        self.adw_action_row_timer.add_prefix(Gtk.Image.new_from_icon_name('timer-symbolic'))
         self.adw_action_row_timer.set_title(title=jT["action_after_timing"])
-        self.adw_action_row_timer.set_title_lines(2)
+        self.adw_action_row_timer.set_title_lines(4)
         self.adw_action_row_timer.set_model(model=actions)
         self.adw_action_row_timer.connect("notify::selected-item", get_action)
         self.adw_expander_row.add_row(child=self.adw_action_row_timer)
@@ -350,7 +335,7 @@ class TimerWindow(Adw.ApplicationWindow):
         if self.settings["action"] == "default":
             ## Adw.ActionRow
             self.adw_action_row_beep = Adw.ActionRow.new()
-            self.adw_action_row_beep.set_icon_name(icon_name='folder-music-symbolic')
+            self.adw_action_row_beep.add_prefix(Gtk.Image.new_from_icon_name('folder-music-symbolic'))
             self.adw_action_row_beep.set_title(title=jT["play_beep"])
             self.adw_action_row_beep.add_suffix(widget=self.switch_03)     
             self.adw_action_row_beep.set_activatable_widget(widget=self.switch_03)
@@ -358,7 +343,7 @@ class TimerWindow(Adw.ApplicationWindow):
         
         ## Adw.ActionRow
         self.adw_action_row_sh = Adw.ActionRow.new()
-        self.adw_action_row_sh.set_icon_name(icon_name='shortcuts')
+        self.adw_action_row_sh.add_prefix(Gtk.Image.new_from_icon_name('shortcuts'))
         self.adw_action_row_sh.set_title(title=jT["manage_shortcuts"])
         self.adw_action_row_sh.add_suffix(widget=self.btn)     
         self.adw_action_row_sh.set_activatable_widget(widget=self.btn)
@@ -380,7 +365,7 @@ class TimerWindow(Adw.ApplicationWindow):
         
         ## Adw.ActionRow
         self.adw_action_row_notification = Adw.ActionRow.new()
-        self.adw_action_row_notification.set_icon_name(icon_name='notification-symbolic')
+        self.adw_action_row_notification.add_prefix(Gtk.Image.new_from_icon_name('notification-symbolic'))
         self.adw_action_row_notification.add_suffix(widget=self.entry)
         self.adw_action_row_notification.add_suffix(widget=self.setButton)
         self.adw_action_row_notification.set_activatable_widget(widget=self.setButton)
@@ -395,7 +380,7 @@ class TimerWindow(Adw.ApplicationWindow):
         
         ## Adw.ActionRow
         self.adw_action_row_adv = Adw.ActionRow.new()
-        self.adw_action_row_adv.set_icon_name(icon_name='preferences-other-symbolic')
+        self.adw_action_row_adv.add_prefix(Gtk.Image.new_from_icon_name('preferences-other-symbolic'))
         self.adw_action_row_adv.set_title(title=jT["advanced"])
         self.adw_action_row_adv.set_title_lines(2)
         self.adw_action_row_adv.add_suffix(widget=self.advButton)
@@ -427,7 +412,7 @@ class TimerWindow(Adw.ApplicationWindow):
         self.headerbar.pack_start(self.applyButton)
         self.ebox = Gtk.ListBox.new()
         self.ebox.set_selection_mode(mode=Gtk.SelectionMode.NONE)
-        self.ebox.get_style_context().add_class(class_name='boxed-list')
+        self.ebox.add_css_class('boxed-list')
         self.mainBox.append(self.ebox)
         self.mainBox.remove(self.lbox)
         self.mainBox.remove(self.timingBox)
@@ -493,7 +478,7 @@ class TimerWindow(Adw.ApplicationWindow):
         
         self.cbox = Gtk.ListBox.new()
         self.cbox.set_selection_mode(mode=Gtk.SelectionMode.NONE)
-        self.cbox.get_style_context().add_class(class_name='boxed-list')
+        self.cbox.add_css_class('boxed-list')
         self.mainBox.append(self.cbox)
         
         self.label_d = Gtk.Label.new()
@@ -505,7 +490,7 @@ class TimerWindow(Adw.ApplicationWindow):
         
         self.dbox = Gtk.ListBox.new()
         self.dbox.set_selection_mode(mode=Gtk.SelectionMode.NONE)
-        self.dbox.get_style_context().add_class(class_name='boxed-list')
+        self.dbox.add_css_class('boxed-list')
         self.mainBox.append(self.dbox)
         
         # Adw.ActionRow - use in alarm clock dialog
@@ -552,7 +537,6 @@ class TimerWindow(Adw.ApplicationWindow):
             self.headerbar.pack_start(self.applyButton)
             self.mainBox.remove(self.lbox)
         self.mainBox.set_valign(Gtk.Align.CENTER)
-        self.mainBox.set_margin_top(0)
         self.headerbar.remove(self.backButton)
         self.set_title(jT["timer_title"])
         
@@ -576,13 +560,13 @@ class TimerWindow(Adw.ApplicationWindow):
         
         self.abox = Gtk.ListBox.new()
         self.abox.set_selection_mode(mode=Gtk.SelectionMode.NONE)
-        self.abox.get_style_context().add_class(class_name='boxed-list')
+        self.abox.add_css_class('boxed-list')
         self.mainBox.append(self.abox)
         # Adw ActionRow - Resizable of Window configuration
         
         ## Adw.ActionRow
         self.adw_action_row_window = Adw.ActionRow.new()
-        self.adw_action_row_window.set_icon_name(icon_name='window-maximize-symbolic')
+        self.adw_action_row_window.add_prefix(Gtk.Image.new_from_icon_name('window-maximize-symbolic'))
         self.adw_action_row_window.set_title(title=jT["resizable_of_window"])
         self.adw_action_row_window.add_suffix(widget=self.switch_02)
         self.adw_action_row_window.set_activatable_widget(widget=self.switch_02)
@@ -592,7 +576,7 @@ class TimerWindow(Adw.ApplicationWindow):
         
         ## Adw.ActionRow
         self.adw_action_row_verText = Adw.ActionRow.new()
-        self.adw_action_row_verText.set_icon_name(icon_name='history-symbolic')
+        self.adw_action_row_verText.add_prefix(Gtk.Image.new_from_icon_name('history-symbolic'))
         self.adw_action_row_verText.set_title(title=jT["vertical_text"])
         self.adw_action_row_verText.set_subtitle(subtitle=jT["vertical_text_desc"])
         self.adw_action_row_verText.add_suffix(widget=self.switch_06)
@@ -603,7 +587,7 @@ class TimerWindow(Adw.ApplicationWindow):
         
         ## Adw.ActionRow
         self.adw_action_row_expander = Adw.ActionRow.new()
-        self.adw_action_row_expander.set_icon_name(icon_name='desktop-symbolic')
+        self.adw_action_row_expander.add_prefix(Gtk.Image.new_from_icon_name('desktop-symbolic'))
         self.adw_action_row_expander.set_title(title=jT["save_expander_row_state"])
         self.adw_action_row_expander.set_subtitle(subtitle=jT["save_expander_row_state_desc"])
         self.adw_action_row_expander.add_suffix(widget=self.switch_08)
@@ -614,7 +598,6 @@ class TimerWindow(Adw.ApplicationWindow):
         self.mainBox.append(self.lbox)
         self.mainBox.remove(self.abox)
         self.mainBox.set_valign(Gtk.Align.CENTER)
-        self.mainBox.set_margin_top(0)
         self.headerbar.pack_start(self.buttonStart)
         self.headerbar.pack_end(self.buttonReset)
         self.headerbar.remove(self.backButton_A)
@@ -642,11 +625,11 @@ class TimerWindow(Adw.ApplicationWindow):
         
         self.setdBox = Gtk.ListBox.new()
         self.setdBox.set_selection_mode(mode=Gtk.SelectionMode.NONE)
-        self.setdBox.get_style_context().add_class(class_name='boxed-list')
+        self.setdBox.add_css_class('boxed-list')
         
         self.setdBox_02 = Gtk.ListBox.new()
         self.setdBox_02.set_selection_mode(mode=Gtk.SelectionMode.NONE)
-        self.setdBox_02.get_style_context().add_class(class_name='boxed-list')
+        self.setdBox_02.add_css_class('boxed-list')
         
         if os.stat(f"{DATA}/shortcuts.txt").st_size == 0:
             self.label_not = Gtk.Label.new(str=jT["shortcuts_warning"])
@@ -701,11 +684,11 @@ class TimerWindow(Adw.ApplicationWindow):
         self.add_btn.add_css_class("suggested-action")
         self.add_btn.connect("clicked", self.on_add)
         self.add_btn.set_valign(Gtk.Align.CENTER)
-        self.add_btn.set_margin_start(60)
-        self.add_btn.set_margin_end(60)
+        #self.add_btn.set_margin_start(60)
+        #self.add_btn.set_margin_end(60)
         self.expand.add_row(self.add_btn)
         
-        self.setDialog.show()
+        self.setDialog.present()
 
     def setDialog_closed(self, w, response):
         item = self.row.get_selected_item()
@@ -912,7 +895,7 @@ class TimerWindow(Adw.ApplicationWindow):
         self.dialogRingstone.set_response_appearance('start', Adw.ResponseAppearance.SUGGESTED)
         self.dialogRingstone.connect('response', self.start_again)
         self.dialogRingstone.choose(self, None, None, None)
-        self.dialogRingstone.show()
+        self.dialogRingstone.present()
         os.popen("bash /app/src/alarm.sh")
         
     def start_again(self, w, response):
@@ -1002,6 +985,67 @@ class TimerWindow(Adw.ApplicationWindow):
             self.minute_entry.set_text('0')
         elif self.secs_entry.get_text() == "":
             self.secs_entry.set_text('0')
+            
+    # Button actions
+    ## Start button action
+    def on_buttonStart_clicked(self, widget, *args):
+        """ button "clicked" in event buttonStart. """
+        self.menu_button.set_can_focus(True)
+        self.menu_button.do_focus(self.menu_button, True)
+        self.start_timer()
+        return True
+    
+    ## Stop button action
+    def on_buttonStop_clicked(self, buttonStop):
+        """ button "clicked" in event buttonStop. """
+        self.menu_button.set_can_focus(True)
+        self.menu_button.do_focus(self.menu_button, True)
+        self.stop_timer()
+        print(jT["timing_ended"])
+    
+    ## Reset button action
+    def on_buttonReset_clicked(self, buttonReset):
+        self.reset_timer()
+        
+    ## Pause button action
+    def on_buttonPause_clicked(self, buttonPause):
+        self.pause_timer()
+        
+    ## Continue button action
+    def on_buttonCont_clicked(self, buttonPause):
+        self.continue_timer()
+    
+    ## edit button action
+    def on_editButton_clicked(self, buttonStart):
+        self.edit_options()
+        
+    ## action of notification button
+    def on_notification_button_clicked(self, widget, *args):
+        self.custom_notification()
+    
+    ## action of advButton
+    def on_advButton_clicked(self, widget, *args):
+        self.advanced()
+    
+    ## Save app theme configuration
+    def on_switch_01_toggled(self, switch01, GParamBoolean):
+        if switch01.get_active():
+            self.style_manager.set_color_scheme(
+                    color_scheme=Adw.ColorScheme.PREFER_DARK
+                )
+        else:
+            self.style_manager.set_color_scheme(
+                    color_scheme=Adw.ColorScheme.FORCE_LIGHT
+                )
+    
+    ## Save resizable window configuration
+    def on_switch_02_toggled(self, switch02, GParamBoolean):
+        if switch02.get_active():
+                self.set_resizable(True)
+        else:
+            self.set_resizable(False)
+            self.set_default_size(425, 425)
+            self.set_size_request(425, 425)
     
     # Action after closing Timer window
     none = ""
@@ -1057,90 +1101,13 @@ class TimerWindow(Adw.ApplicationWindow):
             self.settings["hours"] = int(self.hour_entry.get_text())
             self.settings["mins"] = int(self.minute_entry.get_text())
             self.settings["seconds"] = int(self.secs_entry.get_text())
-        
-    def start_again_dialog(self):
-        if os.path.exists(f"{DATA}/start_timer_again.json"):
-            with open(f"{DATA}/start_timer_again.json") as s:
-                rs = json.load(s)
-            if rs["start_timer_again"] == "true":
-                self.start_timer()
-                os.popen(f"rm -rf {DATA}/*")
-    
-    # Button actions
-    ## Start button action
-    def on_buttonStart_clicked(self, widget, *args):
-        """ button "clicked" in event buttonStart. """
-        self.menu_button.set_can_focus(True)
-        self.menu_button.do_focus(self.menu_button, True)
-        self.start_timer()
-        return True
-    
-    ## Stop button action
-    def on_buttonStop_clicked(self, buttonStop):
-        """ button "clicked" in event buttonStop. """
-        self.menu_button.set_can_focus(True)
-        self.menu_button.do_focus(self.menu_button, True)
-        self.stop_timer()
-        print(jT["timing_ended"])
-    
-    ## Reset button action
-    def on_buttonReset_clicked(self, buttonReset):
-        self.reset_timer()
-        
-    ## Pause button action
-    def on_buttonPause_clicked(self, buttonPause):
-        self.pause_timer()
-        
-    ## Continue button action
-    def on_buttonCont_clicked(self, buttonPause):
-        self.continue_timer()
-    
-    ## edit button action
-    def on_editButton_clicked(self, buttonStart):
-        self.edit_options()
-        
-    ## action of notification button
-    def on_notification_button_clicked(self, widget, *args):
-        self.custom_notification()
-    
-    ## action of advButton
-    def on_advButton_clicked(self, widget, *args):
-        self.advanced()
-    
-    def on_SpinnerWindow_destroy(self, widget, *args):
-        """ procesing closing window """
-        if self.timeout_id:
-            GLib.source_remove(self.timeout_id)
-            self.timeout_id = None
-        Gtk.main_quit()
-    
-    ## Save app theme configuration
-    def on_switch_01_toggled(self, switch01, GParamBoolean):
-        if switch01.get_active():
-            self.style_manager.set_color_scheme(
-                    color_scheme=Adw.ColorScheme.PREFER_DARK
-                )
-        else:
-            self.style_manager.set_color_scheme(
-                    color_scheme=Adw.ColorScheme.FORCE_LIGHT
-                )
-    
-    ## Save resizable window configuration
-    def on_switch_02_toggled(self, switch02, GParamBoolean):
-        if switch02.get_active():
-                self.set_resizable(True)
-        else:
-            self.set_resizable(False)
-            self.set_default_size(425, 425)
-            self.set_size_request(425, 425)
-        
+                    
 # Adw Application class
 class MyApp(Adw.Application):
     def __init__(self, **kwargs):
         super().__init__(**kwargs, flags=Gio.ApplicationFlags.FLAGS_NONE)
         self.connect('activate', self.on_activate)
         self.create_action('shortcuts', self.on_shortcuts_action, ["<primary>question"])
-        self.create_action('about', self.on_about_action, ["F1"])
         self.create_action('reset_settings', self.on_reset_settings_action, ["F5"])
         self.create_action('new_win', self.new_window, ["<primary>n"])
         self.create_action('start_timer', self.call_start_timer, ["<primary>s"])
@@ -1149,16 +1116,20 @@ class MyApp(Adw.Application):
         self.create_action('reset_timer', self.call_reset_timer, ["<primary>r"])
         self.create_action('pause_timer', self.call_pause_timer, ["<primary>p"])
         self.create_action('quit', self.app_quit, ["<primary>q"])
+        self.create_action('about', self.on_about_action)
         
+    # Start timer using Ctrl+S keyboard shortcut
     def call_start_timer(self, action, param):
         self.win.menu_button.set_can_focus(True)
         self.win.menu_button.do_focus(self.win.menu_button, True)
         self.win.start_timer()
         
+    # Stop timer using Ctrl+C keyboard shortcut
     def call_stop_timer(self, action, param):
         print(jT["timing_ended"])
         self.win.stop_timer()
-        
+      
+    # Continue in timing using Ctrl+T keyboard shortcut
     def call_continue_timer(self, action, param):
         try:
             self.win.timingBox.remove(label_pause)
@@ -1166,23 +1137,35 @@ class MyApp(Adw.Application):
             pass
         self.win.continue_timer()
         
+    # Reset time counter values using the Ctrl+R keyboard shortcut
     def call_reset_timer(self, action, param):
         self.win.reset_timer()
         
+    # Pause timer using the Ctrl+P keyboard shortcuts
     def call_pause_timer(self, action, param):
         self.win.pause_timer()
 
-    # Run Keyboard shortcuts dialog
+    # Run the keyboard shortcuts dialog
     def on_shortcuts_action(self, action, param):
         shortcuts_window = ShortcutsWindow(
             transient_for=self.get_active_window())
         shortcuts_window.present()
-        
+       
+    # Quit the app using the Ctrl+Q keyboard shortcut
     def app_quit(self, action, param):
         w = ""
         none = ""
         self.win.close_action(w, none)
         app.quit()
+        
+    # Reset the app settings using the F5 keyboard shortcut
+    def on_reset_settings_action(self, action, param):
+        self.dialog_reset = Dialog_reset(self)
+        
+    # Open a new app window using the Ctrl+N keyboard shortcut
+    def new_window(self, action, param):
+        self.win2 = TimerWindow(application=app)
+        self.win2.present()
     
     # Run About dialog
     def on_about_action(self, action, param):
@@ -1194,18 +1177,11 @@ class MyApp(Adw.Application):
         dialog.set_license_type(Gtk.License(Gtk.License.GPL_3_0))
         dialog.set_website("https://github.com/vikdevelop/timer")
         dialog.set_issue_url("https://github.com/vikdevelop/timer/issues")
-        dialog.set_translator_credits(jT["translator_credits"])
+        dialog.set_translator_credits(jT["translator_credits"]) if not r_lang == "en" else None
         dialog.set_copyright("© 2022 vikdevelop")
         dialog.set_developers(["vikdevelop https://github.com/vikdevelop"])
         dialog.set_application_icon("com.github.vikdevelop.timer")
         dialog.present(app.get_active_window())
-
-    def on_reset_settings_action(self, action, param):
-        self.dialog_reset = Dialog_reset(self)
-        
-    def new_window(self, action, param):
-        self.win2 = TimerWindow(application=app)
-        self.win2.present()
         
     def create_action(self, name, callback, shortcuts=None):
         action = Gio.SimpleAction.new(name, None)
