@@ -1,4 +1,7 @@
 from timer import *
+import gi
+gi.require_version('Gtk', '4.0')
+from gi.repository import Gtk
 
 SHORTCUTS_WINDOW = '<?xml version="1.0" encoding="UTF-8"?>\
 <interface>\
@@ -59,29 +62,6 @@ SHORTCUTS_WINDOW = '<?xml version="1.0" encoding="UTF-8"?>\
                 <property name="title" translatable="yes">%s</property>\
               </object>\
             </child>\
-          </object>\
-        </child>\
-        <child>\
-          <object class="GtkShortcutsGroup">\
-            <property name="title" translatable="yes"></property>\
-            <child>\
-              <object class="GtkShortcutsShortcut">\
-                <property name="accelerator">F1</property>\
-                <property name="title" translatable="yes">%s</property>\
-              </object>\
-            </child>\
-            <child>\
-              <object class="GtkShortcutsShortcut">\
-                <property name="accelerator">F2</property>\
-                <property name="title" translatable="yes">%s</property>\
-              </object>\
-            </child>\
-            <child>\
-              <object class="GtkShortcutsShortcut">\
-                <property name="accelerator">F3</property>\
-                <property name="title" translatable="yes">%s</property>\
-              </object>\
-            </child>\
             <child>\
               <object class="GtkShortcutsShortcut">\
                 <property name="accelerator">F5</property>\
@@ -93,4 +73,12 @@ SHORTCUTS_WINDOW = '<?xml version="1.0" encoding="UTF-8"?>\
       </object>\
     </child>\
   </template>\
-</interface>' % (jT["run_timer"], jT["stop_timer"], jT["quit"], jT["show"], jT["reset_counter"], jT["pause_timer"], jT["continue_timer"], jT["new_window"], jT["show_about_dialog"], jT["activate_dark_theme"], jT["activate_system_theme"], jT["delete_timer_settings"])
+</interface>' % (jT["run_timer"], jT["stop_timer"], jT["quit"], jT["show"], jT["reset_counter"], jT["pause_timer"], jT["continue_timer"], jT["new_window"], jT["delete_timer_settings"])
+
+# Shortcuts window
+@Gtk.Template(string=SHORTCUTS_WINDOW) # from shortcuts_window.py
+class ShortcutsWindow(Gtk.ShortcutsWindow):
+    __gtype_name__ = 'ShortcutsWindow'
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
