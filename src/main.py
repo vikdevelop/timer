@@ -1,8 +1,7 @@
-import sys, json, os, time, gi
+import sys, json, os, time, gi, subprocess
 from datetime import timedelta
 from shortcuts_window import *
-sys.path.append('/app/bin')
-from timer import *
+from __init__ import jT, CACHE, CONFIG, DATA
 
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
@@ -15,9 +14,6 @@ def strfdelta(tdelta, fmt):
     d["minutes"], d["seconds"] = divmod(rem, 60)
     return fmt.format(**d)
 
-# Path for config files
-CONFIG = os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/config'
-DATA = os.path.expanduser('~') + '/.var/app/com.github.vikdevelop.timer/data'
 # Print about timer status
 print(jT["timer_running"])
 
@@ -272,20 +268,67 @@ class TimerWindow(Adw.ApplicationWindow):
     
     # Properties
     def properties(self):
-        def get_action(comborow, GParamObject):
-            if self.adw_action_row_timer.get_selected_item().get_string() == jT["default"]:
+        def open_sound_chooser(w):
+            def open_selected(source, res, data):
+                try:
+                    file = source.open_finish(res)
+                except:
+                    return
+                os.popen(f"install -D -t {DATA}/custom_sounds \"{file.get_path()}\"")
+                self.sound_file = f"{DATA}/custom_sounds/{os.path.basename(file.get_path())}"
+                self.settings["sound-file"] = self.sound_file
+                
+            self.file_chooser = Gtk.FileDialog.new()
+            self.file_chooser.set_modal(True)
+            self.file_chooser.set_title("Select custom sound")
+            self.file_filter = Gtk.FileFilter.new()
+            self.file_filter.set_name("Sound Files")
+            self.file_filter.add_pattern('*.mp3')
+            self.file_filter.add_pattern('*.ogg')
+            self.file_filter.add_pattern('*.flac')
+            self.file_filter.add_pattern('*.wav')
+            self.file_filter_list = Gio.ListStore.new(Gtk.FileFilter);
+            self.file_filter_list.append(self.file_filter)
+            self.file_chooser.set_filters(self.file_filter_list)
+            self.file_chooser.open(self, None, open_selected, None)
+        
+        # Add a new button or row to the Adw.ActionRow() widget
+        def set_up_suffixes():
+            # Remove these widgets before running the conditions
+            try:
+                self.adw_expander_row.remove(self.adw_action_row_beep)
+            except:
+                pass
+            try:
+                self.adw_action_row_timer.remove(self.selButton)
+            except:
+                pass
+            if self.adw_action_row_timer.get_selected_item().get_string() == "default": # Show the Play beep row if the action after finished timer is default
+                self.switch_03 = Gtk.Switch.new()
+                if self.settings["play-beep"]:
+                    self.switch_03.set_active(True)
+                self.switch_03.set_valign(align=Gtk.Align.CENTER)
+                
                 self.adw_action_row_beep = Adw.ActionRow.new()
                 self.adw_action_row_beep.add_prefix(Gtk.Image.new_from_icon_name('folder-music-symbolic'))
                 self.adw_action_row_beep.set_title(title=jT["play_beep"])
                 self.adw_action_row_beep.add_suffix(widget=self.switch_03)     
                 self.adw_action_row_beep.set_activatable_widget(widget=self.switch_03)
                 self.adw_expander_row.add_row(child=self.adw_action_row_beep)
-            else:
-                try:
-                    self.adw_expander_row.remove(self.adw_action_row_beep)
-                except:
-                    pass
+            elif self.adw_action_row_timer.get_selected_item().get_string() == "Play alarm clock": # Show the button for selecting the sound for playing the alarm clock
+                self.selButton = Gtk.Button.new_from_icon_name("document-open-symbolic")
+                self.selButton.set_tooltip_text("Select custom sound")
+                self.selButton.set_valign(Gtk.Align.CENTER)
+                self.selButton.add_css_class('circular')
+                self.selButton.add_css_class('suggested-action')
+                self.selButton.connect("clicked", open_sound_chooser)
+                self.adw_action_row_timer.add_suffix(self.selButton)
         
+        # Call the funtion above from the Adw.ComboRow()
+        def get_action(comborow, GParamObject):
+            set_up_suffixes()
+        
+        # The main expander row
         self.adw_expander_row = Adw.ExpanderRow.new()
         self.adw_expander_row.set_title(title=jT["preferences"])
         self.adw_expander_row.set_subtitle(subtitle=jT["preferences_desc"])
@@ -315,28 +358,9 @@ class TimerWindow(Adw.ApplicationWindow):
             self.adw_action_row_timer.set_selected(3)
         elif self.settings["action"] == "Play alarm clock":
             self.adw_action_row_timer.set_selected(4)
-        
-        ## Gtk.Switch
-        self.switch_03 = Gtk.Switch.new()
-        if self.settings["play-beep"]:
-            self.switch_03.set_active(True)
-        self.switch_03.set_valign(align=Gtk.Align.CENTER)
-        
-        # Show the "Play beep" row if the default action is selected as an action after the finished timer
-        if self.settings["action"] == "default":
-            self.adw_action_row_beep = Adw.ActionRow.new()
-            self.adw_action_row_beep.add_prefix(Gtk.Image.new_from_icon_name('folder-music-symbolic'))
-            self.adw_action_row_beep.set_title(title=jT["play_beep"])
-            self.adw_action_row_beep.add_suffix(widget=self.switch_03)     
-            self.adw_action_row_beep.set_activatable_widget(widget=self.switch_03)
-            self.adw_expander_row.add_row(child=self.adw_action_row_beep)
-        elif self.settings["action"] == "Play alarm clock": # Show the button for selecting the sound for playing the alarm clock
-            self.selButton = Gtk.Button.new_from_icon_name("document-open-symbolic")
-            self.selButton.set_tooltip_text("Select custom sound")
-            self.selButton.set_valign(Gtk.Align.CENTER)
-            self.selButton.add_css_class('circular')
-            self.selButton.add_css_class('suggested-action')
-            self.adw_action_row.add_suffix(self.selButton)
+           
+        # call the set_up_suffixes() function
+        set_up_suffixes()
         
         # Adw ActionRow - Shortcuts Manager
         ## button
@@ -708,7 +732,7 @@ class TimerWindow(Adw.ApplicationWindow):
             
             self.start_timer()
         elif response == 'remove':
-            os.system(f"sed -i 's\%s\ \ ' %s/shortcuts.txt" % (get, DATA))
+            os.system("sed -i 's/%s// ' %s/shortcuts.txt" % (get, DATA))
             os.system(f"notify-send \"{jT['shortcut_removed'].format(get)}\" -i com.github.vikdevelop.timer")
        
     # Add a new shortcut
@@ -899,30 +923,30 @@ class TimerWindow(Adw.ApplicationWindow):
         self.dialogRingstone.connect('response', self.start_again)
         self.dialogRingstone.choose(self, None, None, None)
         self.dialogRingstone.present()
-        os.popen("bash /app/src/alarm.sh")
+        open(f"{CACHE}/.beep.sh", "w").write("for i in {1..70}; do ffplay -nodisp -autoexit \"%s\" > /dev/null 2>&1; done" % self.settings["sound-file"])
+        os.popen(f"bash {CACHE}/.beep.sh")
         
     def start_again(self, w, response):
+        os.popen("pkill -15 bash && pkill -15 ffplay")
         if response == 'start':
             if self.continue_shortcut == True:
                 self.get_from_gsettings = True
                 self.use_shortcut_text = True
             self.present()
             self.start_timer()
-            os.popen('pkill -15 bash && pkill -15 ffplay')
         elif response == 'cancel':
             self.present()
-            os.popen('pkill -15 bash && pkill -15 ffplay')
             if self.get_from_gsettings == True:
                 self.get_from_gsettings = False
                 self.use_shortcut_text = False
                 self.continue_shortcut = False
         else:
-            os.popen('pkill -15 bash && pkill -15 ffplay')
             if self.get_from_gsettings == True:
                 self.get_from_gsettings = False
                 self.use_shortcut_text = False
                 self.continue_shortcut = False
             
+    # Use custom text from the GSettings variable
     def use_custom_text(self):
         print(self.use_shortcut_text)
         if self.use_shortcut_text == True:

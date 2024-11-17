@@ -84,5 +84,9 @@
             <default>''</default>
             <summary>Shortcut name</summary>
         </key>
+        <key name="sound-file" type="s">
+            <default>'/app/src/beeps/Oxygen-Im-Phone-Ring.ogg'</default>
+            <summary>Select the sound file</summary>
+        </key>
     </schema>
 </schemalist>
