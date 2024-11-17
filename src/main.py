@@ -58,9 +58,7 @@ class TimerWindow(Adw.ApplicationWindow):
         
         self.settings = Gio.Settings.new_with_path("com.github.vikdevelop.timer", "/com/github/vikdevelop/timer/")
         
-        self.get_from_gsettings = False
-        self.use_shortcut_text = False
-        self.continue_shortcut = False
+        self.get_from_gsettings = self.use_shortcut_text = self.continue_shortcut = False
         
         (width, height) = self.settings["window-size"]
         self.set_default_size(width, height)
@@ -70,11 +68,6 @@ class TimerWindow(Adw.ApplicationWindow):
             
         if self.settings["resizable"] == False:
             self.set_resizable(False)
-        
-        if self.settings["dark-theme"]:
-            self.style_manager.set_color_scheme(
-                color_scheme=Adw.ColorScheme.PREFER_DARK
-            )
         
         # Gtk switches
         self.switch_01 = Gtk.Switch.new()
@@ -161,9 +154,6 @@ class TimerWindow(Adw.ApplicationWindow):
         
         # Properities
         self.properties()
-        
-        # Load latest translations from GitHub
-        #app.load_locales()
         
         # Start timer button
         self.buttonStart = Gtk.Button.new()
@@ -343,7 +333,7 @@ class TimerWindow(Adw.ApplicationWindow):
         self.adw_action_row_timer = Adw.ComboRow.new()
         self.adw_action_row_timer.add_prefix(Gtk.Image.new_from_icon_name('timer-symbolic'))
         self.adw_action_row_timer.set_title(title=jT["action_after_timing"])
-        self.adw_action_row_timer.set_title_lines(4)
+        self.adw_action_row_timer.set_title_lines(6)
         self.adw_action_row_timer.set_model(model=actions)
         self.adw_action_row_timer.connect("notify::selected-item", get_action)
         self.adw_expander_row.add_row(child=self.adw_action_row_timer)
@@ -926,6 +916,7 @@ class TimerWindow(Adw.ApplicationWindow):
         open(f"{CACHE}/.beep.sh", "w").write("for i in {1..70}; do ffplay -nodisp -autoexit \"%s\" > /dev/null 2>&1; done" % self.settings["sound-file"])
         os.popen(f"bash {CACHE}/.beep.sh")
         
+    # Start timing again from the button in the dialog above
     def start_again(self, w, response):
         os.popen("pkill -15 bash && pkill -15 ffplay")
         if response == 'start':
