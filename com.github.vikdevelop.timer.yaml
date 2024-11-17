@@ -2,7 +2,7 @@ app-id: com.github.vikdevelop.timer
 runtime: org.gnome.Platform
 runtime-version: '46'
 sdk: org.gnome.Sdk
-command: timer.sh
+command: timer
 finish-args:
     - --share=ipc
     # for continuous localization from Hosted Weblate
@@ -21,9 +21,7 @@ modules:
   - name: timer
     buildsystem: simple
     build-commands:
-       - chmod +x timer.sh
-       - install -D -t /app/bin timer.sh
-       - install -D -t /app timer.py
+       - install -D -t /app/bin timer
        - cp -R src /app/
        - install -D -t /app/share/beeps src/beeps/Oxygen.ogg && install -D -t /app/share/beeps src/beeps/Oxygen-Im-Phone-Ring.ogg
        - mkdir /app/translations && cp translations/json/* /app/translations

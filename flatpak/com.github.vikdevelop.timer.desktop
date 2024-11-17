@@ -61,5 +61,5 @@ Comment[hu]=Egyszerű időzítő
 Comment[hi]=सरल टाइमर
 Type=Application
 Icon=com.github.vikdevelop.timer
-Exec=timer.sh
+Exec=timer
 Categories=Utility

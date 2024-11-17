@@ -1,12 +1,8 @@
-import sys
-import json
-import os
-import time
+import sys, json, os, time, gi
 from datetime import timedelta
-sys.path.append('/app')
-from timer import *
 from shortcuts_window import *
-import gi
+sys.path.append('/app/bin')
+from timer import *
 
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
@@ -70,7 +66,6 @@ class TimerWindow(Adw.ApplicationWindow):
         self.use_shortcut_text = False
         self.continue_shortcut = False
         
-        #self.set_size_request(425, 425)
         (width, height) = self.settings["window-size"]
         self.set_default_size(width, height)
         
@@ -85,7 +80,7 @@ class TimerWindow(Adw.ApplicationWindow):
                 color_scheme=Adw.ColorScheme.PREFER_DARK
             )
         
-        # Gtk.Switches
+        # Gtk switches
         self.switch_01 = Gtk.Switch.new()
         if self.settings["dark-theme"]:
             self.switch_01.set_active(True)
@@ -127,8 +122,8 @@ class TimerWindow(Adw.ApplicationWindow):
         self.mainBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
         self.mainBox.set_halign(Gtk.Align.CENTER)
         self.mainBox.set_valign(Gtk.Align.CENTER)
-        self.mainBox.set_margin_start(47)
-        self.mainBox.set_margin_end(47)
+        self.mainBox.set_margin_start(15)
+        self.mainBox.set_margin_end(15)
         self.toolbarview.set_content(self.mainBox)
         self.set_content(self.toolbarview)
         
@@ -320,10 +315,6 @@ class TimerWindow(Adw.ApplicationWindow):
             self.adw_action_row_timer.set_selected(3)
         elif self.settings["action"] == "Play alarm clock":
             self.adw_action_row_timer.set_selected(4)
-            
-        self.btn = Gtk.Button.new_from_icon_name("go-next-symbolic")
-        self.btn.add_css_class("flat")
-        self.btn.connect("clicked", self.open_shortcuts_dialog)
         
         ## Gtk.Switch
         self.switch_03 = Gtk.Switch.new()
@@ -331,17 +322,29 @@ class TimerWindow(Adw.ApplicationWindow):
             self.switch_03.set_active(True)
         self.switch_03.set_valign(align=Gtk.Align.CENTER)
         
-        # Adw ActionRow - play beep
+        # Show the "Play beep" row if the default action is selected as an action after the finished timer
         if self.settings["action"] == "default":
-            ## Adw.ActionRow
             self.adw_action_row_beep = Adw.ActionRow.new()
             self.adw_action_row_beep.add_prefix(Gtk.Image.new_from_icon_name('folder-music-symbolic'))
             self.adw_action_row_beep.set_title(title=jT["play_beep"])
             self.adw_action_row_beep.add_suffix(widget=self.switch_03)     
             self.adw_action_row_beep.set_activatable_widget(widget=self.switch_03)
             self.adw_expander_row.add_row(child=self.adw_action_row_beep)
+        elif self.settings["action"] == "Play alarm clock": # Show the button for selecting the sound for playing the alarm clock
+            self.selButton = Gtk.Button.new_from_icon_name("document-open-symbolic")
+            self.selButton.set_tooltip_text("Select custom sound")
+            self.selButton.set_valign(Gtk.Align.CENTER)
+            self.selButton.add_css_class('circular')
+            self.selButton.add_css_class('suggested-action')
+            self.adw_action_row.add_suffix(self.selButton)
         
-        ## Adw.ActionRow
+        # Adw ActionRow - Shortcuts Manager
+        ## button
+        self.btn = Gtk.Button.new_from_icon_name("go-next-symbolic")
+        self.btn.add_css_class("flat")
+        self.btn.connect("clicked", self.open_shortcuts_dialog)
+        
+        ## action row        
         self.adw_action_row_sh = Adw.ActionRow.new()
         self.adw_action_row_sh.add_prefix(Gtk.Image.new_from_icon_name('shortcuts'))
         self.adw_action_row_sh.set_title(title=jT["manage_shortcuts"])
@@ -425,7 +428,7 @@ class TimerWindow(Adw.ApplicationWindow):
         self.ebox.append(child=self.adw_action_row_timer)
         self.ebox.append(child=self.adw_action_row_beep) if self.settings["action"] == "default" else None
         self.ebox.append(child=self.adw_action_row_notification)
-        
+           
     def cancel_edit_options(self, w):
         self.headerbar.remove(self.applyButton)
         self.headerbar.pack_start(self.buttonStop)
@@ -684,12 +687,11 @@ class TimerWindow(Adw.ApplicationWindow):
         self.add_btn.add_css_class("suggested-action")
         self.add_btn.connect("clicked", self.on_add)
         self.add_btn.set_valign(Gtk.Align.CENTER)
-        #self.add_btn.set_margin_start(60)
-        #self.add_btn.set_margin_end(60)
         self.expand.add_row(self.add_btn)
         
         self.setDialog.present()
-
+    
+    # Action after closing the dialog for setting up shortcuts
     def setDialog_closed(self, w, response):
         item = self.row.get_selected_item()
         get = item.get_string()
@@ -708,7 +710,8 @@ class TimerWindow(Adw.ApplicationWindow):
         elif response == 'remove':
             os.system(f"sed -i 's\%s\ \ ' %s/shortcuts.txt" % (get, DATA))
             os.system(f"notify-send \"{jT['shortcut_removed'].format(get)}\" -i com.github.vikdevelop.timer")
-            
+       
+    # Add a new shortcut
     def on_add(self, w):
         if " " in self.entry_add.get_text():
             incorrect_text = self.entry_add.get_text()
@@ -720,7 +723,7 @@ class TimerWindow(Adw.ApplicationWindow):
         self.setDialog.close()
         self.shortcuts_dialog()
         
-    # Timer actionsuse_shortcut_text
+    # Timer actions
     ## On timeout function
     tick_counter = timedelta(milliseconds = 250) # static object so we don't recreate the object every time
     zero_counter = timedelta()
