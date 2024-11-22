@@ -1,7 +1,7 @@
 import sys, json, os, time, gi, subprocess
 from datetime import timedelta
 from shortcuts_window import *
-from __init__ import jT, CACHE, CONFIG, DATA
+from __init__ import jT, CACHE, CONFIG, DATA, r_lang
 
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
@@ -113,6 +113,7 @@ class TimerWindow(Adw.ApplicationWindow):
         self.mainBox.set_valign(Gtk.Align.CENTER)
         self.mainBox.set_margin_start(15)
         self.mainBox.set_margin_end(15)
+        self.mainBox.set_size_request(-1, -1)
         self.toolbarview.set_content(self.mainBox)
         self.set_content(self.toolbarview)
         
@@ -399,7 +400,7 @@ class TimerWindow(Adw.ApplicationWindow):
         self.adw_action_row_adv = Adw.ActionRow.new()
         self.adw_action_row_adv.add_prefix(Gtk.Image.new_from_icon_name('preferences-other-symbolic'))
         self.adw_action_row_adv.set_title(title=jT["advanced"])
-        self.adw_action_row_adv.set_title_lines(2)
+        self.adw_action_row_adv.set_title_lines(6)
         self.adw_action_row_adv.add_suffix(widget=self.advButton)
         self.adw_action_row_adv.set_activatable_widget(widget=self.advButton)
         self.adw_expander_row.add_row(child=self.adw_action_row_adv)
@@ -1059,11 +1060,9 @@ class TimerWindow(Adw.ApplicationWindow):
     ## Save resizable window configuration
     def on_switch_02_toggled(self, switch02, GParamBoolean):
         if switch02.get_active():
-                self.set_resizable(True)
+            self.set_resizable(True)
         else:
             self.set_resizable(False)
-            self.set_default_size(425, 425)
-            self.set_size_request(425, 425)
     
     # Action after closing Timer window
     none = ""
@@ -1099,7 +1098,10 @@ class TimerWindow(Adw.ApplicationWindow):
         self.settings["maximized"] = self.is_maximized()
         self.settings["dark-theme"] = self.switch_01.get_active()
         self.settings["resizable"] = self.switch_02.get_active()
-        self.settings["play-beep"] = self.switch_03.get_active()
+        try:
+            self.settings["play-beep"] = self.switch_03.get_active()
+        except AttributeError:
+            pass
         self.settings["show-notification-icon"] = self.switch_04.get_active()
         self.settings["use-in-alarm-clock"] = self.switch_05.get_active()
         self.settings["vertical-time-text"] = self.switch_06.get_active()
