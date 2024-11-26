@@ -66,5 +66,8 @@
     "manage_shortcuts": "Spravovat zkratky",
     "new_shortcut": "Přidat novou zkratku",
     "add": "Přidat",
-    "new_window": "Nové okno"
+    "new_window": "Nové okno",
+    "selected_sound_file": "Selected sound file: {}",
+    "select_sound": "Select custom sound",
+    "sound_files": "Sound files"
 }
