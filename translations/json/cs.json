@@ -67,7 +67,7 @@
     "new_shortcut": "Přidat novou zkratku",
     "add": "Přidat",
     "new_window": "Nové okno",
-    "selected_sound_file": "Selected sound file: {}",
-    "select_sound": "Select custom sound",
-    "sound_files": "Sound files"
+    "selected_sound_file": "Vybraný zvukový soubor: {}",
+    "select_sound": "Vybrat vlastní zvuk",
+    "sound_files": "Zvukové soubory"
 }
