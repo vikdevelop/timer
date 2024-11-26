@@ -66,5 +66,8 @@
     "manage_shortcuts": "Sneltoetsen beheren",
     "new_shortcut": "Sneltoets toevoegen",
     "add": "Toevoegen",
-    "new_window": "New window"
+    "new_window": "New window",
+    "selected_sound_file": "Selected sound file: {}",
+    "select_sound": "Select custom sound",
+    "sound_files": "Sound files"
 }
