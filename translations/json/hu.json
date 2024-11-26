@@ -66,5 +66,8 @@
     "manage_shortcuts": "Parancsikonok kezelése",
     "new_shortcut": "Add a new shortcut",
     "add": "Add",
-    "new_window": "New window"
+    "new_window": "New window",
+    "selected_sound_file": "Selected sound file: {}",
+    "select_sound": "Select custom sound",
+    "sound_files": "Sound files"
 }
