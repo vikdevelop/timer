@@ -66,5 +66,8 @@
     "manage_shortcuts": "Управление горячими клавишами",
     "new_shortcut": "Добавить новую горячую клавишу",
     "add": "Добавить",
-    "new_window": "Новое окно"
+    "new_window": "Новое окно",
+    "select_sound": "Select custom sound",
+    "sound_files": "Sound files",
+    "selected_sound_file": "Selected sound file: {}"
 }

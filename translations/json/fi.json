@@ -66,5 +66,8 @@
     "manage_shortcuts": "Hallitse pikanäppäimiä",
     "new_shortcut": "Lisää uusi pikanäppäin",
     "add": "Lisää",
-    "new_window": "Uusi ikkuna"
+    "new_window": "Uusi ikkuna",
+    "selected_sound_file": "Selected sound file: {}",
+    "select_sound": "Select custom sound",
+    "sound_files": "Sound files"
 }

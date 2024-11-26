@@ -66,5 +66,8 @@
     "manage_shortcuts": "Gerenciar atalhos",
     "new_shortcut": "Criar novo atalho",
     "add": "Novo",
-    "new_window": "Nova janela"
+    "new_window": "Nova janela",
+    "selected_sound_file": "Selected sound file: {}",
+    "select_sound": "Select custom sound",
+    "sound_files": "Sound files"
 }

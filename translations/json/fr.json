@@ -66,5 +66,8 @@
     "manage_shortcuts": "Gestion des raccourcis",
     "new_shortcut": "Ajouter un nouveau raccourci",
     "add": "Ajouter",
-    "new_window": "Nouvelle fenêtre"
+    "new_window": "Nouvelle fenêtre",
+    "selected_sound_file": "Selected sound file: {}",
+    "select_sound": "Select custom sound",
+    "sound_files": "Sound files"
 }
