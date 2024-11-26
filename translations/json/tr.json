@@ -66,5 +66,8 @@
     "manage_shortcuts": "Kısayolları Yönet",
     "new_shortcut": "Yeni kısayol ekle",
     "add": "Ekle",
-    "new_window": "Yeni pencere"
+    "new_window": "Yeni pencere",
+    "selected_sound_file": "Selected sound file: {}",
+    "select_sound": "Select custom sound",
+    "sound_files": "Sound files"
 }
