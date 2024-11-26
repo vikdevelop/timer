@@ -66,5 +66,8 @@
     "manage_shortcuts": "Gestionar los accesos directos",
     "new_shortcut": "Añadir un nuevo acceso directo",
     "add": "Añadir",
-    "new_window": "Nueva ventana"
+    "new_window": "Nueva ventana",
+    "selected_sound_file": "Selected sound file: {}",
+    "select_sound": "Select custom sound",
+    "sound_files": "Sound files"
 }
