@@ -66,5 +66,8 @@
     "manage_shortcuts": "Gestisci scorciatoie",
     "new_shortcut": "Aggiungi una nuova scorciatoia",
     "add": "Aggiungi",
-    "new_window": "Nuova finestra"
+    "new_window": "Nuova finestra",
+    "selected_sound_file": "Selected sound file: {}",
+    "select_sound": "Select custom sound",
+    "sound_files": "Sound files"
 }
