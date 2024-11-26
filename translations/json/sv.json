@@ -66,5 +66,8 @@
     "shortcut_removed": "Genvägen '{}' togs bort",
     "add": "Lägg till",
     "translator_credits": "vikdevelop https://github.com/vikdevelop",
-    "new_window": "Nytt fönster"
+    "new_window": "Nytt fönster",
+    "selected_sound_file": "Selected sound file: {}",
+    "select_sound": "Select custom sound",
+    "sound_files": "Sound files"
 }
