@@ -66,5 +66,8 @@
     "shortcut_removed": "शॉर्टकट '{}' हटा दिया गया",
     "add": "जोड़ें",
     "translator_credits": "Scrambled777 <weblate.scrambled777@simplelogin.com>",
-    "new_window": "नई विंडो"
+    "new_window": "नई विंडो",
+    "selected_sound_file": "Selected sound file: {}",
+    "select_sound": "Select custom sound",
+    "sound_files": "Sound files"
 }
