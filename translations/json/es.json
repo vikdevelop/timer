@@ -67,7 +67,7 @@
     "new_shortcut": "Añadir un nuevo acceso directo",
     "add": "Añadir",
     "new_window": "Nueva ventana",
-    "selected_sound_file": "Selected sound file: {}",
-    "select_sound": "Select custom sound",
-    "sound_files": "Sound files"
+    "selected_sound_file": "Archivo de sonido seleccionado: {}",
+    "select_sound": "Seleccionar sonido personalizado",
+    "sound_files": "Archivos de sonido"
 }
