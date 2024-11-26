@@ -267,13 +267,15 @@ class TimerWindow(Adw.ApplicationWindow):
                     return
                 os.popen(f"install -D -t {DATA}/custom_sounds \"{file.get_path()}\"")
                 self.sound_file = f"{DATA}/custom_sounds/{os.path.basename(file.get_path())}"
+                self.selButton.remove_css_class("suggested-action")
+                self.selButton.set_tooltip_text(jT["selected_sound_file"].format(self.sound_file))
                 self.settings["sound-file"] = self.sound_file
                 
             self.file_chooser = Gtk.FileDialog.new()
             self.file_chooser.set_modal(True)
-            self.file_chooser.set_title("Select custom sound")
+            self.file_chooser.set_title(jT["select_sound"])
             self.file_filter = Gtk.FileFilter.new()
-            self.file_filter.set_name("Sound Files")
+            self.file_filter.set_name(jT["sound_files"])
             self.file_filter.add_pattern('*.mp3')
             self.file_filter.add_pattern('*.ogg')
             self.file_filter.add_pattern('*.flac')
@@ -308,10 +310,13 @@ class TimerWindow(Adw.ApplicationWindow):
                 self.adw_expander_row.add_row(child=self.adw_action_row_beep)
             elif self.adw_action_row_timer.get_selected_item().get_string() == "Play alarm clock": # Show the button for selecting the sound for playing the alarm clock
                 self.selButton = Gtk.Button.new_from_icon_name("document-open-symbolic")
-                self.selButton.set_tooltip_text("Select custom sound")
+                if self.settings["sound-file"] == "/app/src/beeps/Oxygen-Im-Phone-Ring.ogg":
+                    self.selButton.add_css_class('suggested-action')
+                    self.selButton.set_tooltip_text(jT["select_sound"])
+                else:
+                    self.selButton.set_tooltip_text(jT["selected_sound_file"].format(self.settings["sound-file"]))
                 self.selButton.set_valign(Gtk.Align.CENTER)
                 self.selButton.add_css_class('circular')
-                self.selButton.add_css_class('suggested-action')
                 self.selButton.connect("clicked", open_sound_chooser)
                 self.adw_action_row_timer.add_suffix(self.selButton)
         
