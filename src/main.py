@@ -65,22 +65,6 @@ class TimerWindow(Adw.ApplicationWindow):
         
         if self.settings["maximized"]:
             self.maximize()
-            
-        if self.settings["resizable"] == False:
-            self.set_resizable(False)
-        
-        # Gtk switches
-        self.switch_01 = Gtk.Switch.new()
-        if self.settings["dark-theme"]:
-            self.switch_01.set_active(True)
-        self.switch_01.set_valign(align=Gtk.Align.CENTER)
-        self.switch_01.connect('notify::active', self.on_switch_01_toggled)
-        
-        self.switch_02 = Gtk.Switch.new()
-        if self.settings["resizable"]:
-            self.switch_02.set_active(True)
-        self.switch_02.set_valign(align=Gtk.Align.CENTER)
-        self.switch_02.connect('notify::active', self.on_switch_02_toggled)
         
         self.switch_04 = Gtk.Switch.new()
         if self.settings["show-notification-icon"]:
@@ -585,15 +569,6 @@ class TimerWindow(Adw.ApplicationWindow):
         self.abox.set_selection_mode(mode=Gtk.SelectionMode.NONE)
         self.abox.add_css_class('boxed-list')
         self.mainBox.append(self.abox)
-        # Adw ActionRow - Resizable of Window configuration
-        
-        ## Adw.ActionRow
-        self.adw_action_row_window = Adw.ActionRow.new()
-        self.adw_action_row_window.add_prefix(Gtk.Image.new_from_icon_name('window-maximize-symbolic'))
-        self.adw_action_row_window.set_title(title=jT["resizable_of_window"])
-        self.adw_action_row_window.add_suffix(widget=self.switch_02)
-        self.adw_action_row_window.set_activatable_widget(widget=self.switch_02)
-        self.abox.append(self.adw_action_row_window)
         
         # Adw.ActionRow - show vertical countdown timer text
         
@@ -997,7 +972,7 @@ class TimerWindow(Adw.ApplicationWindow):
     ## Play beep after finished timer
     def play_beep(self):
         if self.switch_03.get_active() == True:
-            os.popen("ffplay -nodisp -autoexit /app/share/beeps/Oxygen.ogg > /dev/null 2>&1")
+            os.popen("ffplay -nodisp -autoexit /app/src/beeps/Oxygen.ogg > /dev/null 2>&1")
         else:
             pass
     
@@ -1051,24 +1026,6 @@ class TimerWindow(Adw.ApplicationWindow):
     def on_advButton_clicked(self, widget, *args):
         self.advanced()
     
-    ## Save app theme configuration
-    def on_switch_01_toggled(self, switch01, GParamBoolean):
-        if switch01.get_active():
-            self.style_manager.set_color_scheme(
-                    color_scheme=Adw.ColorScheme.PREFER_DARK
-                )
-        else:
-            self.style_manager.set_color_scheme(
-                    color_scheme=Adw.ColorScheme.FORCE_LIGHT
-                )
-    
-    ## Save resizable window configuration
-    def on_switch_02_toggled(self, switch02, GParamBoolean):
-        if switch02.get_active():
-            self.set_resizable(True)
-        else:
-            self.set_resizable(False)
-    
     # Action after closing Timer window
     none = ""
     def close_action(self, w, none):
@@ -1101,8 +1058,6 @@ class TimerWindow(Adw.ApplicationWindow):
         
         self.settings["window-size"] = (width, height)
         self.settings["maximized"] = self.is_maximized()
-        self.settings["dark-theme"] = self.switch_01.get_active()
-        self.settings["resizable"] = self.switch_02.get_active()
         try:
             self.settings["play-beep"] = self.switch_03.get_active()
         except AttributeError:
@@ -1196,9 +1151,9 @@ class MyApp(Adw.Application):
     def on_about_action(self, action, param):
         dialog = Adw.AboutDialog()
         dialog.set_application_name(jT["timer_title"])
-        dialog.set_version("3.4.3")
+        dialog.set_version("3.5")
         dialog.set_developer_name("vikdevelop")
-        dialog.set_release_notes("<ul><li>Fixed minor bugs and UI improvements</li></ul>")
+        dialog.set_release_notes("<ul><li>Added option for selecting custom sound for the alarm clock</li></ul>")
         dialog.set_license_type(Gtk.License(Gtk.License.GPL_3_0))
         dialog.set_website("https://github.com/vikdevelop/timer")
         dialog.set_issue_url("https://github.com/vikdevelop/timer/issues")

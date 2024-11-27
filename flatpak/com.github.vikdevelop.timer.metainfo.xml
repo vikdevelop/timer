@@ -53,6 +53,13 @@
     </branding>
     
     <releases>
+        <release version="3.5" date="2024-11-27">
+            <description>
+                <ul>
+                    <li>Added option to select custom sound for the alarm clock</li>
+                </ul>
+            </description>
+        </release>
         <release version="3.4" date="2024-05-05">
             <description>
                 <ul>

@@ -2,20 +2,12 @@
 <schemalist>
     <schema id="com.github.vikdevelop.timer" path="/com/github/vikdevelop/timer/">
         <key name="window-size" type="(ii)">
-            <default>(425,425)</default>
+            <default>(395,485)</default>
             <summary>Window size</summary>
         </key>
         <key name="maximized" type="b">
           <default>false</default>
           <summary>Window maximize state</summary>
-        </key>
-        <key name="dark-theme" type="b">
-            <default>false</default>
-            <summary>Dark theme switch</summary>
-        </key>
-        <key name="resizable" type="b">
-            <default>false</default>
-            <summary>Resizable window switch</summary>
         </key>
         <key name="play-beep" type="b">
             <default>true</default>
