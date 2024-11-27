@@ -252,7 +252,7 @@ class TimerWindow(Adw.ApplicationWindow):
                 os.popen(f"install -D -t {DATA}/custom_sounds \"{file.get_path()}\"")
                 self.sound_file = f"{DATA}/custom_sounds/{os.path.basename(file.get_path())}"
                 self.selButton.remove_css_class("suggested-action")
-                self.selButton.set_tooltip_text(jT["selected_sound_file"].format(self.sound_file))
+                self.selButton.set_tooltip_text(jT["selected_sound_file"].format(os.path.basename(self.sound_file)))
                 self.settings["sound-file"] = self.sound_file
                 
             self.file_chooser = Gtk.FileDialog.new()
@@ -298,7 +298,7 @@ class TimerWindow(Adw.ApplicationWindow):
                     self.selButton.add_css_class('suggested-action')
                     self.selButton.set_tooltip_text(jT["select_sound"])
                 else:
-                    self.selButton.set_tooltip_text(jT["selected_sound_file"].format(self.settings["sound-file"]))
+                    self.selButton.set_tooltip_text(jT["selected_sound_file"].format(os.path.basename(self.settings["sound-file"])))
                 self.selButton.set_valign(Gtk.Align.CENTER)
                 self.selButton.add_css_class('circular')
                 self.selButton.connect("clicked", open_sound_chooser)
