@@ -67,7 +67,7 @@
     "new_shortcut": "Додати нове клавіатурне скорочення",
     "add": "Додати",
     "new_window": "Нове вікно",
-    "selected_sound_file": "Selected sound file: {}",
-    "select_sound": "Select custom sound",
-    "sound_files": "Sound files"
+    "selected_sound_file": "Вибраний звуковий файл: {}",
+    "select_sound": "Вибрати власний звук",
+    "sound_files": "Звукові файли"
 }

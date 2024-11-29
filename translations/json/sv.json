@@ -67,7 +67,7 @@
     "add": "Lägg till",
     "translator_credits": "vikdevelop https://github.com/vikdevelop",
     "new_window": "Nytt fönster",
-    "selected_sound_file": "Selected sound file: {}",
-    "select_sound": "Select custom sound",
-    "sound_files": "Sound files"
+    "selected_sound_file": "Vald ljudfil: {}",
+    "select_sound": "Välj anpassat ljud",
+    "sound_files": "Ljudfiler"
 }
