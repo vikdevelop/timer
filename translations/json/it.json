@@ -67,7 +67,7 @@
     "new_shortcut": "Aggiungi una nuova scorciatoia",
     "add": "Aggiungi",
     "new_window": "Nuova finestra",
-    "selected_sound_file": "Selected sound file: {}",
-    "select_sound": "Select custom sound",
-    "sound_files": "Sound files"
+    "selected_sound_file": "File audio selezionato: {}",
+    "select_sound": "Seleziona suono personalizzato",
+    "sound_files": "File audio"
 }
