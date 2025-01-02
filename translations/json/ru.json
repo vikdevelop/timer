@@ -67,7 +67,7 @@
     "new_shortcut": "Добавить новую горячую клавишу",
     "add": "Добавить",
     "new_window": "Новое окно",
-    "select_sound": "Select custom sound",
-    "sound_files": "Sound files",
-    "selected_sound_file": "Selected sound file: {}"
+    "select_sound": "Выбрать свой звук",
+    "sound_files": "Звуковые файлы",
+    "selected_sound_file": "Выбранный звуковой файл: {}"
 }
