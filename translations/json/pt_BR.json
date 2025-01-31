@@ -67,7 +67,7 @@
     "new_shortcut": "Criar novo atalho",
     "add": "Novo",
     "new_window": "Nova janela",
-    "selected_sound_file": "Selected sound file: {}",
-    "select_sound": "Select custom sound",
-    "sound_files": "Sound files"
+    "selected_sound_file": "Arquivo de som selecionado: {}",
+    "select_sound": "Selecione som personalizado",
+    "sound_files": "Arquivos de som"
 }
