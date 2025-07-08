@@ -1151,9 +1151,9 @@ class MyApp(Adw.Application):
     def on_about_action(self, action, param):
         dialog = Adw.AboutDialog()
         dialog.set_application_name(jT["timer_title"])
-        dialog.set_version("3.5")
+        dialog.set_version("3.5.1")
         dialog.set_developer_name("vikdevelop")
-        dialog.set_release_notes("<ul><li>Added option for selecting custom sound for the alarm clock</li></ul>")
+        dialog.set_release_notes("<ul><li>Added Tamil translations, thanks to @TamilNeram</li><li>Updated other translations</li></ul>")
         dialog.set_license_type(Gtk.License(Gtk.License.GPL_3_0))
         dialog.set_website("https://github.com/vikdevelop/timer")
         dialog.set_issue_url("https://github.com/vikdevelop/timer/issues")
