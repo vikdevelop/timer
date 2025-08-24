@@ -16,7 +16,3 @@ body:
       label: Describe the solution you would like
     validations:
       required: true
-  - type: textarea
-    id: AnotherSolution
-    attributes:
-      label: Do you have another solution?
