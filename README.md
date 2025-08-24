@@ -3,7 +3,10 @@
   <h1 align="center">Timer</h1>
   <p align="center">Simple countdown</p>
 </div>
-  
+
+> [!WARNING]
+> This app is in maintenance mode. While I fix critical bugs when possible, I'm not actively developing new features. Community contributions via pull requests are welcome.
+
 *Simple countdown timer* that allows:
 
 - timing in hours/minutes/seconds,
