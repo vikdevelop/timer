@@ -227,4 +227,14 @@
         </release>
   </releases>
     
+    <keywords>
+    
+      <keyword>timer</keyword>
+    
+      <keyword>countdown</keyword>
+    
+      <keyword>stopwatch</keyword>
+    
+    </keywords>
+    
 </component>
