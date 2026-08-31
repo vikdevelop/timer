@@ -67,7 +67,7 @@
     "new_shortcut": "Afegeix una drecera nova",
     "add": "Afegeix",
     "new_window": "Finestra nova",
-    "selected_sound_file": "Selected sound file: {}",
-    "select_sound": "Select custom sound",
-    "sound_files": "Sound files"
+    "selected_sound_file": "Fitxer d'àudio seleccionat: {}",
+    "select_sound": "Selecció del so personalitzat",
+    "sound_files": "Fitxers d'àudio"
 }
