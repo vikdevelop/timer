@@ -53,6 +53,14 @@
     </branding>
     
     <releases>
+        <release version="3.5.1" date="2025-07-08">
+            <description>
+                <ul>
+                    <li>Added Tamil translations, thanks to @TamilNeram</li>
+                    <li>Updated other translations</li>
+                </ul>
+            </description>
+        </release>
         <release version="3.5" date="2024-11-27">
             <description>
                 <ul>
